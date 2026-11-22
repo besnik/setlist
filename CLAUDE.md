@@ -69,5 +69,7 @@ Only work on stories with status `approved` — see [docs/plan/](docs/plan/).
 
 ## Environment notes
 
-- Agents can push branches but cannot delete branches, force-push or write via the GitHub API. Branches are auto-deleted after merge.
-- If a pull request cannot be opened automatically, give the CEO the compare link: `https://github.com/besnik/setlist/compare/main...<branch>`.
+- Agents can push branches but cannot delete branches or force-push. Branches are auto-deleted after merge.
+- GitHub GraphQL is blocked, so `gh pr create` fails. Open pull requests via the REST API:
+  `gh api repos/besnik/setlist/pulls -f title='...' -f head='<branch>' -f base='main' -f body='...'`
+- If a pull request still cannot be opened, give the CEO the compare link: `https://github.com/besnik/setlist/compare/main...<branch>`.
