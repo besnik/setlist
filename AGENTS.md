@@ -19,14 +19,22 @@ Roles and decision rights: [docs/company/operating-model.md](docs/company/operat
 - Chat with the CEO: **Slovak**.
 - Everything in the repository (code, comments, docs, commits, PRs, branch names): **English**.
 
+## Start of every session
+
+Sessions have no memory of earlier chats. Before new work, find out where we left off:
+
+1. Open pull requests: `gh api repos/besnik/setlist/pulls --jq '.[] | "#\(.number) \(.head.ref): \(.title)"'`
+2. Tasks with status `in-progress` in [docs/plan/milestones/](docs/plan/milestones/).
+3. If the CEO's request belongs to an open topic, continue on that PR's branch.
+
 ## Rules that always apply
 
 1. Follow the [golden principles](docs/golden-principles.md) — above all: **simplicity first**, add complexity only when needed.
 2. Follow the architecture principles in [ARCHITECTURE.md](ARCHITECTURE.md).
 3. **The CEO decides:** dependencies, tech stack, architecture, larger refactorings, approving tasks and milestones, anything public. When in doubt, ask.
-4. **Plan first:** write a short plan in chat and wait for the CEO's OK before changing files.
+4. **Plan first when it matters:** for unclear or larger work, write a short plan in chat and wait for the CEO's OK. A clear, specific instruction from the CEO can be carried out right away.
 5. Never push to `main`. **One open topic = one branch = one PR.** While a PR on the same topic is open, add commits to its branch instead of creating a new one. Create a new branch `<type>/<short-description>` (always from `main`) only for a new topic. Small PRs, [Conventional Commits](CONTRIBUTING.md). The CEO squash-merges.
-6. Work only on tasks with status `approved` ([docs/plan/](docs/plan/)).
+6. Work only on **approved** tasks ([docs/plan/](docs/plan/)). An explicit instruction from the CEO in chat counts as approval — record the task row in the same PR.
 7. **Mind the budget.** Do small tasks yourself; spawn a lead only for substantial work in its area (each lead starts cold and costs tokens).
 8. **No private links and no generated boilerplate.** Never put into commits, PRs, issues, comments or files:
    - links to AI sessions, chats or other private tools (e.g. `claude.ai/code/session_…`),
@@ -73,3 +81,5 @@ Always cover these three things, but choose short Slovak headings that fit the c
 
 - Agents can push branches but cannot delete branches or force-push. Branches are auto-deleted after merge.
 - GitHub GraphQL is blocked (`gh pr create` fails) — open PRs via the REST API, see the `open-pr` skill.
+- The clone is shallow and tracks only `main`. After checking out or pushing another branch, register it so git (and the stop hook) can see it is pushed:
+  `git config --add remote.origin.fetch '+refs/heads/<branch>:refs/remotes/origin/<branch>' && git fetch origin <branch>`

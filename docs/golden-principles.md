@@ -20,6 +20,7 @@ They apply to every change. When a rule is broken repeatedly, we turn it into a 
 
 ## Process
 
-10. **Specs stay true.** Every change in app behavior updates the matching [product spec](product-specs/) in the same PR.
-11. **Record debt, don't hide it.** Shortcuts and known issues go into [tech-debt.md](plan/tech-debt.md).
-12. **Feedback becomes rules.** A correction from the CEO or a recurring mistake is captured here or in the docs. If it happens again, it becomes a mechanical check.
+10. **Machines check, humans steer.** Agentic development holds together only through what is verified automatically — tests, `make check`, CI — not through written rules alone. Anything that can be checked by a machine is checked by a machine, with error messages that tell the agent how to fix the problem. Written rules are the starting point; the rules that matter get a check. The CEO's review is for judgment, not for catching what a check could catch.
+11. **Specs stay true.** Every change in app behavior updates the matching [product spec](product-specs/) in the same PR.
+12. **Record debt, don't hide it.** Shortcuts and known issues go into [tech-debt.md](plan/tech-debt.md).
+13. **Feedback becomes rules.** A correction from the CEO or a recurring mistake is captured here or in the docs. If it happens again, it becomes a mechanical check.

@@ -38,7 +38,7 @@ proposed ──► approved ──► in-progress ──► done
 | `done` | Merged to `main` | GM (in the PR) |
 | `rejected` | Not going to happen | **CEO only** |
 
-**Only `approved` tasks may be worked on.** The CEO approves in chat or by merging a PR that changes the status.
+**Only `approved` tasks may be worked on.** The CEO approves in chat or by merging a PR that changes the status. An explicit instruction from the CEO in chat counts as approval — the GM records the task row in the same PR.
 
 ## Milestones
 

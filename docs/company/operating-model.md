@@ -66,7 +66,7 @@ Every CEO decision of lasting importance is recorded as an ADR in [docs/decision
 ## Workflow of a task
 
 1. **Intake** — CEO gives a goal (in chat) or approves a task in [docs/plan/](../plan/).
-2. **Plan** — GM writes a short plan in chat and waits for the CEO's OK.
+2. **Plan** — for unclear or larger work, the GM writes a short plan in chat and waits for the CEO's OK. A clear, specific instruction is carried out right away.
 3. **Delegate** — GM assigns parts to leads.
 4. **Build** — work happens on a branch `<type>/<short-description>`.
 5. **Review** — QA lead (and the GM) review before the PR is opened.
