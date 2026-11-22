@@ -63,6 +63,20 @@ Defined in [.claude/agents/](../../.claude/agents/). Each lead:
 
 Every CEO decision of lasting importance is recorded as an ADR in [docs/decisions/](../decisions/).
 
+## From idea to product
+
+Every feature or milestone follows the same order (skill `new-feature`):
+
+```
+1. Functionality analysis  → product spec (what and why)      — CEO approves
+2. UX flow                 → screens and navigation
+3. Technical solution      → ADR, ARCHITECTURE.md, data model — CEO decides
+4. Tasks                   → T-NNN in the milestone           — CEO approves
+5. Build + checks          → code, tests, checks, CI
+```
+
+Fixed constraints set by the CEO (platform, budget) are inputs to the analysis, not its outcome.
+
 ## Workflow of a task
 
 1. **Intake** — CEO gives a goal (in chat) or approves a task in [docs/plan/](../plan/).

@@ -22,7 +22,8 @@ User stories in separate files would scatter the description of what the app doe
 - **Product specs** in `docs/product-specs/` replace user stories.
 - **Tasks** (`T-NNN`) are rows in milestone files; **execution plans** in `docs/plan/plans/` only for bigger tasks.
 - **Golden principles** in `docs/golden-principles.md`; **tech debt** tracked in `docs/plan/tech-debt.md`.
-- **Skills** in `.claude/skills/` for repeatable workflows (start with `open-pr`, `new-adr`).
+- **Skills** in `.claude/skills/` for repeatable workflows (start with `new-feature`, `open-pr`, `new-adr`).
+- **Functionality first:** every feature starts with a spec; the technical solution is derived from it.
 - **Feedback becomes rules:** corrections are captured in the repo; recurring ones become mechanical checks.
 - **Machines check, humans steer:** what can be verified automatically (tests, checks, CI) must be; the CEO's review is for judgment.
 - **Budget rule:** the GM does small tasks itself and spawns leads only for substantial work.

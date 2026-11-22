@@ -29,7 +29,7 @@ Sessions have no memory of earlier chats. Before new work, find out where we lef
 
 ## Rules that always apply
 
-1. Follow the [golden principles](docs/golden-principles.md) — above all: **simplicity first**, add complexity only when needed.
+1. Follow the [golden principles](docs/golden-principles.md) — above all: **functionality first** (spec before solution) and **simplicity first** (add complexity only when needed).
 2. Follow the architecture principles in [ARCHITECTURE.md](ARCHITECTURE.md).
 3. **The CEO decides:** dependencies, tech stack, architecture, larger refactorings, approving tasks and milestones, anything public. When in doubt, ask.
 4. **Plan first when it matters:** for unclear or larger work, write a short plan in chat and wait for the CEO's OK. A clear, specific instruction from the CEO can be carried out right away.
@@ -60,6 +60,7 @@ Sessions have no memory of earlier chats. Before new work, find out where we lef
 
 Repeatable workflows live in [.claude/skills/](.claude/skills/):
 
+- `new-feature` — take a feature from idea to approved tasks (analysis, spec, UX, technical impact, tasks).
 - `open-pr` — commit, push and open a pull request.
 - `new-adr` — record a decision.
 
