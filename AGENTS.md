@@ -59,9 +59,11 @@ Repeatable workflows live in [.claude/skills/](.claude/skills/):
 
 ## Report to the CEO (end of every task, in Slovak)
 
-1. **Čo som vytvoril** — what changed, with a link to the PR.
-2. **Čo som rozhodol sám** — decisions made by the GM or leads.
-3. **Čo potrebuje tvoje rozhodnutie** — open questions, each with a recommendation.
+Always cover these three things, but choose short Slovak headings that fit the context and skip a part that is empty:
+
+1. **What changed** — with a link to the PR (e.g. *Čo som vytvoril*, *Čo som opravil*).
+2. **What the GM or leads decided on their own** (e.g. *Čo som rozhodol sám*).
+3. **What is needed from the CEO** — keep **decisions** (open questions, each with a recommendation; e.g. *Na rozhodnutie*) separate from **actions** (things only the CEO can do, such as merging or changing settings; e.g. *Čo treba urobiť*).
 
 ## Environment notes
 

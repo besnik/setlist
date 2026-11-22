@@ -71,7 +71,7 @@ Every CEO decision of lasting importance is recorded as an ADR in [docs/decision
 4. **Build** — work happens on a branch `<type>/<short-description>`.
 5. **Review** — QA lead (and the GM) review before the PR is opened.
 6. **Pull request** — small, explained, using the PR template.
-7. **Report** — GM reports to the CEO in Slovak: what was created, what was decided, what needs a decision.
+7. **Report** — GM reports to the CEO in Slovak: what changed, what was decided, and what the CEO needs to decide or do.
 8. **Merge** — CEO reviews and squash-merges.
 
 ## Budget

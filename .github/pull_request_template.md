@@ -14,9 +14,9 @@
 
 <!-- Small decisions taken by the GM / leads. -->
 
-## Needs CEO decision
+## Needs from CEO
 
-<!-- Open questions with a recommendation, or "None". -->
+<!-- Decisions (each with a recommendation) and actions only the CEO can do, or "None". -->
 
 ## Checklist
 
