@@ -18,4 +18,6 @@ Important decisions are recorded here as short **ADRs** (Architecture Decision R
 
 | # | Title | Status |
 |---|---|---|
-| [0001](0001-agentic-operating-model.md) | Agentic operating model and repository harness | accepted |
+| [0001](0001-agentic-operating-model.md) | Agentic operating model and repository harness | accepted (planning part superseded by 0002) |
+| [0002](0002-knowledge-base-and-planning.md) | Repository knowledge base and lightweight planning | accepted |
+| [0003](0003-layered-architecture.md) | Layered architecture for domains and UI | accepted |

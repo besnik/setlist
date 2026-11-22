@@ -4,7 +4,7 @@
 
 ## Why
 
-<!-- Story ID (e.g. S-001), ADR, or the reason for the change. -->
+<!-- Task ID (e.g. T-001), spec, ADR, or the reason for the change. -->
 
 ## How it was verified
 
@@ -22,5 +22,6 @@
 
 - [ ] Small and focused on one topic
 - [ ] PR title follows Conventional Commits (`type: summary`)
-- [ ] Docs and plan files updated (story status, milestone, ADR if needed)
+- [ ] Specs, plan files (task status) and ADRs updated if needed
+- [ ] Respects the architecture layers and golden principles
 - [ ] No new dependencies without a CEO decision

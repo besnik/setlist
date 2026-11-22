@@ -1,6 +1,6 @@
 # 0001. Agentic operating model and repository harness
 
-- **Status:** accepted
+- **Status:** accepted — planning part superseded by [0002](0002-knowledge-base-and-planning.md)
 - **Date:** 2026-11-22
 - **Decided by:** CEO
 

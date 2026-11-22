@@ -42,7 +42,9 @@ Why: the type tells at a glance whether a change affects users, and enables auto
 
 ## Planning and decisions
 
-- Work is planned in [docs/plan/](docs/plan/) (roadmap, milestones, stories).
+- What the app does is described in [docs/product-specs/](docs/product-specs/).
+- Work is planned in [docs/plan/](docs/plan/) (roadmap, milestones, tasks).
+- Code structure: [ARCHITECTURE.md](ARCHITECTURE.md); coding rules: [docs/golden-principles.md](docs/golden-principles.md).
 - Important decisions are recorded in [docs/decisions/](docs/decisions/).
 
 ## License

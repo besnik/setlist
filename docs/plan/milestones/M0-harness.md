@@ -4,24 +4,16 @@
 
 ## Goal
 
-Before building the product, set up the system for agentic development: rules, roles, decision rights, planning and repository conventions.
+Before building the product, set up the system for agentic development: rules, roles, decision rights, knowledge base and repository conventions.
 
-## Scope
+## Tasks
 
-- [x] GitHub: protect `main` (PR required, no force push, no deletion)
-- [x] GitHub: auto-delete branches after merge, squash merge
-- [x] `CLAUDE.md` — agent instructions
-- [x] Operating model and department lead subagents
-- [x] Decision records (ADR) with template
-- [x] Planning structure (`docs/plan/`)
-- [x] PR template, `CONTRIBUTING.md`, project README
-
-M0 is done once the `chore/harness-setup` pull request is merged.
+| ID | Task | Spec | Status | PR |
+|---|---|---|---|---|
+| T-001 | GitHub settings: protect `main`, auto-delete branches, squash merge | — | done | — (manual) |
+| T-002 | Operating model, department leads, ADRs, planning, PR template, README | — | in-progress | [#1](https://github.com/besnik/setlist/pull/1) |
+| T-003 | Knowledge base: AGENTS.md router, architecture, golden principles, product specs, tasks, skills, security policy | — | in-progress | this PR |
 
 ## Out of scope
 
-Tech stack, CI, any product code — these come next.
-
-## Stories
-
-None — M0 is tracked by the checklist above.
+Tech stack, build tooling, CI, any product code — these come next.
