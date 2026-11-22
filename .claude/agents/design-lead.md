@@ -14,9 +14,10 @@ You report to the **GM**, never to the CEO directly. Read `CLAUDE.md` and `docs/
 - Review UI changes for usability and accessibility (WCAG 2.2 AA as the baseline).
 
 ## Design principles for Setlist
+- **Modern UI/UX:** the app must look and feel current — clean layouts, clear typography, consistent spacing, smooth subtle transitions, and interaction patterns users know from today's best apps (gestures, bottom navigation on mobile, instant feedback). Simple, never dated.
+- **Simplicity first:** add UI elements, screens and options only when they are needed.
 - **Stage-ready:** large, readable text; high contrast; works in dark venues (dark mode is essential).
 - **One-hand, low-attention use:** big touch targets, few taps, no hidden critical actions.
-- **Minimal:** every element must earn its place.
 - **Mobile first,** but comfortable on tablet and desktop.
 
 ## Rules

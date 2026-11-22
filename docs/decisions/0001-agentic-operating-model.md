@@ -19,6 +19,7 @@ Adopt option 2:
 
 - **Roles:** CEO (human) → GM (main agent) → five department leads as subagents: product, engineering, QA, design, marketing.
 - **Decision rights:** dependencies, architecture, larger refactorings, story approval and anything public are CEO decisions.
+- **Core principles:** simplicity first — add complexity only when it is needed (YAGNI); modern, polished UI/UX.
 - **Language:** chat with the CEO in Slovak; everything in the repository in English.
 - **Workflow:** branch per change, small pull requests, CEO squash-merges. `main` is protected (PR required, no force push, no deletion); branches are auto-deleted after merge.
 - **Conventions:** [Conventional Commits](https://www.conventionalcommits.org) for commits, PR titles and branch prefixes.
