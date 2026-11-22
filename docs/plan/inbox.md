@@ -7,5 +7,7 @@ Raw ideas go here — one line each, no filtering. The GM or Product lead turns 
 - Set up mechanical checks for the architecture and a CI workflow.
 - Deploy the app (e.g. GitHub Pages).
 - Define MVP scope (M1) and write the first product specs.
-- Skill for verifying changes in a real browser (screenshots in PRs) — with the first UI.
-- Quality grades per area and a cleanup skill — later.
+- Skill `implement-task` — approved task → branch → build → `make check` and tests → QA review → PR (with the first code).
+- Skill `fix-bug` — reproduce → failing test → fix → passing test → update spec if needed (with the first code).
+- Skill `cleanup` — find deviations from golden principles and tech debt, open small cleanup PRs (end of a milestone).
+- Quality grades per area — later.

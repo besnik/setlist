@@ -40,7 +40,7 @@ Sessions have no memory of earlier chats. Before new work, find out where we lef
    - links to AI sessions, chats or other private tools (e.g. `claude.ai/code/session_…`),
    - tool attribution or promotion ("Generated with/by …", `Co-Authored-By: <AI>` trailers, session trailers, emoji badges).
    Write only content about the change itself.
-9. **Feedback becomes rules.** When the CEO corrects something or an agent struggles, capture the lesson in the repo (docs, golden principles, or a check) so it never has to be said twice.
+9. **Feedback becomes rules.** When the CEO corrects something or an agent struggles, capture the lesson in the repo (docs, golden principles, or a check) so it never has to be said twice — use the `update-harness` skill.
 
 ## Where to find things
 
@@ -64,6 +64,7 @@ Repeatable workflows live in [.claude/skills/](.claude/skills/):
 - `new-feature` — take a feature from idea to approved tasks (analysis, spec, UX, technical impact, tasks).
 - `open-pr` — commit, push and open a pull request.
 - `new-adr` — record a decision.
+- `update-harness` — change rules or workflow and keep all harness docs consistent.
 
 ## Definition of done
 

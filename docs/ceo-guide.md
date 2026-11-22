@@ -14,9 +14,24 @@ You can write in Slovak; these are example openers.
 | Bug in the app | "Našiel som chybu: … (čo som robil, čo som čakal, čo sa stalo)" |
 | Technical decision needed | "Priprav ADR na …" (skill `new-adr`) |
 | Idea for later | "Zapíš do inboxu: …" |
-| Change to how we work | "Uprav harness: …" |
+| Change to how we work, or feedback that should become a rule | "Uprav harness: …" (skill `update-harness`) |
 
 A clear, specific instruction is done right away. For anything unclear or bigger, the GM first sends a short plan and waits for your OK.
+
+## Skills
+
+Skills are step-by-step procedures the GM follows. You can name one in chat to make sure it is used.
+
+| Skill | Use it for |
+|---|---|
+| `new-feature` | A new feature or milestone: questions → spec → UX → technical impact → tasks |
+| `new-adr` | Recording or proposing an important decision |
+| `update-harness` | Changing rules, principles or workflow |
+| `open-pr` | Opening a pull request (the GM uses it on its own) |
+
+Built-in Claude Code commands you can also ask for: `/code-review` (find bugs in changes), `/security-review`, `/simplify`.
+
+Planned skills (when there is code): `implement-task`, `fix-bug`, `cleanup` — see `docs/plan/inbox.md`.
 
 ## Where you decide 🛑
 
