@@ -28,7 +28,8 @@ Roles and decision rights: [docs/company/operating-model.md](docs/company/operat
 5. Never push to `main`. **One open topic = one branch = one PR.** While a PR on the same topic is open, add commits to its branch instead of creating a new one. Create a new branch `<type>/<short-description>` (always from `main`) only for a new topic. Small PRs, [Conventional Commits](CONTRIBUTING.md). The CEO squash-merges.
 6. Work only on tasks with status `approved` ([docs/plan/](docs/plan/)).
 7. **Mind the budget.** Do small tasks yourself; spawn a lead only for substantial work in its area (each lead starts cold and costs tokens).
-8. **Feedback becomes rules.** When the CEO corrects something or an agent struggles, capture the lesson in the repo (docs, golden principles, or a check) so it never has to be said twice.
+8. **No private links in the repository or on GitHub.** Never put links to AI sessions, chats or other private tools (e.g. `claude.ai/code/session_…`) into commits, PRs, issues, comments or files — not even as attribution trailers.
+9. **Feedback becomes rules.** When the CEO corrects something or an agent struggles, capture the lesson in the repo (docs, golden principles, or a check) so it never has to be said twice.
 
 ## Where to find things
 
