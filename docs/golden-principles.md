@@ -14,7 +14,7 @@ They apply to every change. When a rule is broken repeatedly, we turn it into a 
 4. **Boring technology.** Prefer the web platform and well-known, stable tools over new or clever ones. A small helper we write ourselves beats an opaque library.
 5. **No build step required.** The app runs straight from the source files in a browser.
 6. **Native ES modules, no global state.** Every module imports what it uses explicitly.
-7. **Follow the architecture principles** in [ARCHITECTURE.md](../ARCHITECTURE.md) (SOLID, applied pragmatically).
+7. **Follow the architecture principles** in [ARCHITECTURE.md](../ARCHITECTURE.md).
 8. **Validate at the boundary.** Data coming from storage, files or user input is validated before use. Never build on guessed data shapes.
 9. **Enforce invariants, not implementations.** Rules define boundaries; inside them, choose the simplest way to solve the problem.
 
