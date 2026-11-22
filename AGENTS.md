@@ -55,6 +55,7 @@ Sessions have no memory of earlier chats. Before new work, find out where we lef
 | How the virtual company works | [docs/company/operating-model.md](docs/company/operating-model.md) |
 | Branch, commit and PR conventions | [CONTRIBUTING.md](CONTRIBUTING.md) |
 | Security policy | [SECURITY.md](SECURITY.md) |
+| Cheat sheet for the CEO | [docs/ceo-guide.md](docs/ceo-guide.md) |
 
 ## Skills
 
@@ -68,6 +69,7 @@ Repeatable workflows live in [.claude/skills/](.claude/skills/):
 
 - The approved task's acceptance criteria are met.
 - Product specs, plan files and ADRs are updated in the same PR.
+- If the way we work changed (rules, skills, workflow), [docs/ceo-guide.md](docs/ceo-guide.md) is updated too.
 - The PR follows the [template](.github/pull_request_template.md).
 
 ## Report to the CEO (end of every task, in Slovak)

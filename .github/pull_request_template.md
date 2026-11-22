@@ -22,6 +22,6 @@
 
 - [ ] Small and focused on one topic
 - [ ] PR title follows Conventional Commits (`type: summary`)
-- [ ] Specs, plan files (task status) and ADRs updated if needed
+- [ ] Specs, plan files (task status), ADRs and the CEO guide updated if needed
 - [ ] Follows the architecture principles and golden principles
 - [ ] No new dependencies without a CEO decision
