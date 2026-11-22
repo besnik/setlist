@@ -14,13 +14,12 @@ They apply to every change. When a rule is broken repeatedly, we turn it into a 
 4. **Boring technology.** Prefer the web platform and well-known, stable tools over new or clever ones. A small helper we write ourselves beats an opaque library.
 5. **No build step required.** The app runs straight from the source files in a browser.
 6. **Native ES modules, no global state.** Every module imports what it uses explicitly.
-7. **Data only through repositories.** No code outside a repository reads or writes storage. See [ARCHITECTURE.md](../ARCHITECTURE.md).
-8. **Respect the layers** of domains and UI as described in [ARCHITECTURE.md](../ARCHITECTURE.md).
-9. **Validate at the boundary.** Data coming from storage, files or user input is validated before use. Never build on guessed data shapes.
-10. **Enforce invariants, not implementations.** Rules define boundaries; inside them, choose the simplest way to solve the problem.
+7. **Follow the architecture principles** in [ARCHITECTURE.md](../ARCHITECTURE.md) (SOLID, applied pragmatically).
+8. **Validate at the boundary.** Data coming from storage, files or user input is validated before use. Never build on guessed data shapes.
+9. **Enforce invariants, not implementations.** Rules define boundaries; inside them, choose the simplest way to solve the problem.
 
 ## Process
 
-11. **Specs stay true.** Every change in app behavior updates the matching [product spec](product-specs/) in the same PR.
-12. **Record debt, don't hide it.** Shortcuts and known issues go into [tech-debt.md](plan/tech-debt.md).
-13. **Feedback becomes rules.** A correction from the CEO or a recurring mistake is captured here or in the docs. If it happens again, it becomes a mechanical check.
+10. **Specs stay true.** Every change in app behavior updates the matching [product spec](product-specs/) in the same PR.
+11. **Record debt, don't hide it.** Shortcuts and known issues go into [tech-debt.md](plan/tech-debt.md).
+12. **Feedback becomes rules.** A correction from the CEO or a recurring mistake is captured here or in the docs. If it happens again, it becomes a mechanical check.

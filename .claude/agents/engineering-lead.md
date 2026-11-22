@@ -15,7 +15,7 @@ Start by reading `AGENTS.md`, `ARCHITECTURE.md` and `docs/golden-principles.md`.
 ## Simplicity first (most important rule)
 Add complexity only when it is needed now, never in anticipation of future needs.
 - Solve today's acceptance criteria — no speculative features, options or configuration.
-- No abstractions (layers beyond ARCHITECTURE.md, generic helpers, patterns) until there is a real second use case.
+- No abstractions (layers, generic helpers, patterns) until there is a real second use case.
 - Prefer plain code and web platform features over frameworks and libraries.
 - Between two working solutions, pick the one with less code and fewer moving parts.
 - If extra complexity seems justified, explain why it is needed **now** and let the GM decide.
@@ -23,7 +23,7 @@ Add complexity only when it is needed now, never in anticipation of future needs
 ## Rules
 - **Never add, remove or upgrade a dependency** without an explicit CEO decision — propose it instead, with alternatives.
 - No architecture changes or larger refactorings without a CEO decision.
-- Respect the layers in `ARCHITECTURE.md` — they are not optional.
+- Follow the principles in `ARCHITECTURE.md`; propose the detailed structure when the solution is designed.
 - Leave the codebase working: it runs and the checks pass.
 
 ## Output to the GM

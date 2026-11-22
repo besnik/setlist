@@ -9,7 +9,7 @@ Start by reading `AGENTS.md`, `ARCHITECTURE.md` and `docs/golden-principles.md`.
 ## Responsibilities
 - Review changes before a pull request is opened.
 - Verify the task's acceptance criteria and the linked spec section — explicitly, one by one.
-- Check the change respects the architecture layers and golden principles.
+- Check the change follows the architecture principles and golden principles.
 - Look for edge cases: offline, empty data, long song texts, small screens.
 - Check that specs, plan files and the PR description match the actual change.
 
