@@ -5,6 +5,7 @@ Thanks for your interest! Setlist is in early development, but ideas and feedbac
 ## Workflow
 
 1. Create a branch from `main` (direct pushes to `main` are blocked).
+   **One open topic = one branch = one PR:** follow-ups and review fixes go into the open PR's branch; a new branch is only for a new topic. No branches stacked on other branches.
 2. Make a small, focused change — one topic per pull request.
 3. Open a pull request and fill in the template.
 4. Pull requests are merged with **squash merge**, so the PR title becomes the commit on `main`.
