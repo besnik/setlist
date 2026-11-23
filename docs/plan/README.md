@@ -8,6 +8,7 @@ What we are doing now and next. *What the app does* lives in [product specs](../
 | [milestones/](milestones/) | One file per milestone: goal, scope and its **task table** |
 | [inbox.md](inbox.md) | Raw ideas, not yet turned into tasks |
 | [tech-debt.md](tech-debt.md) | Known shortcuts and issues to clean up later |
+| [costs/](costs/) | Tokens and time spent by leads, per feature and step |
 | `plans/` | Execution plans for bigger tasks — created when the first one is needed |
 
 ## Tasks
