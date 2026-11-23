@@ -10,6 +10,8 @@ You can write in Slovak; these are example openers.
 | Situation | Write |
 |---|---|
 | New feature or milestone | "Use the `new-feature` skill: chcem …" |
+| Want to try ideas first | "Use the `new-feature` skill: chcem …, najprv prototyp." — the GM writes a kickoff prompt into the chat |
+| Prototype is done | Upload `intake.md` + `final.html` (or a zip) and write "Use the `new-feature` skill: intake prototypu …" |
 | Continue unfinished work | "Pokračuj tam, kde sme skončili." — the agent checks open PRs and in-progress tasks |
 | Bug in the app | "Našiel som chybu: … (čo som robil, čo som čakal, čo sa stalo)" |
 | Technical decision needed | "Priprav ADR na …" (skill `new-adr`) |
@@ -24,7 +26,7 @@ Skills are step-by-step procedures the GM follows. You can name one in chat to m
 
 | Skill | Use it for |
 |---|---|
-| `new-feature` | A new feature or milestone: questions → spec → UX → technical impact → tasks |
+| `new-feature` | A new feature or milestone: questions → optional prototype → spec → UX → technical impact → tasks |
 | `new-adr` | Recording or proposing an important decision |
 | `update-harness` | Changing rules, principles or workflow |
 | `open-pr` | Opening a pull request (the GM uses it on its own) |

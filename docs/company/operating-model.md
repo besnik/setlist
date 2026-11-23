@@ -68,6 +68,7 @@ Every CEO decision of lasting importance is recorded as an ADR in [docs/decision
 Every feature or milestone follows the same order (skill `new-feature`):
 
 ```
+0. Prototype (optional)    → intake package from the CEO      — only when something is unclear
 1. Functionality analysis  → product spec (what and why)      — CEO approves
 2. UX flow                 → screens and navigation
 3. Technical solution      → ADR, ARCHITECTURE.md, data model — CEO decides
@@ -76,6 +77,8 @@ Every feature or milestone follows the same order (skill `new-feature`):
 ```
 
 Fixed constraints set by the CEO (platform, budget) are inputs to the analysis, not its outcome.
+
+**Prototypes:** when UI, data, technology, an integration or performance is unclear, the GM proposes a throwaway prototype and writes a kickoff prompt into the chat. The CEO builds and compares variants in a separate, clean session outside the harness and brings back an intake package (`intake.md` + prototype files) in the chat. Prototype code is a reference only — never copied — and is not stored in the repository; its learnings go into the spec. Details: skill `new-feature`, step 3.
 
 ## Workflow of a task
 
