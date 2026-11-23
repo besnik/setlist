@@ -24,4 +24,12 @@ Legend: 🔴 problem · 🟡 friction · 🟢 worked well
 | 12 | Process | The skill says the output is "one PR", but approval stops come at steps 4, 6 and 7. It does not say when to open the PR or where the CEO approves the spec (chat vs. PR review). GM chose: push the draft, approve in chat, open the PR once there is something to review. | 🟡 |
 | 14 | Spec approval | Approval in chat worked well. The GM moved the CEO's decisions into the rules and set the status to `approved`. That is fine, but the harness does not say who records the approval or how ("CEO only" sets `approved` for tasks, nothing is said for specs). | 🟡 |
 | 15 | Delegation | The Agent tool started the lead in the background, although the GM asked for the foreground. That does not hurt anything, but the GM has nothing to do while waiting. | 🟢 |
+| 16 | UX (design-lead) | Step 5 says "UX flow … screens and transitions"; visual design (tokens, typography, contrast) is not mentioned, and the spec template has no slot for it. The GM had to say where to put it. | 🟡 |
+| 17 | UX (design-lead) | Brand colors are a CEO decision, but nothing says whether a palette for one feature or a trial counts. The lead labelled it "neutral trial choice". | 🟡 |
+| 18 | UX (design-lead) | No design guidelines doc exists yet, so tokens live in a feature spec. Before the first real feature, decide where design tokens live (e.g. `docs/design/`). | 🔴 |
+| 19 | UX (design-lead) | Contrast ratios were computed by hand by the lead. The GM re-checked them with a small script (all 20 pairs pass). This should be a reusable check (golden principle 11). | 🟡 |
+| 20 | Process | Step 5 has no 🛑, so the CEO does not see the design before the tasks. For a visual feature, the CEO probably wants to approve the look. | 🟡 |
+| 21 | Tech impact (step 6) | The skill says "check against ARCHITECTURE.md", but not where to write the result when no ADR is needed. GM put "Technical notes" into the milestone file, an ad-hoc choice. ARCHITECTURE.md is nearly empty, so the check is thin. | 🟡 |
+| 22 | Tasks (step 7) | The task had to go into M0, which is marked `done`; the roadmap now looks inconsistent. Same root cause as #4. | 🟡 |
+| 23 | Spec (product-lead) and UX | Spec rule "pressed state on rows" collides with "no JavaScript" on iOS Safari. Spec writing did not catch the technical limits; flagged at step 6. | 🟢 |
 | 13 | Spec (product-lead) | The lead stayed in its role, flagged technical choices instead of deciding them, and gave a recommendation for each open question. Quick (~70 s). | 🟢 |
