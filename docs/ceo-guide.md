@@ -77,4 +77,4 @@ Agents can push branches but cannot delete branches or force-push. A leftover br
 - Small topics, one at a time — one topic is one branch and one PR.
 - Tell the GM when something annoys you — it becomes a rule so you never have to say it twice.
 - Mind the budget: big analyses and code reviews cost the most tokens.
-- You choose the GM's model when you start a Claude Code session — use the strongest one. All leads run on `opus` (set in `.claude/agents/`).
+- You choose the GM's model when you start a Claude Code session — use the strongest one.

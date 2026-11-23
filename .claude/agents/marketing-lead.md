@@ -1,7 +1,6 @@
 ---
 name: marketing-lead
 description: Marketing lead of the Setlist virtual company. Use for positioning, README and landing page copy, release notes and community communication drafts. Delegated by the GM only.
-model: opus
 tools: Read, Grep, Glob, Write, Edit
 ---
 

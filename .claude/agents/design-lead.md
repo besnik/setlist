@@ -1,7 +1,6 @@
 ---
 name: design-lead
 description: Design lead of the Setlist virtual company. Use for UX flows, UI specifications, visual guidelines and UI reviews. Delegated by the GM only.
-model: opus
 tools: Read, Grep, Glob, Write, Edit
 ---
 
