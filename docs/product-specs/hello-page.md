@@ -1,11 +1,11 @@
 # Hello page (harness trial)
 
-- **Status:** draft
+- **Status:** approved
 
 ## Purpose
 
 A single static page that shows what Setlist could look like: one sample setlist with its songs, a header and a bottom navigation bar.
-It exists to test our product process end to end on a tiny feature. It is throwaway: it lives in a trial location, not in the app, and nothing on it can be used or changed.
+It exists to test our product process end to end on a tiny feature. It is throwaway: it lives in a trial location, not in the app, and nothing on it can be used or changed. This spec lives only on the trial branch and is deleted with it; it never becomes `implemented` on `main`.
 
 ## Behavior
 
@@ -29,13 +29,13 @@ It exists to test our product process end to end on a tiny feature. It is throwa
 - Rule: each row shows the song's position in the setlist (1, 2, 3 …), title, artist, key and duration (`m:ss`).
 - Rule: given a guitarist looks at the screen from arm's length in a dim room, then the song title is the most prominent text in the row and readable without zooming.
 - Rule: given a song title or artist is too long for the row, then the layout does not break and the page never scrolls sideways.
-- Rule: given the user taps a song row, then nothing happens (no navigation, no reload, no error).
+- Rule: given the user taps a song row, then it shows a subtle pressed state and nothing else happens (no navigation, no reload, no error).
 
 ### Bottom navigation bar
 
 - Rule: given the page is open, then the bar shows four buttons in this order: **Songs**, **Setlists**, **Gig**, **Settings**; each has an icon and a text label.
-- Rule: exactly one button is shown as the current section (see open question 1); the difference is visible without relying on color alone.
-- Rule: given the user taps any button, then nothing happens (no navigation, no reload, no error). The buttons are visual only.
+- Rule: exactly one button, **Setlists**, is shown as the current section; the difference is visible without relying on color alone.
+- Rule: given the user taps any button, then it shows a subtle pressed state and nothing else happens (no navigation, no reload, no error). The buttons are visual only.
 - Rule: given a phone held in one hand, then every button can be reached with the thumb and has a touch area of at least 44 × 44 CSS pixels.
 - Rule: given a keyboard user presses Tab, then focus moves through the buttons and the focused button is clearly visible.
 
@@ -57,7 +57,7 @@ It exists to test our product process end to end on a tiny feature. It is throwa
 - Rule: the setlist title is **"Hello, Setlist"**.
 - Rule: the setlist has 8 songs, enough to need scrolling on a phone in portrait.
 - Rule: every song has a title, artist, key and duration; keys use common notation (e.g. `G`, `Em`, `F#m`) and durations are realistic (2:30–6:00).
-- Rule: the songs are traditional or public-domain songs (see open question 2), for example "House of the Rising Sun", "Scarborough Fair", "Whiskey in the Jar", "Wild Mountain Thyme", "The Water Is Wide", "Shenandoah", "Amazing Grace", "Danny Boy", with "Traditional" as the artist.
+- Rule: the songs are traditional or public-domain songs (no rights questions once the repository is public), for example "House of the Rising Sun", "Scarborough Fair", "Whiskey in the Jar", "Wild Mountain Thyme", "The Water Is Wide", "Shenandoah", "Amazing Grace", "Danny Boy", with "Traditional" as the artist.
 - Rule: all UI text is in English.
 
 ## Out of scope
@@ -71,11 +71,4 @@ It exists to test our product process end to end on a tiny feature. It is throwa
 
 ## Open questions
 
-1. **Which bottom-bar button is shown as the current section?**
-   Recommendation: **Setlists** — the page shows one setlist, so that is where the user "is".
-2. **Sample songs: well-known songs by real artists, traditional/public-domain songs, or invented ones?**
-   Recommendation: **traditional / public-domain** — realistic for a guitarist, and no rights questions once the repository is public.
-3. **Should the buttons and rows show a pressed state when tapped, even though nothing happens?**
-   Recommendation: **yes, subtle** — it makes the page feel polished; the Design lead decides the look.
-4. **What happens to this spec after the trial?**
-   Recommendation: **it stays only on the trial branch and is deleted with it**; it never becomes `implemented` on `main`.
+None. Decided by the CEO on approval: current section is **Setlists**; sample songs are traditional/public-domain; rows and buttons show a subtle pressed state; the spec is deleted with the trial branch.

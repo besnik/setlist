@@ -22,4 +22,6 @@ Legend: 🔴 problem · 🟡 friction · 🟢 worked well
 | 10 | Spec (product-lead) | No lifecycle for throwaway/experimental specs (only draft/approved/implemented). | 🟡 |
 | 11 | Spec (product-lead) | Given/when/then fits static content poorly; the lead mixed it with plain "Rule:" statements. Template could allow both. | 🟡 |
 | 12 | Process | The skill says the output is "one PR", but approval stops come at steps 4, 6 and 7. It does not say when to open the PR or where the CEO approves the spec (chat vs. PR review). GM chose: push the draft, approve in chat, open the PR once there is something to review. | 🟡 |
+| 14 | Spec approval | Approval in chat worked well. The GM moved the CEO's decisions into the rules and set the status to `approved`. That is fine, but the harness does not say who records the approval or how ("CEO only" sets `approved` for tasks, nothing is said for specs). | 🟡 |
+| 15 | Delegation | The Agent tool started the lead in the background, although the GM asked for the foreground. That does not hurt anything, but the GM has nothing to do while waiting. | 🟢 |
 | 13 | Spec (product-lead) | The lead stayed in its role, flagged technical choices instead of deciding them, and gave a recommendation for each open question. Quick (~70 s). | 🟢 |
