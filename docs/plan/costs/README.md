@@ -6,6 +6,7 @@ One row per feature here; the step-by-step breakdown lives in one file per featu
 | Feature | Description | Mode | PR | Lead tokens | Lead time | CEO stops | QA findings (blocking / other) | Outcome |
 |---|---|---|---|---|---|---|---|---|
 | [Hello page (trial)](details/hello-page-trial.md) | Static sample view of a setlist (HTML + CSS) to test the harness | small | [#5](https://github.com/besnik/setlist/pull/5) | 282,794 | 10:32 | 4 | 4 / 6 | closed without merge (trial) |
+| [Gig mode (trial)](details/gig-mode-trial.md)* | Static gig mode screen (HTML + CSS) to test the harness after its improvements | small | [#10](https://github.com/besnik/setlist/pull/10) | 83,112 | 0:49 | 1 | 0 / 4 | closed without merge (trial) |
 
 Only lead runs are measured. The GM's own work cannot be measured from inside the session, so it is **not included** — no estimates. In the detail files, GM steps show `n/a`.
 
