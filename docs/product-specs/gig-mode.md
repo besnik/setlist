@@ -79,12 +79,12 @@ Phone portrait (320–599 px wide):
 ```
 
 - The current-song block sits in the flexible middle area; the next-song block and the buttons are anchored to the bottom (thumb zone).
-- **Previous:** outlined (1 px `line-strong`), text `text`. **Next:** filled `accent`, text `on-accent`.
+- **Previous:** `surface` fill with a 1 px `line-strong` outline, text `text`. **Next:** filled `accent`, text `on-accent`.
 - **Focus:** 3 px `accent` outline, 3 px offset, on both buttons.
 
 Tablet / desktop (600 px and wider): the same column, max 640 wide, centered; current title 64, next title 26; buttons max 640 wide in total.
 
-Short landscape (height below 500): top bar 44, current title 32, label hidden ("NOW PLAYING"), chips 32 high, buttons 52 high.
+Short landscape (height below 500; wins over the tablet / desktop sizes when both apply, e.g. a desktop at 200 % zoom): top bar 44, current title 32, label hidden ("NOW PLAYING"), chips 32 high, buttons 52 high.
 
 ### Tokens (provisional)
 
@@ -103,7 +103,7 @@ Font: the system UI stack (no web fonts). Durations and `3 / 12` use tabular num
 
 ### Self-check
 
-- Contrast (computed): `text`/`bg` 17.7, `text`/`surface` 15.8, `muted`/`bg` 7.6, `muted`/`surface` 6.8, `on-accent`/`accent` 10.2, `accent`/`bg` 10.6 (focus ring), `line-strong`/`bg` 7.6. All meet 4.5:1 or 3:1. `track`/`bg` is 1.45, but the divider is decorative and carry no information.
+- Contrast (computed): `text`/`bg` 17.7, `text`/`surface` 15.8, `muted`/`bg` 7.6, `muted`/`surface` 6.8, `on-accent`/`accent` 10.2, `accent`/`bg` 10.6 (focus ring), `line-strong`/`bg` 7.6. All meet 4.5:1 or 3:1. `track`/`bg` is 1.45, but the divider is decorative and carries no information.
 - Buttons at 320 wide: (320 − 2 × 16 − 12) / 2 = 138 × 64 (52 in landscape) ≥ 44 × 44.
 - Height at 320 × 568: 56 + 24 + 20 + 2 × 48 (title) + 16 + 40 + 24 + 1 + 20 + 30 + 16 + 64 + 16 ≈ 427 < 568. Title "Whiskey in the Jar" at 44 px needs 2 lines at 288 px content width.
 - Height at 568 × 320 (landscape): the title at 32 px fits on one line in 536 px of width, so 44 + 16 + 36 + 12 + 32 + 16 + 1 + 20 + 28 + 12 + 52 + 12 ≈ 281 < 320. ✓ (With a two-line title it would be ≈ 317, i.e. almost no margin — longer real titles are out of scope for this trial.)

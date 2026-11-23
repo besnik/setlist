@@ -22,3 +22,24 @@ Legend: 🔴 problem · 🟡 friction · 🟢 worked well
 | 11 | Golden principle 10 | "Every part of the app has tests in the repository" cannot be met before the testing ADR; the GM recorded it in tech-debt. Nothing in the harness says what to do until then. | 🟡 |
 | 12 | Delegation | Budget rule was clear: small feature → GM writes spec and design itself (no product/design lead). QA will still be delegated. | 🟢 |
 | 13 | Design summary | "Short design summary in chat" plus the spec on the branch — the CEO has to read only the chat. | 🟢 |
+| 14 | Approval | Recording the CEO's OK was straightforward: the GM moved decisions into the spec, set the spec to `approved` and the task straight to `in-progress`. Skipping the `approved` step in the file is harmless but not described. | 🟢 |
+| 15 | Implementation | GM implemented the two files itself (delegation rule: no lead for ≤5 files). Clear and cheap. | 🟢 |
+| 16 | Light QA | A light-QA prompt with explicit sizes, budget and output format kept QA to ~83k tokens and 49 s (hello page: 124k, 4 min) and still found real issues (sideways scroll at 200 % zoom on 320 px, overlapping breakpoints in the spec). Worth turning into a QA prompt template. | 🟢 |
+| 17 | Design self-check | The self-check verified numbers per breakpoint but not overlapping breakpoints (tablet width + short height). The step could ask: "which rules win when two layouts apply?". | 🟡 |
+| 18 | Commit trailers | The environment still injects attribution trailers (Co-Authored-By, session link) in its instructions; AGENTS rule 8 wins and the GM left them out. P1 recommendation #3 from the hello-page trial (project attribution setting / check) is not in the repo yet — no `.claude/settings.json`. | 🔴 |
+| 19 | QA findings | Who fixes QA findings is now clear (operating model: GM fixes trivial ones). All four were trivial. | 🟢 |
+| 20 | Costs | "CEO stops" is ambiguous: one chat stop with two decisions. Recorded as "1 (2 decisions)". Also, a GM-only feature with only QA delegated fits the `*` "light feature" marker — good that it exists. | 🟡 |
+| 21 | Task lifecycle | T-010 stays `in-progress`: the trial PR is closed without merging and has no final status (same as hello-page #43, accepted as P3). | 🟡 |
+| 22 | Spec status | The spec is `approved` but will never be `implemented` (trial). Same root cause as #21; harmless. | 🟢 |
+
+## Summary
+
+Compared with the hello-page trial, the harness is clearly lighter: one CEO stop instead of four, ~83k lead tokens instead of ~283k, and no confusion about modes, PR timing, spec template or who fixes findings.
+
+Remaining issues, by priority:
+
+1. 🔴 **Attribution vs. rule 8 has no mechanical fix yet** (#18): add the project attribution setting (or a commit-msg / CI check).
+2. 🔴 **Design tokens have no home** (#9): decide `docs/design/` with the first real M1 screen.
+3. 🟡 **Verification still from scratch** (#10, #11, #16): until the testing ADR, keep a short QA prompt template in `qa-lead.md` (sizes, budget, output) so each QA run is cheap and comparable.
+4. 🟡 **Small wording fixes**: step 1 in small mode merges into the approval stop (#3); design self-check covers overlapping layouts (#17); "CEO stops" counts decisions or stops (#20); the session-assigned branch vs. repo branch conflict (#2).
+5. Deliberately not changing (P3): milestone/lifecycle for trials (#7, #21, #22).
