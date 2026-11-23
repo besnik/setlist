@@ -53,3 +53,57 @@ Legend: 🔴 problem · 🟡 friction · 🟢 worked well
 | 42 | QA findings | After QA, the GM fixed small findings directly (CSS, spec text) instead of sending them back to engineering. That was cheaper, but no rule says who fixes QA findings. | 🟡 |
 | 43 | Task lifecycle | T-006 is complete, but `done` means "merged to `main`" and this PR will be closed without merging. A throwaway or abandoned task has no final status (only `rejected`, which is CEO-only and means "not going to happen"). T-006 stays `in-progress`. | 🟡 |
 | 13 | Spec (product-lead) | The lead stayed in its role, flagged technical choices instead of deciding them, and gave a recommendation for each open question. Quick (~70 s). | 🟢 |
+
+## Recommendations
+
+Ordered by priority. Numbers refer to the log above.
+
+### P1: before the first real feature
+
+1. **Two modes in `new-feature`: small 🟢 and big 🔵** (#12, #20, #26, #30). Agreed by the CEO during the trial.
+   - **Small:** spec, design and tasks are presented in chat and approved there in one stop, with links to the files on the branch. A single PR is opened at the end.
+   - **Big:** a draft spec PR; merging it approves the spec and the tasks. Then one PR per task.
+   - The GM proposes the mode in step 1 and the CEO confirms it.
+   - Define "topic" per mode in AGENTS rule 5 and in CONTRIBUTING.
+2. **`open-pr` changes** (#24, #28, #38):
+   - Always open the PR as a draft (`-F draft=true`). It is marked ready when handed to the CEO.
+   - Update the PR description whenever commits are added. Add this to the definition of done.
+3. **Make rule 8 hold mechanically** (#25, #35, #39).
+   - Set Claude Code's attribution setting in the project `.claude/settings.json` to empty values for commits and PRs. Verify the exact key against the current Claude Code docs.
+   - Add one line to AGENTS.md: repo rules override tool defaults.
+   - Optional: a CI check for forbidden trailers and footers.
+4. **Verification infrastructure** (#19, #33, #37). Needs a CEO decision and an ADR, together with the M1 tech stack.
+   - Choose a committed smoke check (e.g. Playwright as a dev-only tool) and `make check`.
+   - Reusable checks: page overflow, no network requests, contrast of the design tokens.
+   - Without this, every agent writes throwaway scripts from scratch. That is the largest cost driver in this trial.
+5. **A home for design tokens** (#17, #18): `docs/design/` (tokens, typography, components). Brand colors stay a CEO decision.
+
+### P2: clarity and fewer guesses
+
+6. **Spec template** (#7, #8, #9, #11, #16):
+   - Decide between one file per area and one file per feature. Recommendation: one file per area, with each feature as a section.
+   - Add optional sections "UX and visual design" and "Notes for Design / Engineering".
+   - Allow plain "Rule:" statements for static content.
+   - Add one line on the boundary: the spec says what the user must see and do, plus measurable limits; Design says how it looks.
+7. **`new-feature` steps** (#14, #21, #31, #40):
+   - Step 5 also covers visual design and ends with a self-check of every number against every rule.
+   - Step 6 records the result in a "Technical notes" section, either in the spec or in the plan.
+   - State that the GM records approvals in the spec and task status.
+8. **qa-lead prompt** (#41, #42):
+   - Review "before the PR is handed to the CEO".
+   - Results are pass, fail or not verifiable.
+   - Trivial findings are fixed by the GM; the rest go back to engineering.
+   - For small features, a lighter QA pass.
+9. **CEO guide:** add a "Review a PR on mobile" section (#27, #29):
+   - Start a review, then Submit, choosing Comment.
+   - The CEO approves by merging.
+   - A pending review is invisible to the GM.
+   - The session watches the PR.
+10. **Environment notes** (#3, #34):
+    - AGENTS.md branch naming wins over a session-assigned branch.
+    - Playwright from the scratchpad needs `NODE_PATH=$(npm root -g)`.
+
+### P3: deliberately not changing (simplicity)
+
+11. **No special lifecycle for experiments** (#2, #4, #10, #22, #43). Trials are rare. One line is enough: "A harness or process trial uses a `chore/trial-*` branch, records no tasks or specs on `main`, and its PR is closed without merging."
+12. **Cost** (#36, #37): the leads used about 280k tokens for a hello page. Small mode should usually be GM-only, plus engineering and a light QA pass. Product and design leads are for big features.
