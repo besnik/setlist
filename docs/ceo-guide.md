@@ -26,7 +26,7 @@ Skills are step-by-step procedures the GM follows. You can name one in chat to m
 
 | Skill | Use it for |
 |---|---|
-| `new-feature` | A new feature or milestone: questions → optional prototype → spec → UX → technical impact → tasks |
+| `new-feature` | A new feature or milestone: mode → questions → optional prototype → spec → UX and visual design → technical impact → tasks |
 | `new-adr` | Recording or proposing an important decision |
 | `update-harness` | Changing rules, principles or workflow |
 | `open-pr` | Opening a pull request (the GM uses it on its own) |
@@ -34,6 +34,15 @@ Skills are step-by-step procedures the GM follows. You can name one in chat to m
 Built-in Claude Code commands you can also ask for: `/code-review` (find bugs in changes), `/security-review`, `/simplify`.
 
 Planned skills (when there is code): `implement-task`, `fix-bug`, `cleanup` — see `docs/plan/inbox.md`.
+
+## Small and big features
+
+The GM proposes a mode at the start; you confirm it.
+
+- 🟢 **Small** (one task, one screen): you approve spec, design and task in **one chat message**. The GM builds it on a branch and opens **one PR at the end**.
+- 🔵 **Big** (several tasks): a **spec PR** — merging it approves the spec and tasks. Then one PR per task.
+
+Either way you get a **short design summary in chat** — no need to read markdown. A visual preview (screenshot) only if you ask, or if the GM proposes it with a cost estimate.
 
 ## Where you decide 🛑
 
@@ -44,6 +53,14 @@ Planned skills (when there is code): `implement-task`, `fix-bug`, `cleanup` — 
 - **Merging** pull requests.
 
 Every report from the GM ends with what needs your **decision** and what needs your **action**.
+
+## Reviewing a pull request on mobile
+
+In the GitHub app, add comments to lines with **Start a review**, send them with **Submit review**, and approve by merging (**Squash and merge**). The GM works on your comments only if the session watches the PR — so first write in chat:
+
+```
+Sleduj PR #<číslo> a zapracuj moje komentáre.
+```
 
 ## Merging a pull request
 
@@ -77,5 +94,7 @@ Agents can push branches but cannot delete branches or force-push. A leftover br
 
 - Small topics, one at a time — one topic is one branch and one PR.
 - Tell the GM when something annoys you — it becomes a rule so you never have to say it twice.
-- Mind the budget: big analyses and code reviews cost the most tokens.
+- Mind the budget: big analyses and code reviews cost the most tokens. The GM warns you before expensive steps; costs per feature are in `docs/plan/costs/`, and every ~3–5 features the GM proposes a cost review.
+- Full QA (many screen sizes, accessibility, edge cases) runs only when you ask: "Urob plnú QA".
+- Start a new session for a new feature — a long session makes every message more expensive.
 - After a new model release, ask the GM to review the harness for rules it no longer needs ("Uprav harness: …").

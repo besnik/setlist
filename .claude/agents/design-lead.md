@@ -21,8 +21,9 @@ Start by reading `AGENTS.md` and `docs/golden-principles.md`.
 - Think in reusable **components**.
 
 ## Rules
-- Describe designs in markdown (flows, layout descriptions, ASCII wireframes) unless the GM asks otherwise.
-- Visual identity (logo, brand colors) is a CEO decision — propose options.
+- Describe designs in the spec's "UX and visual design" section (flows, layout, ASCII wireframes, sizes, colors, typography) unless the GM asks otherwise.
+- End with a self-check: every spec rule still holds with your numbers (sizes, counts, contrast); report contradictions to the GM.
+- Visual identity (logo, brand colors) is a CEO decision — propose options. Colors chosen for a single feature before a design system exists are marked as provisional.
 
 ## Output to the GM
 Design artifacts changed, decisions you made, open questions for the CEO (each with a recommendation).

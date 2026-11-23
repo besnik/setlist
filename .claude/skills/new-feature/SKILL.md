@@ -1,15 +1,29 @@
 ---
 name: new-feature
-description: Take a new feature (or a whole milestone such as the MVP) from an idea to approved, ready-to-build tasks — functionality analysis, optional throwaway prototype, product spec, UX flow, technical impact, tasks. Use whenever the CEO wants to add or change app functionality, before any code is written, and when the CEO brings back a prototype intake package.
+description: Take a new feature (or a whole milestone such as the MVP) from an idea to approved, ready-to-build tasks — mode (small/big), functionality analysis, optional throwaway prototype, product spec, UX and visual design, technical impact, tasks. Use whenever the CEO wants to add or change app functionality, before any code is written, and when the CEO brings back a prototype intake package.
 ---
 
 # New feature: from idea to tasks
 
 **Functionality first:** analyze what the feature must do before designing how to build it.
-Scale every step to the size of the feature — for a small one, steps 1–7 can be a few sentences in one PR; for a big one, also create an execution plan in `docs/plan/plans/`.
-Involve leads (product, design, engineering) only for bigger features (budget rule in `AGENTS.md`). After every lead run, record its usage in `docs/plan/costs/` (how: its README).
+Scale every step to the size of the feature.
 
 🛑 = stop and wait for the CEO.
+
+## 0. Choose the mode
+
+The GM proposes a mode in step 1 and the CEO confirms it. The GM switches to big mode (and says so) if the feature turns out bigger than expected.
+
+| | 🟢 Small | 🔵 Big |
+|---|---|---|
+| When | One task, one screen or a clear change | Several tasks, a new data structure, or real uncertainty |
+| Planning | Spec, design and task on the feature branch | Spec, design and tasks in a spec PR |
+| CEO approval | **One stop in chat**: spec + design summary + task together | **Merging the spec PR** approves the spec and tasks (the CEO may also say OK in chat) |
+| Pull requests | One, opened when the work and QA are done | One for the spec, then one per task |
+
+"One topic = one PR" ([git workflow](../../../docs/company/git-workflow.md)): in small mode the topic is the whole feature; in big mode the spec is one topic and each task is another.
+
+**Who does the work** does not depend on the mode — follow the delegation rule in the [operating model](../../../docs/company/operating-model.md#budget). After every lead run, record its usage in `docs/plan/costs/` (how: its README).
 
 ## 1. Clarify the intent (chat, in Slovak)
 
@@ -18,6 +32,8 @@ Ask a few questions at once — not a questionnaire:
 - In which situation is it used (gig, rehearsal, at home)?
 - What is a must-have and what is nice-to-have?
 - What should it **not** do?
+
+Skip what the CEO's request already answers. Propose the mode (step 0).
 
 ## 2. Check existing specs
 
@@ -61,16 +77,19 @@ When the CEO uploads the intake package to the chat:
 
 ## 4. Write the spec
 
-Create or update a spec in `docs/product-specs/` (template: `_template.md`), status `draft`:
-- concrete, testable rules (given / when / then),
+Create or update the spec of the functional area in `docs/product-specs/` (template: `_template.md`; one file per area, the feature is a section), status `draft`:
+- concrete, testable rules (given / when / then for behavior, plain rules for static content),
 - out of scope,
-- open questions, each with a recommendation.
+- open questions for the CEO, each with a recommendation.
 
-Update the spec index. 🛑 **The CEO approves the spec** (status `approved`).
+Update the spec index.
 
-## 5. UX flow (only if screens or navigation change)
+## 5. UX and visual design (only if screens change)
 
-Describe screens and transitions in markdown with simple ASCII sketches — in the spec or a linked section. Follow the design principles in `.claude/agents/design-lead.md`.
+Describe layout, flows and the look in the spec's "UX and visual design" section: ASCII sketches, sizes, colors, typography. Follow the design principles in `.claude/agents/design-lead.md`.
+End with a **self-check**: every spec rule still holds with the design's numbers (sizes, counts, contrast).
+
+For the CEO, write a **short design summary in chat** (layout, key decisions, an ASCII sketch), so the CEO never has to read the markdown. A visual preview (screenshot) only when the CEO asks or when the GM proposes it for a new look — always with a cost estimate first.
 
 ## 6. Technical impact
 
@@ -78,16 +97,19 @@ Check against `ARCHITECTURE.md` and the golden principles:
 - Does it fit the current structure?
 - Does it need an ADR, a new dependency or a larger refactoring?
 
-🛑 **If yes, the CEO decides** (use the `new-adr` skill for the proposal).
+Record the result in the spec's "Notes for Design / Engineering" section.
+🛑 **If an ADR, dependency or larger refactoring is needed, the CEO decides** (use the `new-adr` skill for the proposal).
 
 ## 7. Break it into tasks
 
 Add rows `T-NNN` with status `proposed` to the milestone's task table, each linked to a spec section. Small, independently mergeable tasks.
-🛑 **The CEO approves the tasks** — only then does implementation start.
+
+🛑 **The CEO approves** — in small mode, spec, design and task in one chat message; in big mode, by merging the spec PR. The GM then records the approval: spec status `approved`, task status `approved`.
 
 ## Output
 
-One PR with the spec (and plan, tasks, ADR if any), opened with the `open-pr` skill, and a report to the CEO listing what needs approval.
+- 🟢 Small: the approved spec and task on the feature branch; implementation continues on the same branch, and one PR is opened at the end (`open-pr`).
+- 🔵 Big: a spec PR (spec, tasks, ADR if any) opened with `open-pr`; after the merge, each task gets its own branch and PR.
 
 ## Kickoff prompt template
 
