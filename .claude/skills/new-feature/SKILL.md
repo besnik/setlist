@@ -87,7 +87,8 @@ Update the spec index.
 ## 5. UX and visual design (only if screens change)
 
 Describe layout, flows and the look in the spec's "UX and visual design" section: ASCII sketches, sizes, colors, typography. Follow the design principles in `.claude/agents/design-lead.md`.
-End with a **self-check**: every spec rule still holds with the design's numbers (sizes, counts, contrast).
+Do not add elements the request did not ask for; offer them as an option in the design summary.
+End with a **self-check**: every spec rule still holds with the design's numbers (sizes, counts, contrast) — on every supported screen size, in portrait and landscape.
 
 For the CEO, write a **short design summary in chat** (layout, key decisions, an ASCII sketch), so the CEO never has to read the markdown. A visual preview (screenshot) only when the CEO asks or when the GM proposes it for a new look — always with a cost estimate first.
 
