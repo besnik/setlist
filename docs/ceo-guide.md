@@ -78,3 +78,4 @@ Agents can push branches but cannot delete branches or force-push. A leftover br
 - Tell the GM when something annoys you — it becomes a rule so you never have to say it twice.
 - Mind the budget: big analyses and code reviews cost the most tokens.
 - You choose the GM's model when you start a Claude Code session — use the strongest one.
+- After a new model release, ask the GM to review the harness for rules it no longer needs ("Uprav harness: …").

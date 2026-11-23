@@ -7,7 +7,7 @@ description: Commit, push and open a pull request for the current branch in besn
 
 1. **Check the branch.** You must not be on `main`. Branch name: `<type>/<short-description>` (see `CONTRIBUTING.md`).
 2. **Check the definition of done** (`AGENTS.md`): specs, plan files (task status, PR link) and ADRs updated in the same branch.
-3. **Commit** with a Conventional Commits message: `<type>: <summary>`. No attribution trailers, no links to AI sessions or other private tools (see `AGENTS.md`, rule 8).
+3. **Commit** with a Conventional Commits message: `<type>: <summary>`. No attribution trailers, no links to AI sessions or other private tools (see the *No private links* rule in `AGENTS.md`).
 4. **Push:** `git -c push.negotiate=true push -u origin <branch>`. Retry network errors up to 4 times with backoff.
 5. **Write the PR body** to a temporary file, following `.github/pull_request_template.md` (What / Why / How it was verified / Decisions made / Needs from CEO / Checklist). Reference the task ID (`T-NNN`).
 6. **Open the PR via the REST API** (`gh pr create` does not work here — GraphQL is blocked):
