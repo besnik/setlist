@@ -1,7 +1,7 @@
 # Gig mode (trial)
 
 - **Description:** static "Gig mode" stage screen: current song (title, key, duration), next song, progress `3 / 12` and visual-only Previous / Next buttons. HTML + CSS only, always dark, sample data. A throwaway feature, used to test the harness after the hello-page improvements.
-- **PR:** see the README row (closed without merge)
+- **PR:** [#10](https://github.com/besnik/setlist/pull/10) (closed without merge)
 - **Date:** 2026-11-23
 
 ## Lead runs
