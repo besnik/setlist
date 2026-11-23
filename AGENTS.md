@@ -61,7 +61,7 @@ Sessions have no memory of earlier chats. Before new work, find out where we lef
 
 Repeatable workflows live in [.claude/skills/](.claude/skills/):
 
-- `new-feature` — take a feature from idea to approved tasks (analysis, spec, UX, technical impact, tasks).
+- `new-feature` — take a feature from idea to approved tasks (analysis, optional prototype, spec, UX, technical impact, tasks).
 - `open-pr` — commit, push and open a pull request.
 - `new-adr` — record a decision.
 - `update-harness` — change rules or workflow and keep all harness docs consistent.
