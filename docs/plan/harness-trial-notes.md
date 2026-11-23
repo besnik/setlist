@@ -32,4 +32,6 @@ Legend: 🔴 problem · 🟡 friction · 🟢 worked well
 | 21 | Tech impact (step 6) | The skill says "check against ARCHITECTURE.md", but not where to write the result when no ADR is needed. GM put "Technical notes" into the milestone file, an ad-hoc choice. ARCHITECTURE.md is nearly empty, so the check is thin. | 🟡 |
 | 22 | Tasks (step 7) | The task had to go into M0, which is marked `done`; the roadmap now looks inconsistent. Same root cause as #4. | 🟡 |
 | 23 | Spec (product-lead) and UX | Spec rule "pressed state on rows" collides with "no JavaScript" on iOS Safari. Spec writing did not catch the technical limits; flagged at step 6. | 🟢 |
+| 24 | open-pr skill | The skill has no option for a draft PR. A spec-only PR, opened at step 7 and waiting for approval, is naturally a draft. The `gh api` command fails when `draft` is passed twice, so the GM fell back to a normal PR. | 🟡 |
+| 25 | Commit trailers | The environment injects attribution trailers (Co-Authored-By, session link). AGENTS.md rule 8 forbids them, and the GM followed AGENTS.md. A mechanical check, for example a commit-msg hook or CI, would make this reliable. | 🟡 |
 | 13 | Spec (product-lead) | The lead stayed in its role, flagged technical choices instead of deciding them, and gave a recommendation for each open question. Quick (~70 s). | 🟢 |

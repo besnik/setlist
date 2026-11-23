@@ -15,7 +15,7 @@ Before building the product, set up the system for agentic development: rules, r
 | T-003 | Knowledge base: AGENTS.md router, architecture, golden principles, product specs, tasks, skills, security policy | — | done | [#2](https://github.com/besnik/setlist/pull/2) |
 | T-004 | Prototype workflow: optional throwaway prototype and intake in `new-feature` | — | done | [#3](https://github.com/besnik/setlist/pull/3) |
 | T-005 | Slim the harness: remove duplicated rules, prefer removing rules, reference rules by name | — | done | [#4](https://github.com/besnik/setlist/pull/4) |
-| T-006 | Harness trial: build the static hello page (throwaway, branch is deleted after the trial) | [hello-page.md](../../product-specs/hello-page.md) | proposed | — |
+| T-006 | Harness trial: build the static hello page (throwaway, branch is deleted after the trial) | [hello-page.md](../../product-specs/hello-page.md) | proposed | [#5](https://github.com/besnik/setlist/pull/5) |
 
 ## Technical notes for T-006
 
