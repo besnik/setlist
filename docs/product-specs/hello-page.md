@@ -44,7 +44,7 @@ It exists to test our product process end to end on a tiny feature. It is throwa
 - Rule: given a phone in portrait (narrowest supported width 320 CSS pixels), then all regions fit the width with no sideways scrolling and no cut-off text.
 - Rule: given a phone in landscape, then the header and bottom bar together leave most of the screen height for the song list.
 - Rule: given a tablet or desktop window, then the content does not stretch into very long lines; it stays at a comfortable reading width, and the page still looks intentional (not a stretched phone screen with empty space).
-- Rule: given the user zooms the page to 200 %, then all text and buttons are still visible and usable.
+- Rule: given the user zooms the page to 200 %, then all text and buttons are still visible and usable (down to the 320 CSS pixel floor; narrower effective widths are best effort).
 
 ### Theme
 
@@ -154,10 +154,10 @@ The accent (deep teal / bright teal) is a neutral trial choice, not a brand deci
 | `text-muted` on `surface` / `chrome` | 7.7 / 7.0 | 6.9 / 7.7 |
 | `text` on `pressed` | 13.9 | 14.2 |
 | `text-muted` on `pressed` | 6.0 | 5.8 |
-| `accent` marker / focus ring on `chrome` | 6.8 | 10.6 |
+| `accent` marker / focus ring on `chrome` | 6.9 | 10.6 |
 | `accent` marker on `pressed` | 5.9 | 8.0 |
 | `accent` focus ring on `surface` | 7.5 | 9.5 |
-| `on-accent` on `accent` | 6.8 | 10.6 |
+| `on-accent` on `accent` | 6.9 | 10.6 |
 
 `line` is decorative and has no contrast requirement; no information depends on it.
 
@@ -177,7 +177,7 @@ The accent (deep teal / bright teal) is a neutral trial choice, not a brand deci
 | Duration | 14 / 20 | 400 | `text-muted` |
 | Bar label | 12 / 16 | 500 (700 when current) | `text-muted` (`text` when current) |
 
-The song title is the largest and boldest text in the row (spec rule).
+The song title is the largest text in the row and the most prominent (spec rule); the key is bolder but smaller.
 
 ### Corner radii
 
@@ -191,7 +191,8 @@ The song title is the largest and boldest text in the row (spec rule).
 - **Icons:** 24 × 24, outline style, about 2 px stroke with rounded ends and joins, one consistent family. Songs = music note, Setlists = list with lines, Gig = microphone, Settings = gear. Inactive icons use `text-muted`.
 - **Current section (Setlists) — not color alone:** the icon sits on a filled `accent` pill (phone: 56 × 32 behind the icon; 600 px and wider: one pill around icon and label, 40 high, 16 side padding) with the icon (and label inside the pill) in `on-accent`. On phone the label below is `text` at weight 700. Shape, fill and weight all differ from the other buttons.
 - **Pressed state (all buttons):** a `pressed` rounded rectangle (radius 12) fills the button, inset 4 from its edges, behind icon, label and marker. It appears immediately on press and fades out over about 150 ms on release (no fade if the system asks for reduced motion). No scale, bounce or ripple.
-- **Focus (keyboard):** a 2 px `accent` ring with 2 px gap around the button, radius 12. Shown only for keyboard focus, not on tap.
+- **Scrollable list:** when it is a keyboard tab stop, it gets the same accent ring, drawn inside its edge.
+- **Focus (keyboard):** a 2 px `accent` ring drawn just inside the button edge, radius 12 (buttons sit edge to edge, so a ring outside would be clipped or overlap neighbours). Shown only for keyboard focus, not on tap.
 - **Hover:** none (simplicity; the spec asks only for a pressed state).
 
 ### Song row pressed state
