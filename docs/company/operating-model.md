@@ -98,5 +98,5 @@ What each lead used is recorded per feature in [docs/plan/costs/](../plan/costs/
 | Level | When | What |
 |---|---|---|
 | **Base** | Every task, automatically | The project's test command (golden principle *A lean test base in the repository*) |
-| **Light QA** | Every PR | The QA lead checks acceptance criteria against the code and runs the base tests; no new verification scripts, at most 2–3 screenshots and only if the look changed |
-| **Full QA** | Only when the CEO asks (the GM proposes it before a public release) | Many screen sizes, accessibility, edge cases |
+| **Light QA** | Every PR | The QA lead checks acceptance criteria against the code and runs the base tests; adds repository tests for uncovered spec rules and for bugs found (no throwaway scripts); at most 2–3 screenshots and only if the look changed |
+| **Full QA** | Only when the CEO asks (the GM proposes it before a public release) | Many screen sizes, accessibility, edge cases; only tests that found a bug stay in the repository |

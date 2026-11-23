@@ -18,7 +18,7 @@ They apply to every change. When a rule is broken repeatedly, we turn it into a 
 8. **Follow the architecture principles** in [ARCHITECTURE.md](../ARCHITECTURE.md).
 9. **Validate at the boundary.** Data coming from storage, files or user input is validated before use. Never build on guessed data shapes.
 10. **Enforce invariants, not implementations.** Rules define boundaries; inside them, choose the simplest way to solve the problem.
-11. **A lean test base in the repository.** Every part of the app has tests in the repository and documented commands in [ARCHITECTURE.md](../ARCHITECTURE.md): one command for everything and one per part. Cover smoke tests and the main happy paths; unit tests only for risky logic; every bug found gets one test. Tests are fast and print only a summary and failures. Full testing (many screen sizes, accessibility, edge cases) runs only when the CEO asks for it. A new test tool or language is a CEO decision (ADR).
+11. **A lean test base in the repository.** Every part of the app has tests in the repository and documented commands in [ARCHITECTURE.md](../ARCHITECTURE.md): one command for everything and one per part. Cover smoke tests and the main happy paths; unit tests only for risky logic; every bug found gets one test. Engineering writes the happy-path tests; QA adds tests for uncovered spec rules and for every bug it finds. Tests of an area live together, whoever wrote them, and every test starts with a short comment naming the spec rule or bug it covers. Tests are fast and print only a summary and failures. Full testing (many screen sizes, accessibility, edge cases) runs only when the CEO asks for it. A new test tool or language is a CEO decision (ADR).
 
 ## Process
 

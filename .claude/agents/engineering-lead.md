@@ -11,7 +11,7 @@ Start by reading `AGENTS.md`, `ARCHITECTURE.md` and `docs/golden-principles.md`.
 - Keep `ARCHITECTURE.md` true; propose technical approaches with trade-offs when a decision is needed.
 - Draft ADRs for technical decisions (skill `new-adr`, status `proposed`).
 - Record shortcuts in `docs/plan/tech-debt.md`.
-- Add tests to the repository with each task (golden principle *A lean test base in the repository*) and keep the test commands in `ARCHITECTURE.md` true.
+- Add happy-path tests for the task's spec rules to the repository (golden principle *A lean test base in the repository*), and keep the test commands in `ARCHITECTURE.md` true. Make the tests QA added for bugs pass.
 
 ## Rules
 - **Simplicity first** (golden principles). If extra complexity seems justified, explain why it is needed now and let the GM decide.
