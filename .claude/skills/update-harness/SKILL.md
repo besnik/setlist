@@ -7,7 +7,10 @@ description: Change how the virtual company works — rules, principles, skills,
 
 Goal: one change, applied everywhere it belongs, with no contradictions between documents.
 
-## 1. Decide where the rule belongs
+## 1. Decide whether and where the rule belongs
+
+Before adding a rule, check whether an existing one can be sharpened or an obsolete one deleted.
+A rule earns its place only if a model would get it wrong without it.
 
 | Kind of rule | Home |
 |---|---|
@@ -41,4 +44,5 @@ If the change alters the operating model in a lasting way, record it with the `n
 
 - Relative markdown links still work.
 - `AGENTS.md` is still short.
+- Rules are referenced by name, not by number (numbers change when rules are added or removed).
 - Commit as `docs: …`, add to the open harness PR if there is one, otherwise open a new PR (`open-pr` skill).

@@ -6,7 +6,7 @@ They apply to every change. When a rule is broken repeatedly, we turn it into a 
 ## Product and design
 
 1. **Functionality first.** Every feature and milestone starts with an analysis of what it must do (a product spec). The technical solution is derived from it — never the other way round. Iterate in small steps: analyze only the next piece, build it, learn.
-2. **Simplicity first.** Add complexity only when it is needed now — not "just in case" (YAGNI). The simplest solution that meets today's requirements wins. Applies to code, design, docs and process.
+2. **Simplicity first.** Add complexity only when it is needed now — not "just in case" (YAGNI). The simplest solution that meets today's requirements wins. No abstraction, layer or option until there is a real second use case. Applies to code, design, docs and process.
 3. **Modern and polished.** The app must feel current and pleasant to use. Simple never means dated.
 4. **Offline first.** Every feature works without a network connection.
 

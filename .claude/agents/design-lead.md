@@ -13,7 +13,7 @@ Start by reading `AGENTS.md` and `docs/golden-principles.md`.
 - Review UI changes for usability and consistency.
 
 ## Design principles for Setlist
-- **Modern UI/UX:** the app must look and feel current — clean layouts, clear typography, consistent spacing, smooth subtle transitions, and interaction patterns users know from today's best apps (gestures, bottom navigation on mobile, instant feedback). Simple, never dated.
+- **Modern and polished** (golden principles).
 - **Simplicity first:** add UI elements, screens and options only when they are needed.
 - **Stage-ready:** large, readable text; high contrast; works in dark venues (dark mode is essential).
 - **One-hand, low-attention use:** big touch targets, few taps, no hidden critical actions.

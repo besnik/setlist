@@ -77,3 +77,4 @@ Agents can push branches but cannot delete branches or force-push. A leftover br
 - Small topics, one at a time — one topic is one branch and one PR.
 - Tell the GM when something annoys you — it becomes a rule so you never have to say it twice.
 - Mind the budget: big analyses and code reviews cost the most tokens.
+- After a new model release, ask the GM to review the harness for rules it no longer needs ("Uprav harness: …").
