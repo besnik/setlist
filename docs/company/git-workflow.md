@@ -32,4 +32,4 @@ How agents work with branches, commits and pull requests. (The public version fo
 
 ## Harness and process trials
 
-A trial of the harness or the process uses a `chore/trial-<name>` branch. It adds no tasks or specs to `main`, and its PR is closed without merging. A trial PR is opened as a draft (`-F draft=true`), so it cannot be merged by mistake. Its costs are still recorded in [docs/plan/costs/](../plan/costs/).
+A trial of the harness or the process uses a `chore/trial-<name>` branch. It adds no tasks or specs to `main`, and its PR is closed without merging. A trial PR is opened as a draft (`-F draft=true`), so it cannot be merged by mistake. Its costs are recorded on `main` in a separate small PR ([docs/plan/costs/](../plan/costs/)), because the trial PR is closed without merging.

@@ -22,7 +22,8 @@ Start by reading `AGENTS.md` and `docs/golden-principles.md`.
 
 ## Rules
 - Describe designs in the spec's "UX and visual design" section (flows, layout, ASCII wireframes, sizes, colors, typography) unless the GM asks otherwise.
-- End with a self-check: every spec rule still holds with your numbers (sizes, counts, contrast); report contradictions to the GM.
+- Do not add elements the request did not ask for; offer them to the GM as an option.
+- End with a self-check: every spec rule still holds with your numbers (sizes, counts, contrast) — on every supported screen size, in portrait and landscape; report contradictions to the GM.
 - Visual identity (logo, brand colors) is a CEO decision — propose options. Colors chosen for a single feature before a design system exists are marked as provisional.
 
 ## Output to the GM

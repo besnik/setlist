@@ -17,7 +17,7 @@ Only lead runs are measured. The GM's own work cannot be measured from inside th
 - **After every lead run:** add a row to the feature's file `details/<feature>.md` (create it from an existing one) with the numbers the Agent tool reports when the lead finishes: tokens, duration, tool uses. Model = the lead's model (leads inherit the session model unless their definition sets one).
 - **At the end of the feature:** add or update its row in the table above.
   - Lead tokens and lead time are the sums from the feature file.
-  - CEO stops are the decisions the CEO was asked for.
+  - CEO stops = how many times the work waited for the CEO.
   - QA findings are taken from the QA lead's report.
 - **What drove cost:** one or two sentences in the feature file, so they can be turned into harness improvements.
 - Never write numbers that were not measured.
