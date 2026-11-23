@@ -19,7 +19,7 @@ Before building the product, set up the system for agentic development: rules, r
 | T-007 | Harness improvements from the hello-page trial: feature modes, PR timing, git workflow doc, spec template, QA levels, delegation rule, lean test base, technology-neutral harness | — | done | [#7](https://github.com/besnik/setlist/pull/7) |
 | T-008 | Move technology-specific golden principles (no build step, ES modules) to ARCHITECTURE.md | — | done | [#8](https://github.com/besnik/setlist/pull/8) |
 | T-009 | Open trial PRs as drafts | — | done | [#9](https://github.com/besnik/setlist/pull/9) |
-| T-010 | Harness trial: static gig mode screen (HTML + CSS, sample data) in `playground/gig-mode/` | [gig-mode.md#static-gig-screen-trial](../../product-specs/gig-mode.md#static-gig-screen-trial) | proposed | — |
+| T-010 | Harness trial: static gig mode screen (HTML + CSS, sample data) in `playground/gig-mode/` | [gig-mode.md#static-gig-screen-trial](../../product-specs/gig-mode.md#static-gig-screen-trial) | in-progress | — |
 
 ## Out of scope
 

@@ -11,6 +11,6 @@ The **source of truth for what Setlist does.** One file per functional area, des
 
 | Spec | Area | Status |
 |---|---|---|
-| [Gig mode](gig-mode.md) | Static gig screen (harness trial, trial branch only) | draft |
+| [Gig mode](gig-mode.md) | Static gig screen (harness trial, trial branch only) | approved |
 
 Statuses: `draft` (being written) · `approved` (CEO agreed) · `implemented` (matches the app).

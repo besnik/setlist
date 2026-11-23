@@ -1,0 +1,48 @@
+<!doctype html>
+<!-- Gig mode (harness trial): a static stage screen with sample data.
+     HTML + CSS only; the buttons are visual and do nothing. Spec: docs/product-specs/gig-mode.md -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0B0D10">
+  <title>Gig mode – Setlist</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="screen">
+    <header class="top-bar">
+      <h1 class="setlist-name">Friday at The Anchor</h1>
+      <p class="progress">
+        <span aria-hidden="true">3 / 12</span>
+        <span class="visually-hidden">Song 3 of 12</span>
+      </p>
+    </header>
+
+    <main class="stage">
+      <section class="current" aria-labelledby="now-label">
+        <p class="label" id="now-label">Now playing</p>
+        <h2 class="current-title">Whiskey in the Jar</h2>
+        <ul class="chips">
+          <li class="chip"><span class="chip-label">Key</span> G</li>
+          <li class="chip"><span class="visually-hidden">Duration </span>4:05</li>
+        </ul>
+      </section>
+
+      <section class="next" aria-labelledby="next-label">
+        <p class="label" id="next-label">Next</p>
+        <p class="next-song">
+          <span class="next-title">The Parting Glass</span>
+          <span class="next-meta"><span class="visually-hidden">Key </span>D <span class="visually-hidden">, duration </span>3:40</span>
+        </p>
+      </section>
+    </main>
+
+    <nav class="controls" aria-label="Song navigation">
+      <button type="button" class="btn btn-prev"><span aria-hidden="true">‹</span> Previous</button>
+      <button type="button" class="btn btn-next">Next <span aria-hidden="true">›</span></button>
+    </nav>
+  </div>
+</body>
+</html>

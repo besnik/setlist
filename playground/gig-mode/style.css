@@ -1,0 +1,224 @@
+/* Gig mode (harness trial) — always dark, stage-readable layout.
+   Tokens and sizes come from the spec's "UX and visual design" section (colors are provisional). */
+
+:root {
+  --bg: #0B0D10;
+  --surface: #171A1F;
+  --text: #F2F4F7;
+  --muted: #9AA3AE;
+  --accent: #FFB020;
+  --on-accent: #111317;
+  --line-strong: #9AA3AE;
+  --track: #2A2F37;
+
+  /* Sizes in rem so text scales with zoom (1rem = 16px). */
+  --top-bar: 3.5rem;
+  --title: 2.75rem;      /* 44 */
+  --next-title: 1.375rem; /* 22 */
+  --chip: 2.5rem;        /* 40 high */
+  --btn: 4rem;           /* 64 high */
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--bg); color-scheme: dark; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* One centered column that fills the viewport; it may grow taller (e.g. at 200 % zoom) and then scrolls. */
+.screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding:
+    env(safe-area-inset-top) max(1rem, env(safe-area-inset-right))
+    max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: var(--top-bar);
+}
+
+.setlist-name {
+  margin: 0;
+  min-width: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.progress {
+  margin: 0;
+  flex: none;
+  font-size: 1.125rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Middle area: the current song floats in the free space; the next song sits at the bottom. */
+.stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.current {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: 1.5rem;
+}
+
+.label {
+  margin: 0 0 0.25rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.current-title {
+  margin: 0;
+  font-size: var(--title);
+  font-weight: 700;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--chip);
+  padding: 0 1rem;
+  border-radius: 0.75rem;
+  background: var(--surface);
+  font-size: 1.25rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.chip-label { color: var(--muted); }
+
+.next {
+  border-top: 1px solid var(--track);
+  padding-block: 1.5rem 1rem;
+}
+
+.next-song {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0;
+}
+
+.next-title {
+  min-width: 0;
+  font-size: var(--next-title);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.next-meta {
+  flex: none;
+  color: var(--muted);
+  font-size: 1.125rem;
+  font-variant-numeric: tabular-nums;
+  word-spacing: 0.5em;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.btn {
+  min-height: var(--btn);
+  padding: 0 0.75rem;
+  border-radius: 1rem;
+  font: inherit;
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.btn-prev {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+}
+
+.btn-next {
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 1px solid var(--accent);
+}
+
+/* Pressed look is best effort: some mobile browsers show :active only with a touch listener. */
+.btn:active { transform: scale(0.97); filter: brightness(0.9); }
+
+.btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Tablet / desktop: larger type in the same centered column. */
+@media (min-width: 600px) {
+  :root {
+    --title: 4rem;          /* 64 */
+    --next-title: 1.625rem; /* 26 */
+  }
+}
+
+/* Short landscape (phone on its side, or heavy zoom on a laptop): compact everything. */
+@media (max-height: 499px) {
+  :root {
+    --top-bar: 2.75rem;  /* 44 */
+    --title: 2rem;       /* 32 */
+    --chip: 2rem;        /* 32 */
+    --btn: 3.25rem;      /* 52 */
+  }
+  .current { padding-block: 1rem; }
+  .current .label { display: none; }
+  .chips { margin-top: 0.75rem; }
+  .next { padding-block: 1rem 0.75rem; }
+}

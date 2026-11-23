@@ -1,6 +1,6 @@
 # Gig mode
 
-- **Status:** draft
+- **Status:** approved
 
 ## Purpose
 
@@ -38,7 +38,7 @@ Screen sizes
 
 Look and robustness
 
-- Rule: the screen is always dark, whatever the system theme (see open question 1).
+- Rule: the screen is always dark, whatever the system theme (CEO decision).
 - Rule: normal text has a contrast ratio of at least 4.5:1 and large text and button outlines at least 3:1 against their background.
 - Rule: the page works with JavaScript disabled and without a network connection (no web fonts, icons or images loaded from the network).
 
@@ -59,7 +59,6 @@ Phone portrait (320–599 px wide):
 ```
 ┌────────────────────────────────┐
 │ Friday at The Anchor    3 / 12 │  top bar, 56
-│ ███████░░░░░░░░░░░░░░░░░░░░░░░ │  progress bar, 4
 │                                │
 │ NOW PLAYING                    │  label 14, muted, caps
 │ Whiskey in                     │
@@ -80,7 +79,6 @@ Phone portrait (320–599 px wide):
 ```
 
 - The current-song block sits in the flexible middle area; the next-song block and the buttons are anchored to the bottom (thumb zone).
-- **Progress bar:** a thin bar under the top bar, filled to position / total (3 / 12 = 25 %). Decorative only; the number is the real information (GM decision, see the report).
 - **Previous:** outlined (1 px `line-strong`), text `text`. **Next:** filled `accent`, text `on-accent`.
 - **Focus:** 3 px `accent` outline, 3 px offset, on both buttons.
 
@@ -96,19 +94,19 @@ Short landscape (height below 500): top bar 44, current title 32, label hidden (
 | `surface` | `#171A1F` | Chips, Previous button |
 | `text` | `#F2F4F7` | Titles, labels on buttons |
 | `muted` | `#9AA3AE` | Labels, next song key and duration |
-| `accent` | `#FFB020` | Next button, progress fill, focus ring |
+| `accent` | `#FFB020` | Next button, focus ring |
 | `on-accent` | `#111317` | Text on the Next button |
 | `line-strong` | `#9AA3AE` | Previous button outline |
-| `track` | `#2A2F37` | Progress bar track, divider |
+| `track` | `#2A2F37` | Divider above the next song |
 
 Font: the system UI stack (no web fonts). Durations and `3 / 12` use tabular numbers. Spacing scale: 4, 8, 12, 16, 24, 32.
 
 ### Self-check
 
-- Contrast (computed): `text`/`bg` 17.7, `text`/`surface` 15.8, `muted`/`bg` 7.6, `muted`/`surface` 6.8, `on-accent`/`accent` 10.2, `accent`/`bg` 10.6 (focus ring, progress fill), `line-strong`/`bg` 7.6. All meet 4.5:1 or 3:1. `track`/`bg` is 1.45, but the track and divider are decorative and carry no information.
+- Contrast (computed): `text`/`bg` 17.7, `text`/`surface` 15.8, `muted`/`bg` 7.6, `muted`/`surface` 6.8, `on-accent`/`accent` 10.2, `accent`/`bg` 10.6 (focus ring), `line-strong`/`bg` 7.6. All meet 4.5:1 or 3:1. `track`/`bg` is 1.45, but the divider is decorative and carry no information.
 - Buttons at 320 wide: (320 − 2 × 16 − 12) / 2 = 138 × 64 (52 in landscape) ≥ 44 × 44.
-- Height at 320 × 568: 56 + 4 + 24 + 20 + 2 × 48 (title) + 16 + 40 + 24 + 1 + 20 + 30 + 16 + 64 + 16 ≈ 431 < 568. Title "Whiskey in the Jar" at 44 px needs 2 lines at 288 px content width.
-- Height at 568 × 320 (landscape): the title at 32 px fits on one line in 536 px of width, so 44 + 4 + 16 + 36 + 12 + 32 + 16 + 1 + 20 + 28 + 12 + 52 + 12 ≈ 285 < 320. ✓ (With a two-line title it would be ≈ 321, i.e. no margin — longer real titles are out of scope for this trial.)
+- Height at 320 × 568: 56 + 24 + 20 + 2 × 48 (title) + 16 + 40 + 24 + 1 + 20 + 30 + 16 + 64 + 16 ≈ 427 < 568. Title "Whiskey in the Jar" at 44 px needs 2 lines at 288 px content width.
+- Height at 568 × 320 (landscape): the title at 32 px fits on one line in 536 px of width, so 44 + 16 + 36 + 12 + 32 + 16 + 1 + 20 + 28 + 12 + 52 + 12 ≈ 281 < 320. ✓ (With a two-line title it would be ≈ 317, i.e. almost no margin — longer real titles are out of scope for this trial.)
 - Largest text: current title (44 / 64) > next title (22 / 26) > chips (20). ✓
 
 ## Notes for Design / Engineering
@@ -125,9 +123,8 @@ Font: the system UI stack (no web fonts). Durations and `3 / 12` use tabular num
 - Any behavior: the buttons do not change the song, nothing is stored, no real data.
 - Lyrics, chords, notes, tempo, a timer or clock.
 - Other states: first song (no Previous), last song (no Next), empty setlist.
-- Light theme, settings, landscape-specific features beyond fitting on screen.
+- Light theme (CEO decision: gig mode is always dark), a progress bar (CEO decision: the `3 / 12` number is enough), settings, landscape-specific features beyond fitting on screen.
 
 ## Open questions
 
-1. **Always dark, or follow the system theme?** Recommendation: always dark — gig mode is used on stage in dim light, and one theme halves the design and QA work. Light theme can come later if needed.
-2. **Progress bar under the top bar** (my addition, not in your request). Recommendation: keep it — it shows "how far through the set" at a glance and costs a few lines of CSS. Say no and it goes.
+None. Decided by the CEO: always dark; no progress bar.
