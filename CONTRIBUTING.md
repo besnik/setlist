@@ -1,5 +1,7 @@
 # Contributing to Setlist
 
+<!-- Public mirror of docs/company/git-workflow.md (the agents' source). Keep both in sync. -->
+
 Thanks for your interest! Setlist is in early development, but ideas and feedback are always welcome.
 
 ## Workflow

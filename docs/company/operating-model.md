@@ -65,7 +65,7 @@ Every CEO decision of lasting importance is recorded as an ADR in [docs/decision
 
 ## From idea to product
 
-Every feature or milestone follows the `new-feature` skill: functionality analysis, optional prototype, spec, UX, technical impact, tasks. The CEO approves the spec and the tasks and decides technical questions.
+Every feature or milestone follows the `new-feature` skill: mode (🟢 small / 🔵 big), functionality analysis, optional prototype, spec, UX and visual design, technical impact, tasks. The CEO approves the spec and the tasks (in small mode in one chat message) and decides technical questions.
 
 Fixed constraints set by the CEO (platform, budget) are inputs to the analysis, not its outcome.
 
@@ -74,12 +74,29 @@ Fixed constraints set by the CEO (platform, budget) are inputs to the analysis, 
 1. **Intake** — CEO gives a goal (in chat) or approves a task in [docs/plan/](../plan/).
 2. **Plan** — for unclear or larger work, the GM writes a short plan in chat and waits for the CEO's OK. A clear, specific instruction is carried out right away.
 3. **Delegate** — GM assigns parts to leads.
-4. **Build** — work happens on a branch `<type>/<short-description>`.
-5. **Review** — QA lead (and the GM) review before the PR is opened.
+4. **Build** — work happens on a branch ([git workflow](git-workflow.md)).
+5. **Review** — the QA lead reviews before the PR is opened (see [QA levels](#qa-levels)). The GM fixes trivial findings itself (a line of CSS, a spec wording; no behavior change); everything else goes back to the lead who built it.
 6. **Pull request** — small, explained, using the PR template.
 7. **Report** — GM reports to the CEO in Slovak: what changed, what was decided, and what the CEO needs to decide or do.
 8. **Merge** — CEO reviews and squash-merges.
 
 ## Budget
 
-The AI budget is limited. The GM does small tasks itself and spawns a lead only for substantial work in its area — each lead starts without context and costs extra tokens. Typical use: the QA lead reviews code changes before a PR; the Product lead writes a new spec. What each lead used is recorded per feature in [docs/plan/costs/](../plan/costs/), so the CEO can see where the budget goes and tune the harness.
+The AI budget is limited. The GM does the work itself — it already has the context — and delegates to a lead only when one of these applies:
+
+1. **Independent view needed** — whoever wrote something hardly finds its own mistakes. QA review is always delegated.
+2. **Heavy work that would flood the GM's context** — reading many files, long tool output, running tests (e.g. an implementation across more than ~5 files).
+3. **Parallel work** that saves real time.
+
+Give every lead a token budget in its prompt (e.g. "aim for under 40k tokens; if you need more, stop and report") and ask for concise output.
+Before an expensive step (a lead run, screenshots, full QA), the GM tells the CEO the expected cost.
+
+What each lead used is recorded per feature in [docs/plan/costs/](../plan/costs/). Every ~3–5 features the GM proposes a cost review with the CEO to tune the harness.
+
+## QA levels
+
+| Level | When | What |
+|---|---|---|
+| **Base** | Every task, automatically | The project's test command (golden principle *A lean test base in the repository*) |
+| **Light QA** | Every PR | The QA lead checks acceptance criteria against the code and runs the base tests; adds repository tests for uncovered spec rules and for bugs found (no throwaway scripts); at most 2–3 screenshots and only if the look changed |
+| **Full QA** | Only when the CEO asks (the GM proposes it before a public release) | Many screen sizes, accessibility, edge cases; only tests that found a bug stay in the repository |

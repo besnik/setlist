@@ -7,7 +7,9 @@ One row per feature here; the step-by-step breakdown lives in one file per featu
 |---|---|---|---|---|---|---|---|---|
 | [Hello page (trial)](details/hello-page-trial.md) | Static sample view of a setlist (HTML + CSS) to test the harness | small | [#5](https://github.com/besnik/setlist/pull/5) | 282,794 | 10:32 | 4 | 4 / 6 | closed without merge (trial) |
 
-Only lead runs are measured. The GM's own work cannot be measured from inside the session, so it is **not included** — no estimates.
+Only lead runs are measured. The GM's own work cannot be measured from inside the session, so it is **not included** — no estimates. In the detail files, GM steps show `n/a`.
+
+\* Marks a feature prepared mainly by the GM (light feature): its lead numbers cover only the delegated parts, usually QA.
 
 ## How to record (GM)
 

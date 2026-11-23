@@ -33,9 +33,9 @@ Sessions have no memory of earlier chats. Before new work, find out where we lef
 2. Follow the architecture principles in [ARCHITECTURE.md](ARCHITECTURE.md).
 3. **The CEO decides** anything hard to reverse, costly, user-facing or public — see [decision rights](docs/company/operating-model.md#decision-rights). When in doubt, ask.
 4. **Plan first when it matters:** for unclear or larger work, write a short plan in chat and wait for the CEO's OK. A clear, specific instruction from the CEO can be carried out right away.
-5. Never push to `main`. **One open topic = one branch = one PR.** While a PR on the same topic is open, add commits to its branch instead of creating a new one. Create a new branch `<type>/<short-description>` (always from `main`) only for a new topic. Small PRs, [Conventional Commits](CONTRIBUTING.md). The CEO squash-merges.
+5. Never push to `main`. **One open topic = one branch = one PR**, opened only when ready for the CEO's review. Branches, commits and PRs: [git workflow](docs/company/git-workflow.md).
 6. Work only on **approved** tasks ([docs/plan/](docs/plan/)). An explicit instruction from the CEO in chat counts as approval — record the task row in the same PR.
-7. **Mind the budget.** Do small tasks yourself; spawn a lead only for substantial work in its area (each lead starts cold and costs tokens). Record what each lead used in [docs/plan/costs/](docs/plan/costs/).
+7. **Mind the budget.** Do the work yourself unless delegating pays off ([when to delegate](docs/company/operating-model.md#budget)). Warn the CEO about the cost before expensive steps. Record what each lead used in [docs/plan/costs/](docs/plan/costs/).
 8. **No private links and no generated boilerplate.** Never put into commits, PRs, issues, comments or files:
    - links to AI sessions, chats or other private tools (e.g. `claude.ai/code/session_…`),
    - tool attribution or promotion ("Generated with/by …", `Co-Authored-By: <AI>` trailers, session trailers, emoji badges).
@@ -55,7 +55,7 @@ Sessions have no memory of earlier chats. Before new work, find out where we lef
 | Coding and design rules | [docs/golden-principles.md](docs/golden-principles.md) |
 | Why things are the way they are | [docs/decisions/](docs/decisions/) (ADRs) |
 | How the virtual company works | [docs/company/operating-model.md](docs/company/operating-model.md) |
-| Branch, commit and PR conventions | [CONTRIBUTING.md](CONTRIBUTING.md) |
+| Branch, commit and PR conventions | [docs/company/git-workflow.md](docs/company/git-workflow.md) |
 | Security policy | [SECURITY.md](SECURITY.md) |
 | Cheat sheet for the CEO | [docs/ceo-guide.md](docs/ceo-guide.md) |
 
@@ -63,7 +63,7 @@ Sessions have no memory of earlier chats. Before new work, find out where we lef
 
 Repeatable workflows live in [.claude/skills/](.claude/skills/):
 
-- `new-feature` — take a feature from idea to approved tasks (analysis, optional prototype, spec, UX, technical impact, tasks).
+- `new-feature` — take a feature from idea to approved tasks (mode, analysis, optional prototype, spec, UX and visual design, technical impact, tasks).
 - `open-pr` — commit, push and open a pull request.
 - `new-adr` — record a decision.
 - `update-harness` — change rules or workflow and keep all harness docs consistent.
@@ -74,7 +74,7 @@ Repeatable workflows live in [.claude/skills/](.claude/skills/):
 - Product specs, plan files and ADRs are updated in the same PR.
 - If the way we work changed (rules, skills, workflow), [docs/ceo-guide.md](docs/ceo-guide.md) is updated too.
 - If leads were used, their costs are recorded in [docs/plan/costs/](docs/plan/costs/).
-- The PR follows the [template](.github/pull_request_template.md).
+- The PR follows the [template](.github/pull_request_template.md) and its description matches the change.
 
 ## Report to the CEO (end of every task, in Slovak)
 
@@ -88,5 +88,6 @@ Always cover these three things, but choose short Slovak headings that fit the c
 
 - Agents can push branches but cannot delete branches or force-push. Branches are auto-deleted after merge.
 - GitHub GraphQL is blocked (`gh pr create` fails) — open PRs via the REST API, see the `open-pr` skill.
+- To use the preinstalled Playwright from the scratchpad, run node with `NODE_PATH=$(npm root -g)`.
 - The clone is shallow and tracks only `main`. After checking out or pushing another branch, register it so git (and the stop hook) can see it is pushed:
   `git config --add remote.origin.fetch '+refs/heads/<branch>:refs/remotes/origin/<branch>' && git fetch origin <branch>`
