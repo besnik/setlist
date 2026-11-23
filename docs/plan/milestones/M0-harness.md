@@ -19,7 +19,7 @@ Before building the product, set up the system for agentic development: rules, r
 | T-007 | Harness improvements from the hello-page trial: feature modes, PR timing, git workflow doc, spec template, QA levels, delegation rule, lean test base, technology-neutral harness | — | done | [#7](https://github.com/besnik/setlist/pull/7) |
 | T-008 | Move technology-specific golden principles (no build step, ES modules) to ARCHITECTURE.md | — | done | [#8](https://github.com/besnik/setlist/pull/8) |
 | T-009 | Open trial PRs as drafts | — | done | [#9](https://github.com/besnik/setlist/pull/9) |
-| T-010 | Harness fixes from the gig-mode trial (QA brief, design self-check in portrait and landscape, no unrequested elements, CEO stops definition, trial costs on `main`) | — | done | PRLINK |
+| T-010 | Harness fixes from the gig-mode trial (QA brief, design self-check in portrait and landscape, no unrequested elements, CEO stops definition, trial costs on `main`) | — | done | [#12](https://github.com/besnik/setlist/pull/12) |
 
 ## Out of scope
 
