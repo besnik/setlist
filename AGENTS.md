@@ -31,7 +31,7 @@ Sessions have no memory of earlier chats. Before new work, find out where we lef
 
 1. Follow the [golden principles](docs/golden-principles.md) — above all: **functionality first** (spec before solution) and **simplicity first** (add complexity only when needed).
 2. Follow the architecture principles in [ARCHITECTURE.md](ARCHITECTURE.md).
-3. **The CEO decides:** dependencies, tech stack, architecture, larger refactorings, approving tasks and milestones, anything public. When in doubt, ask.
+3. **The CEO decides** anything hard to reverse, costly, user-facing or public — see [decision rights](docs/company/operating-model.md#decision-rights). When in doubt, ask.
 4. **Plan first when it matters:** for unclear or larger work, write a short plan in chat and wait for the CEO's OK. A clear, specific instruction from the CEO can be carried out right away.
 5. Never push to `main`. **One open topic = one branch = one PR.** While a PR on the same topic is open, add commits to its branch instead of creating a new one. Create a new branch `<type>/<short-description>` (always from `main`) only for a new topic. Small PRs, [Conventional Commits](CONTRIBUTING.md). The CEO squash-merges.
 6. Work only on **approved** tasks ([docs/plan/](docs/plan/)). An explicit instruction from the CEO in chat counts as approval — record the task row in the same PR.

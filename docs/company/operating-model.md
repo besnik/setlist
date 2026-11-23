@@ -65,20 +65,9 @@ Every CEO decision of lasting importance is recorded as an ADR in [docs/decision
 
 ## From idea to product
 
-Every feature or milestone follows the same order (skill `new-feature`):
-
-```
-0. Prototype (optional)    → intake package from the CEO      — only when something is unclear
-1. Functionality analysis  → product spec (what and why)      — CEO approves
-2. UX flow                 → screens and navigation
-3. Technical solution      → ADR, ARCHITECTURE.md, data model — CEO decides
-4. Tasks                   → T-NNN in the milestone           — CEO approves
-5. Build + checks          → code, tests, checks, CI
-```
+Every feature or milestone follows the `new-feature` skill: functionality analysis, optional prototype, spec, UX, technical impact, tasks. The CEO approves the spec and the tasks and decides technical questions.
 
 Fixed constraints set by the CEO (platform, budget) are inputs to the analysis, not its outcome.
-
-**Prototypes:** when UI, data, technology, an integration or performance is unclear, the GM proposes a throwaway prototype and writes a kickoff prompt into the chat. The CEO builds and compares variants in a separate, clean session outside the harness and brings back an intake package (`intake.md` + prototype files) in the chat. Prototype code is a reference only — never copied — and is not stored in the repository; its learnings go into the spec. Details: skill `new-feature`, step 3.
 
 ## Workflow of a task
 
@@ -94,8 +83,3 @@ Fixed constraints set by the CEO (platform, budget) are inputs to the analysis, 
 ## Budget
 
 The AI budget is limited. The GM does small tasks itself and spawns a lead only for substantial work in its area — each lead starts without context and costs extra tokens. Typical use: the QA lead reviews code changes before a PR; the Product lead writes a new spec.
-
-## Communication
-
-- CEO ↔ GM: chat, in **Slovak**.
-- Everything stored in the repository: **English**.
