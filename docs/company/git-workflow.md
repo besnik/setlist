@@ -26,10 +26,10 @@ How agents work with branches, commits and pull requests. (The public version fo
 
 ## Pull requests
 
-- Open a PR (skill `open-pr`) **only when it is ready for the CEO's review**: the work and QA are done. No draft PRs.
+- Open a PR (skill `open-pr`) **only when it is ready for the CEO's review**: the work and QA are done. No draft PRs (except trials, below).
 - Keep the PR description true: when new commits change what the PR does, update the description.
 - If the CEO's review comments are being worked on, say so in the report ("do not merge yet").
 
 ## Harness and process trials
 
-A trial of the harness or the process uses a `chore/trial-<name>` branch. It adds no tasks or specs to `main`, and its PR is closed without merging. Its costs are still recorded in [docs/plan/costs/](../plan/costs/).
+A trial of the harness or the process uses a `chore/trial-<name>` branch. It adds no tasks or specs to `main`, and its PR is closed without merging. A trial PR is opened as a draft (`-F draft=true`), so it cannot be merged by mistake. Its costs are still recorded in [docs/plan/costs/](../plan/costs/).

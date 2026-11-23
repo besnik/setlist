@@ -23,6 +23,8 @@ Open a PR only when it is ready for the CEO's review — the work and QA are don
      --jq '.html_url'
    ```
 
+   For a trial PR (`chore/trial-*` branch), add `-F draft=true`.
+
 7. If it fails, give the CEO the compare link instead: `https://github.com/besnik/setlist/compare/main...<branch>`.
 8. Put the PR link into the task row in the milestone file and into the report to the CEO.
 
