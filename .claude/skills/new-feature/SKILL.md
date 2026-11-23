@@ -7,7 +7,7 @@ description: Take a new feature (or a whole milestone such as the MVP) from an i
 
 **Functionality first:** analyze what the feature must do before designing how to build it.
 Scale every step to the size of the feature — for a small one, steps 1–7 can be a few sentences in one PR; for a big one, also create an execution plan in `docs/plan/plans/`.
-Involve leads (product, design, engineering) only for bigger features (budget rule in `AGENTS.md`).
+Involve leads (product, design, engineering) only for bigger features (budget rule in `AGENTS.md`). After every lead run, record its usage in `docs/plan/costs/` (how: its README).
 
 🛑 = stop and wait for the CEO.
 

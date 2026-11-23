@@ -82,4 +82,4 @@ Fixed constraints set by the CEO (platform, budget) are inputs to the analysis, 
 
 ## Budget
 
-The AI budget is limited. The GM does small tasks itself and spawns a lead only for substantial work in its area — each lead starts without context and costs extra tokens. Typical use: the QA lead reviews code changes before a PR; the Product lead writes a new spec.
+The AI budget is limited. The GM does small tasks itself and spawns a lead only for substantial work in its area — each lead starts without context and costs extra tokens. Typical use: the QA lead reviews code changes before a PR; the Product lead writes a new spec. What each lead used is recorded per feature in [docs/plan/costs/](../plan/costs/), so the CEO can see where the budget goes and tune the harness.
