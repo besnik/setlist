@@ -5,6 +5,7 @@ Raw ideas go here — one line each, no filtering. The GM or Product lead turns 
 - Choose the tech stack (CEO decision, ADR needed).
 - Design the detailed architecture with the solution — idea: DDD-style domain layers `types → repository → service (optional) → ui`, UI layers `components → views → app`, storage only through repositories.
 - Set up mechanical checks for the architecture and a CI workflow.
+- With the first CI workflow: a required check that fails for `chore/trial-*` branches, so trial PRs cannot be merged into `main` (add it to the `protect-main` ruleset).
 - Deploy the app (e.g. GitHub Pages).
 - Define MVP scope (M1) and write the first product specs.
 - Skill `implement-task` — approved task → branch → build → the check command and tests → QA review → PR (with the first code).
