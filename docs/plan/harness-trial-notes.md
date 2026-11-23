@@ -51,4 +51,5 @@ Legend: 🔴 problem · 🟡 friction · 🟢 worked well
 | 40 | Spec quality | The spec still contained self-contradictions after Design: title "boldest" vs. the key at 700; max width 720 vs. a 480 bar group; contrast table rounding; zoom rule vs. the 320 floor. A design self-check (numbers against rules) before tasks would catch them. | 🟡 |
 | 41 | QA prompt | The qa-lead prompt says "review before a PR is opened", but the PR was already open (see #26). Its output format lacks a "not verifiable" result. | 🟡 |
 | 42 | QA findings | After QA, the GM fixed small findings directly (CSS, spec text) instead of sending them back to engineering. That was cheaper, but no rule says who fixes QA findings. | 🟡 |
+| 43 | Task lifecycle | T-006 is complete, but `done` means "merged to `main`" and this PR will be closed without merging. A throwaway or abandoned task has no final status (only `rejected`, which is CEO-only and means "not going to happen"). T-006 stays `in-progress`. | 🟡 |
 | 13 | Spec (product-lead) | The lead stayed in its role, flagged technical choices instead of deciding them, and gave a recommendation for each open question. Quick (~70 s). | 🟢 |

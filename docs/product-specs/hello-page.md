@@ -55,9 +55,9 @@ It exists to test our product process end to end on a tiny feature. It is throwa
 ### Sample data
 
 - Rule: the setlist title is **"Hello, Setlist"**.
-- Rule: the setlist has 8 songs, enough to need scrolling on a phone in portrait.
+- Rule: the setlist has 12 songs, enough to need scrolling on any phone in portrait (including large phones, e.g. 430×932).
 - Rule: every song has a title, artist, key and duration; keys use common notation (e.g. `G`, `Em`, `F#m`) and durations are realistic (2:30–6:00).
-- Rule: the songs are traditional or public-domain songs (no rights questions once the repository is public), for example "House of the Rising Sun", "Scarborough Fair", "Whiskey in the Jar", "Wild Mountain Thyme", "The Water Is Wide", "Shenandoah", "Amazing Grace", "Danny Boy", with "Traditional" as the artist.
+- Rule: the songs are traditional or public-domain songs (no rights questions once the repository is public), for example "House of the Rising Sun", "Scarborough Fair", "Whiskey in the Jar", "Wild Mountain Thyme", "The Water Is Wide", "Shenandoah", "Amazing Grace", "Danny Boy", "Black Is the Colour", "The Parting Glass", "Red River Valley", "Molly Malone", with "Traditional" as the artist.
 - Rule: all UI text is in English.
 
 ## UX and visual design
