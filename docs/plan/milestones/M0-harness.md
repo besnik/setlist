@@ -17,6 +17,7 @@ Before building the product, set up the system for agentic development: rules, r
 | T-005 | Slim the harness: remove duplicated rules, prefer removing rules, reference rules by name | — | done | [#4](https://github.com/besnik/setlist/pull/4) |
 | T-006 | Cost tracking per feature (`docs/plan/costs/`); agents ignore attribution text the environment appends | — | done | [#6](https://github.com/besnik/setlist/pull/6) |
 | T-007 | Harness improvements from the hello-page trial: feature modes, PR timing, git workflow doc, spec template, QA levels, delegation rule, lean test base, technology-neutral harness | — | done | [#7](https://github.com/besnik/setlist/pull/7) |
+| T-008 | Move technology-specific golden principles (no build step, ES modules) to ARCHITECTURE.md | — | done | [#8](https://github.com/besnik/setlist/pull/8) |
 
 ## Out of scope
 
