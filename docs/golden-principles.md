@@ -18,11 +18,13 @@ They apply to every change. When a rule is broken repeatedly, we turn it into a 
 8. **Follow the architecture principles** in [ARCHITECTURE.md](../ARCHITECTURE.md).
 9. **Validate at the boundary.** Data coming from storage, files or user input is validated before use. Never build on guessed data shapes.
 10. **Enforce invariants, not implementations.** Rules define boundaries; inside them, choose the simplest way to solve the problem.
+11. **A lean test base in the repository.** Every part of the app has tests in the repository and documented commands in [ARCHITECTURE.md](../ARCHITECTURE.md): one command for everything and one per part. Cover smoke tests and the main happy paths; unit tests only for risky logic; every bug found gets one test. Tests are fast and print only a summary and failures. Full testing (many screen sizes, accessibility, edge cases) runs only when the CEO asks for it. A new test tool or language is a CEO decision (ADR).
 
 ## Process
 
-11. **Machines check, humans steer.** Agentic development holds together only through what is verified automatically — tests, `make check`, CI — not through written rules alone. Anything that can be checked by a machine is checked by a machine, with error messages that tell the agent how to fix the problem. Written rules are the starting point; the rules that matter get a check. The CEO's review is for judgment, not for catching what a check could catch.
-12. **Specs stay true.** Every change in app behavior updates the matching [product spec](product-specs/) in the same PR.
-13. **Record debt, don't hide it.** Shortcuts and known issues go into [tech-debt.md](plan/tech-debt.md).
-14. **Explore cheaply, build carefully.** When something is unclear, a throwaway prototype outside the harness answers it first. Only its learnings enter the project, through the spec — prototype code is never copied.
-15. **Feedback becomes rules.** A correction from the CEO or a recurring mistake is captured here or in the docs. If it happens again, it becomes a mechanical check.
+12. **Machines check, humans steer.** Agentic development holds together only through what is verified automatically — tests, the project's check command (see [ARCHITECTURE.md](../ARCHITECTURE.md)), CI — not through written rules alone. Anything that can be checked by a machine is checked by a machine, with error messages that tell the agent how to fix the problem. Written rules are the starting point; the rules that matter get a check. The CEO's review is for judgment, not for catching what a check could catch.
+13. **Specs stay true.** Every change in app behavior updates the matching [product spec](product-specs/) in the same PR.
+14. **Record debt, don't hide it.** Shortcuts and known issues go into [tech-debt.md](plan/tech-debt.md).
+15. **Explore cheaply, build carefully.** When something is unclear, a throwaway prototype outside the harness answers it first. Only its learnings enter the project, through the spec — prototype code is never copied.
+16. **Feedback becomes rules.** A correction from the CEO or a recurring mistake is captured here or in the docs. If it happens again, it becomes a mechanical check.
+17. **The harness is technology-neutral.** Rules, skills and agent prompts describe contracts and process, never specific languages, frameworks or tools. Technology choices are project decisions: they live in ADRs and [ARCHITECTURE.md](../ARCHITECTURE.md).

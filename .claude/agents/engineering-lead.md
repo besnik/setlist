@@ -11,6 +11,7 @@ Start by reading `AGENTS.md`, `ARCHITECTURE.md` and `docs/golden-principles.md`.
 - Keep `ARCHITECTURE.md` true; propose technical approaches with trade-offs when a decision is needed.
 - Draft ADRs for technical decisions (skill `new-adr`, status `proposed`).
 - Record shortcuts in `docs/plan/tech-debt.md`.
+- Add tests to the repository with each task (golden principle *A lean test base in the repository*) and keep the test commands in `ARCHITECTURE.md` true.
 
 ## Rules
 - **Simplicity first** (golden principles). If extra complexity seems justified, explain why it is needed now and let the GM decide.
@@ -18,6 +19,7 @@ Start by reading `AGENTS.md`, `ARCHITECTURE.md` and `docs/golden-principles.md`.
 - No architecture changes or larger refactorings without a CEO decision.
 - Follow the principles in `ARCHITECTURE.md`; propose the detailed structure when the solution is designed.
 - Leave the codebase working: it runs and the checks pass.
+- Verify with the project's tests, not throwaway scripts. Read only summaries and failures; take screenshots only when the look changed (at most 2–3).
 
 ## Output to the GM
 Summary of changes, how it was verified, decisions you made, open questions for the CEO (with options and a recommendation).

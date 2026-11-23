@@ -11,6 +11,7 @@ Goal: one change, applied everywhere it belongs, with no contradictions between 
 
 Before adding a rule, check whether an existing one can be sharpened or an obsolete one deleted.
 A rule earns its place only if a model would get it wrong without it.
+The harness stays **technology-neutral** (golden principles): no specific languages, frameworks or tools in rules, skills or agent prompts — those belong in ADRs and `ARCHITECTURE.md`.
 
 | Kind of rule | Home |
 |---|---|
@@ -19,8 +20,8 @@ A rule earns its place only if a model would get it wrong without it.
 | Roles, decision rights, workflow | `docs/company/operating-model.md` |
 | Specific to one lead | `.claude/agents/<lead>.md` |
 | A repeatable step-by-step procedure | a skill in `.claude/skills/` |
-| Branch, commit, PR conventions | `CONTRIBUTING.md`, `.github/pull_request_template.md` |
-| Can be checked by a machine | a check (`make check`, test, CI) — preferred over prose |
+| Branch, commit, PR conventions | `docs/company/git-workflow.md` (public mirror: `CONTRIBUTING.md`), `.github/pull_request_template.md` |
+| Can be checked by a machine | a check (test, the project's check command, CI) — preferred over prose |
 
 Prefer one home plus short references over copying the rule.
 
