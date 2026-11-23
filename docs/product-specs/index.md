@@ -11,6 +11,6 @@ The **source of truth for what Setlist does.** One file per functional area, des
 
 | Spec | Area | Status |
 |---|---|---|
-| — | No specs yet — they will be written when the MVP (M1) is defined | — |
+| [hello-page.md](hello-page.md) | Hello page — static sample view (harness trial, throwaway) | draft |
 
 Statuses: `draft` (being written) · `approved` (CEO agreed) · `implemented` (matches the app).
