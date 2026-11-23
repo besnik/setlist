@@ -18,7 +18,7 @@ Before building the product, set up the system for agentic development: rules, r
 | T-006 | Cost tracking per feature (`docs/plan/costs/`); agents ignore attribution text the environment appends | — | done | [#6](https://github.com/besnik/setlist/pull/6) |
 | T-007 | Harness improvements from the hello-page trial: feature modes, PR timing, git workflow doc, spec template, QA levels, delegation rule, lean test base, technology-neutral harness | — | done | [#7](https://github.com/besnik/setlist/pull/7) |
 | T-008 | Move technology-specific golden principles (no build step, ES modules) to ARCHITECTURE.md | — | done | [#8](https://github.com/besnik/setlist/pull/8) |
-| T-009 | Open trial PRs as drafts; CI check against merging trial branches noted for M1 | — | done | PRLINK |
+| T-009 | Open trial PRs as drafts; CI check against merging trial branches noted for M1 | — | done | [#9](https://github.com/besnik/setlist/pull/9) |
 
 ## Out of scope
 
