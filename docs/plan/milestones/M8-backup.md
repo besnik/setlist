@@ -12,8 +12,8 @@ Export a backup on the laptop, import it on the phone: all songs and setlists ar
 
 ## Scope
 
-- Export all songs and setlists into one file (JSON) the user saves.
-- Import such a file, validated before use; what happens to existing data is specified with the feature.
+- Analyzed as a whole once setlists exist (CEO decision): export of one song, of all songs and of setlists, and the matching import.
+- Files validated before use; what happens to existing data on import is specified with the feature.
 
 ## Out of scope
 

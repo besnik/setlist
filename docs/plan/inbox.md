@@ -13,3 +13,4 @@ Raw ideas go here — one line each, no filtering. The GM or Product lead turns 
 - Linter and formatter for the code (a new development dependency — CEO decision).
 - User guide screenshots generated automatically by Playwright, so they stay current.
 - Signpost page at the root of the website (links to the app and the guide).
+- Fuzzy search: tolerate typos and approximate matches (e.g. Levenshtein distance), on top of the accent-insensitive search from M1.

@@ -15,7 +15,6 @@ Paste a song from the web into a new song, close the app, open it again: the son
 - Add and edit a song: title (required), artist, key, text with chords (in the format from M4); delete with confirmation.
 - Permanent storage on the device (likely IndexedDB — own ADR), validated when read; ask the browser for persistent storage (`navigator.storage.persist()`).
 - Known limit to explain to users: on iPhone, the app added to the Home Screen has storage separate from Safari tabs — songs entered in Safari do not appear in the installed app.
-- Before M5 starts: decide the origin (custom domain or not, see [ADR 0005](../../decisions/0005-dev-tooling-tests-and-deployment.md)).
 - Sample songs only on the very first start.
 
 ## Out of scope
