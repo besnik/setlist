@@ -1,7 +1,7 @@
 # MVP plan
 
 - **Description:** MVP split into milestones M1–M8 (+ M9 user guide after the MVP), ADR 0004 (tech stack and architecture), ADR 0005 (tooling, tests, CI, deployment), architecture, M1 specs and tasks, prototype reference.
-- **PR:** see the roadmap commit on `main`
+- **PR:** [#14](https://github.com/besnik/setlist/pull/14)
 - **Date:** 2026-11-24
 
 ## Lead runs
