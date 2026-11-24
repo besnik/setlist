@@ -1,0 +1,21 @@
+{
+  "name": "setlist",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Development commands for Setlist. The app itself has no build step and no runtime dependencies.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node tools/serve.js",
+    "check": "node tools/check.js",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "node --test --test-reporter=dot \"tests/app/unit/**/*.test.js\" \"tests/tools/**/*.test.js\"",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0"
+  }
+}

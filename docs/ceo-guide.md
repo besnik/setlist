@@ -35,6 +35,16 @@ Built-in Claude Code commands you can also ask for: `/code-review` (find bugs in
 
 Planned skills (when there is code): `implement-task`, `fix-bug`, `cleanup` — see `docs/plan/inbox.md`.
 
+## Running the app on your computer
+
+Needs [Node.js](https://nodejs.org) 22 or newer. In the repository folder, once: `npm install`. Then:
+
+| Command | What it does |
+|---|---|
+| `npm start` | Runs the app at `http://localhost:8080/setlist/app/`; it also prints an address for your phone in the same Wi-Fi |
+| `npm test` | Runs all tests |
+| `npm run check` | Checks the project rules |
+
 ## Small and big features
 
 The GM proposes a mode at the start; you confirm it.
