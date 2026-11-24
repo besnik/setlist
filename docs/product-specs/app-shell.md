@@ -1,6 +1,6 @@
 # App shell
 
-- **Status:** approved (UX and visual design follow in T-012)
+- **Status:** approved
 
 <!-- Based on the CEO's prototype — see docs/design/prototype-reference.md. -->
 
@@ -39,7 +39,32 @@ A bottom tab bar Songs / Setlists arrives with setlists. Before that the app has
 
 ## UX and visual design
 
-To be written in task T-012 (design foundation), based on the [prototype reference](../design/prototype-reference.md).
+Tokens and components: [design guidelines](../design/guidelines.md).
+
+**Page**
+
+- Page background `--color-bg`. Text uses `--font-body` with the `body` step in `--color-ink`.
+- The page declares `color-scheme: light dark`.
+- Light and dark values switch with `prefers-color-scheme`, so a change in the system setting applies right away, without a reload.
+- `<meta name="theme-color">` is set once per theme (media query) to `--color-bg`, so the browser's own bar matches.
+- Fonts: four self-hosted WOFF2 files (see the guidelines), `font-display: swap`. The page is readable in the fallback fonts before they load.
+
+**Column**
+
+```
+phone (320–599 px)                     tablet / desktop (≥ 600 px)
+┌────────────────────┐                 ┌──────────────────────────────────────────┐
+│16│  content    │16 │                 │        │  content, max 720 px  │        │
+│  │  column     │   │                 │  auto  │  24 px gutter inside  │  auto  │
+└────────────────────┘                 └──────────────────────────────────────────┘
+```
+
+- One column, `max-width: var(--content-max)` (720 px), centered with automatic side margins.
+- Side gutter `--gutter`: 16 px below 600 px, 24 px from 600 px.
+- Top and bottom padding `--space-5` (24 px).
+- The page scrolls vertically only. Every flex or grid child that holds text has `min-width: 0`, and long words wrap or ellipsize, so nothing widens the page.
+- No `viewport-fit=cover` in M1: on phones with a notch in landscape the browser keeps the content inside the safe area by itself.
+- No top app bar and no navigation in M1. The screen heading is the top of the page; the tab bar comes in M6.
 
 ## Out of scope
 
