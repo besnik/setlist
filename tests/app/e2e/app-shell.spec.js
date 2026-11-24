@@ -56,3 +56,39 @@ test('a wide screen shows one centered 720 px column', async ({ page }) => {
   expect(box.width).toBe(720);
   expect(box.x).toBe((1280 - 720) / 2);
 });
+
+// Rule (UX, Column): side gutter --gutter is 16 px below 600 px and 24 px from 600 px.
+test('the side gutter is 16 px on phones and 24 px from 600 px', async ({ page }) => {
+  const gutter = () => page.locator('#app').evaluate((app) => getComputedStyle(app).paddingLeft);
+  await page.setViewportSize({ width: 599, height: 800 });
+  await page.goto('./');
+  expect(await gutter()).toBe('16px');
+
+  await page.setViewportSize({ width: 600, height: 800 });
+  expect(await gutter()).toBe('24px');
+});
+
+// Rule (design guidelines, Fonts): every font file covers Latin Extended letters such as č, ľ, ň.
+// A glyph the font has renders the same width whatever the fallback font is.
+test('the fonts include Central European letters', async ({ page }) => {
+  await page.goto('./');
+  const missing = await page.evaluate(async () => {
+    const fonts = [['Bricolage Grotesque', 700], ['DM Sans', 400], ['DM Sans', 600], ['JetBrains Mono', 700]];
+    await Promise.all(fonts.map(([family, weight]) => document.fonts.load(`${weight} 40px "${family}"`, 'č')));
+    const context = document.createElement('canvas').getContext('2d');
+    const width = (font, text) => {
+      context.font = font;
+      return context.measureText(text).width;
+    };
+    const result = [];
+    for (const [family, weight] of fonts) {
+      for (const letter of 'čďľĺňŕšťžýôäČĽŠŽőłęś') {
+        const serif = width(`${weight} 40px "${family}", serif`, letter);
+        const mono = width(`${weight} 40px "${family}", monospace`, letter);
+        if (serif !== mono) result.push(`${family} ${weight}: ${letter}`);
+      }
+    }
+    return result;
+  });
+  expect(missing).toEqual([]);
+});

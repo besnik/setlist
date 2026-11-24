@@ -10,7 +10,7 @@
 // 4. Layers inside app/src: main.js → ui → data → domain. A layer imports only
 //    itself and layers to its right.
 // 5. HTML and CSS load only files of their own part, by relative path: <script src>,
-//    <link href>, <img src>, <source src>, CSS url() and @import (nothing from other
+//    <link href>, src of media and frames, CSS url() and @import (nothing from other
 //    websites, no root paths that break under /setlist/app/).
 
 import { readdirSync, readFileSync, statSync } from 'node:fs';
@@ -107,7 +107,8 @@ export function importProblems(path, source, exists) {
 
 /**
  * Lists the files an HTML or CSS file loads: <script src>, <link href> (except
- * rel=canonical, which loads nothing), <img>/<source> src, CSS url() and @import.
+ * rel=canonical, which loads nothing), src of <img>, <source>, <video>, <audio>,
+ * <iframe> and <embed>, CSS url() and @import (in .css files and <style> blocks).
  * Inline data: URLs and fragment-only references are left out.
  * @param {string} path repository-relative path ending in .html or .css
  * @param {string} source file content
@@ -115,17 +116,20 @@ export function importProblems(path, source, exists) {
  */
 export function assetReferencesOf(path, source) {
   const references = [];
-  if (path.endsWith('.html')) {
+  const isHtml = path.endsWith('.html');
+  // In HTML, only inline <style> blocks hold CSS; comments are left out.
+  let css = source;
+  if (isHtml) {
     const html = source.replace(/<!--[\s\S]*?-->/g, '');
-    for (const [tag, name] of html.matchAll(/<(script|link|img|source)\b[^>]*>/gi)) {
+    css = [...html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].map((match) => match[1]).join('\n');
+    for (const [tag, name] of html.matchAll(/<(script|link|img|source|video|audio|iframe|embed)\b[^>]*>/gi)) {
       if (/\brel\s*=\s*["']?canonical\b/i.test(tag)) continue;
       const attribute = name.toLowerCase() === 'link' ? 'href' : 'src';
       const match = new RegExp(`\\b${attribute}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s>]+))`, 'i').exec(tag);
       if (match) references.push(match[1] ?? match[2] ?? match[3]);
     }
   }
-  // CSS: in .css files and in inline <style> blocks of HTML.
-  const css = source.replace(/\/\*[\s\S]*?\*\//g, '');
+  css = css.replace(/\/\*[\s\S]*?\*\//g, '');
   for (const match of css.matchAll(/url\(\s*(?:"([^"]*)"|'([^']*)'|([^)\s]*))\s*\)|@import\s+(?:"([^"]*)"|'([^']*)')/gi)) {
     references.push(match.slice(1).find((value) => value !== undefined));
   }

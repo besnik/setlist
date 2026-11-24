@@ -49,7 +49,7 @@ test('parts are isolated', () => {
 test('HTML and CSS references are found', () => {
   const html = `<link rel="stylesheet" href="styles/a.css"><script type="module" src='src/main.js'></script>
 <link rel="canonical" href="app/"><img src=icon.png><!-- <script src="old.js"></script> -->
-<style>body { background: url("bg.png"); }</style>`;
+<style>body { background: url("bg.png"); }</style><p>Text with url(not-loaded.png)</p>`;
   assert.deepEqual(assetReferencesOf('app/index.html', html), ['styles/a.css', 'src/main.js', 'icon.png', 'bg.png']);
   const css = `@import "b.css";\n@font-face { src: url(../assets/f.woff2) format("woff2"); }\n.x { background: url('data:image/png;base64,AA'); }\n/* url(old.png) */`;
   assert.deepEqual(assetReferencesOf('app/styles/a.css', css), ['b.css', '../assets/f.woff2']);
