@@ -1,10 +1,11 @@
 // Song list order and search (product spec songs.md, "Song list" and "Search"),
-// the song count label, and the sample songs from the repository.
+// the song count label, the sample songs from the repository and the song row markup.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { searchSongs, songCountLabel, sortSongs } from '../../../app/src/domain/songs.js';
 import { listSongs } from '../../../app/src/data/song-repository.js';
+import { songList } from '../../../app/src/ui/songs-view.js';
 
 const song = (title, artist = '', key = '', id = title) => ({ id, title, artist, key, text: '' });
 const titles = (songs) => songs.map((s) => s.title);
@@ -64,4 +65,13 @@ test('the repository returns the four sample songs', async () => {
   for (const s of songs) assert.ok(s.id && s.text.length > 0, `${s.title} has an id and text`);
   songs[0].title = 'changed';
   assert.notEqual((await listSongs())[0].title, 'changed', 'callers get copies');
+});
+
+// Rule (Song list): the artist reads "Unknown artist" when empty; without a key the row has no chip.
+// Song data is escaped (ADR 0004).
+test('a row without artist or key shows "Unknown artist" and no chip; song data is escaped', () => {
+  const markup = String(songList([song('<b>Tom & Jerry</b>')]));
+  assert.match(markup, /Unknown artist/);
+  assert.doesNotMatch(markup, /key-chip/);
+  assert.match(markup, /&lt;b&gt;Tom &amp; Jerry&lt;\/b&gt;/);
 });
