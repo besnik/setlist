@@ -9,6 +9,9 @@
 // 3. The app imports only relative paths to existing files (no packages, no CDN).
 // 4. Layers inside app/src: main.js → ui → data → domain. A layer imports only
 //    itself and layers to its right.
+// 5. HTML and CSS load only files of their own part, by relative path: <script src>,
+//    <link href>, src of media and frames, CSS url() and @import (nothing from other
+//    websites, no root paths that break under /setlist/app/).
 
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, posix, relative, resolve } from 'node:path';
@@ -102,6 +105,64 @@ export function importProblems(path, source, exists) {
   return problems;
 }
 
+/**
+ * Lists the files an HTML or CSS file loads: <script src>, <link href> (except
+ * rel=canonical, which loads nothing), src of <img>, <source>, <video>, <audio>,
+ * <iframe> and <embed>, CSS url() and @import (in .css files and <style> blocks).
+ * Inline data: URLs and fragment-only references are left out.
+ * @param {string} path repository-relative path ending in .html or .css
+ * @param {string} source file content
+ * @returns {string[]}
+ */
+export function assetReferencesOf(path, source) {
+  const references = [];
+  const isHtml = path.endsWith('.html');
+  // In HTML, only inline <style> blocks hold CSS; comments are left out.
+  let css = source;
+  if (isHtml) {
+    const html = source.replace(/<!--[\s\S]*?-->/g, '');
+    css = [...html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].map((match) => match[1]).join('\n');
+    for (const [tag, name] of html.matchAll(/<(script|link|img|source|video|audio|iframe|embed)\b[^>]*>/gi)) {
+      if (/\brel\s*=\s*["']?canonical\b/i.test(tag)) continue;
+      const attribute = name.toLowerCase() === 'link' ? 'href' : 'src';
+      const match = new RegExp(`\\b${attribute}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s>]+))`, 'i').exec(tag);
+      if (match) references.push(match[1] ?? match[2] ?? match[3]);
+    }
+  }
+  css = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  for (const match of css.matchAll(/url\(\s*(?:"([^"]*)"|'([^']*)'|([^)\s]*))\s*\)|@import\s+(?:"([^"]*)"|'([^']*)')/gi)) {
+    references.push(match.slice(1).find((value) => value !== undefined));
+  }
+  return references.filter((reference) => reference && !reference.startsWith('data:') && !reference.startsWith('#'));
+}
+
+/**
+ * Checks the files an HTML or CSS file loads against rule 5.
+ * @param {string} path repository-relative path with forward slashes
+ * @param {string} source file content
+ * @param {(path: string) => boolean} exists whether a repository-relative file exists
+ * @returns {string[]} problem messages
+ */
+export function assetProblems(path, source, exists) {
+  const part = path.split('/')[0];
+  if (!['app', 'site'].includes(part)) return [];
+  const problems = [];
+  for (const reference of assetReferencesOf(path, source)) {
+    const where = `${path}: loads '${reference}'`;
+    if (/^([a-z][a-z0-9+.-]*:|\/)/i.test(reference)) {
+      problems.push(`${where} — load only the part's own files by relative path ('styles/x.css', '../assets/x.woff2'). Nothing comes from other websites, and a root path ('/x') breaks under /setlist/app/ (see ARCHITECTURE.md, "Technical constraints").`);
+      continue;
+    }
+    const target = posix.normalize(posix.join(posix.dirname(path), reference.split(/[?#]/)[0]));
+    if (target.split('/')[0] !== part) {
+      problems.push(`${where} from another part. Parts are isolated: copy the file into ${part}/ (see ARCHITECTURE.md, "Repository layout").`);
+    } else if (!exists(target)) {
+      problems.push(`${where}, but ${target} does not exist. Fix the path (relative to ${path}).`);
+    }
+  }
+  return problems;
+}
+
 /** Repository-relative paths (forward slashes) of all source files to check. */
 function sourceFiles(dir = ROOT) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -119,7 +180,8 @@ function main() {
   const problems = files.flatMap((path) => {
     const source = readFileSync(join(ROOT, path), 'utf8');
     const header = headerProblem(path, source);
-    return [...(header ? [header] : []), ...(path.endsWith('.js') ? importProblems(path, source, exists) : [])];
+    const references = path.endsWith('.js') ? importProblems(path, source, exists) : assetProblems(path, source, exists);
+    return [...(header ? [header] : []), ...references];
   });
 
   if (problems.length) {

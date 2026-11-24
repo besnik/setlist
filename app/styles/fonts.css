@@ -1,0 +1,35 @@
+/* Self-hosted fonts (design guidelines, "Fonts"). The app loads nothing from other
+   websites; font-display: swap keeps text readable in the fallback font while a
+   file loads. How the files were made: app/assets/fonts/README.md. */
+
+@font-face {
+  font-family: "Bricolage Grotesque";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/bricolage-grotesque-700.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "DM Sans";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/dm-sans-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "DM Sans";
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/dm-sans-600.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/jetbrains-mono-700.woff2") format("woff2");
+}

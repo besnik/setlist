@@ -4,4 +4,4 @@ Known shortcuts, workarounds and issues we chose to fix later. Add an entry when
 
 | Area | Debt | Why it exists | Added |
 |---|---|---|---|
-| Check (`tools/check.js`) | The "nothing from other websites" rule is checked only in JavaScript imports, not in HTML (`<script src>`, `<link href>`) or CSS (`@import`, `url()`) | No HTML or CSS references existed yet in T-013; add the check with the app shell (T-015) | 2026-11-24 |
+| Check (`tools/check.js`) | Rule 5 (files loaded by HTML and CSS) does not read `srcset` or imports inside inline `<script>` blocks | Neither is used yet; add when the first responsive image or inline module appears | 2026-11-24 |
