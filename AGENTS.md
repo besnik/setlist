@@ -85,6 +85,7 @@ Always cover these three things, but choose short Slovak headings that fit the c
 1. **What changed** — with a link to the PR (e.g. *Čo som vytvoril*, *Čo som opravil*).
 2. **What the GM or leads decided on their own** (e.g. *Čo som rozhodol sám*).
 3. **What is needed from the CEO** — keep **decisions** (open questions, each with a recommendation; e.g. *Na rozhodnutie*) separate from **actions** (things only the CEO can do, such as merging or changing settings; e.g. *Čo treba urobiť*).
+4. **Next step and where to do it** — when proposing the next step, recommend a **new session** (for a new task or topic: a long session makes every message more expensive, and the repository holds the state) or **this session** (only for review comments on its own open PR or a short follow-up). Give a ready-to-paste opener, e.g. *„Pokračuj v M1: začni T-015.“*
 
 ## Environment notes
 
