@@ -38,7 +38,8 @@ const CONTENT_TYPES = {
 
 /** Maps a URL path to a file inside its mounted folder, or returns null when it is outside. */
 function fileFor(urlPath) {
-  const mount = MOUNTS.find(([prefix]) => urlPath.startsWith(prefix));
+  // `${urlPath}/` also matches a mounted folder without its slash (`/setlist/app`).
+  const mount = MOUNTS.find(([prefix]) => `${urlPath}/`.startsWith(prefix));
   if (!mount) return null;
   const [prefix, dir] = mount;
   const file = resolve(dir, decodeURIComponent(urlPath.slice(prefix.length)));
@@ -55,17 +56,23 @@ async function handle(req, res) {
     return;
   }
 
-  // The server root leads to the website; like GitHub Pages, a folder without
-  // its trailing slash redirects to the folder. (site/ itself redirects to the app.)
-  const redirect = { '/': SITE_PATH, '/setlist': SITE_PATH, '/setlist/app': APP_PATH }[pathname];
-  if (redirect) {
-    res.writeHead(302, { Location: redirect }).end();
+  // The server root leads to the website (site/ itself redirects to the app).
+  if (pathname === '/' || pathname === '/setlist') {
+    res.writeHead(302, { Location: SITE_PATH }).end();
     return;
   }
 
   try {
     let file = fileFor(pathname);
-    if (file && (await stat(file)).isDirectory()) file = join(file, 'index.html');
+    if (file && (await stat(file)).isDirectory()) {
+      // Like GitHub Pages: a folder without its trailing slash redirects to the
+      // folder, so relative URLs on its page resolve inside it.
+      if (!pathname.endsWith('/')) {
+        res.writeHead(302, { Location: `${pathname}/` }).end();
+        return;
+      }
+      file = join(file, 'index.html');
+    }
     // Like GitHub Pages: a file name followed by a slash is not found.
     else if (pathname.endsWith('/')) file = null;
     if (!file) throw new Error('outside the website');

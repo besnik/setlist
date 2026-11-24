@@ -13,7 +13,9 @@
 | T-012 design foundation | design-lead | Opus 5.5 | 41,805 | 3:17 | 30 | guidelines, tokens, components, UX sections of both specs |
 | T-012 light QA | qa-lead | Opus 5.5 | 85,096 | 1:02 | 8 | 0 blocking, 10 other — 8 fixed by the GM, 1 raised to the CEO (song count during search), 1 placeholder |
 | T-013 light QA | qa-lead | Opus 5.5 | 95,352 | 4:31 | 14 | 1 blocking (malformed request crashed the dev server), 4 other — 3 fixed, 1 recorded as tech debt; added `tests/tools/serve.test.js` |
-| **Total so far** | | | **241,470** | **9:21** | **70** | |
+| T-014 deployment to GitHub Pages | GM | n/a | n/a | n/a | n/a | not measured |
+| T-014 light QA | qa-lead | Opus 5.5 | 88,843 | 1:00 | 5 | 0 blocking, 3 other — newer action versions and folder redirects in the dev server fixed, 1 note for the PR description |
+| **Total so far** | | | **330,313** | **10:21** | **75** | |
 
 ## What drove cost
 
