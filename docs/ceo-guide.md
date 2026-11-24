@@ -45,6 +45,10 @@ Needs [Node.js](https://nodejs.org) 22 or newer. In the repository folder, once:
 | `npm test` | Runs all tests |
 | `npm run check` | Checks the project rules |
 
+## Trying the app on your phone
+
+Every merge to `main` is published to **https://besnik.github.io/setlist/app/** a few minutes later (tab *Actions* → workflow *Deploy* shows the progress). There are no previews of pull requests: try a change after merging it, or on your home network with `npm start`.
+
 ## Small and big features
 
 The GM proposes a mode at the start; you confirm it.
