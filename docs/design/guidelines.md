@@ -25,7 +25,7 @@ There are two kinds of screens with different rules:
 
 ## Tokens (provisional)
 
-Tokens are CSS custom properties defined once in the app's styles. Components use tokens, never raw values.
+Tokens are CSS custom properties defined once in the app's styles. Colors, type, spacing and radius in components use tokens; small fixed sizes (1–2 px borders, a component's height) may be raw values. A token that no M1 screen uses (marked *from M3/M5*) is added to the CSS only when its screen is built.
 
 ### Color
 
@@ -96,7 +96,7 @@ Type scale. Each step is a set of size, weight and line-height tokens, e.g. `--t
 | `--radius-dialog` | 20 px | Dialogs (from M5) |
 | `--radius-pill` | 999 px | Pill buttons (from M5) |
 | `--touch-min` | 44 px | Minimum touch target on browse screens |
-| `--touch-stage` | 56 px | Minimum key control on stage screens |
+| `--touch-stage` | 56 px | Minimum key control on stage screens (from M3) |
 | `--content-max` | 720 px | Max width of the content column |
 | `--gutter` | 16 px (< 600 px), 24 px (≥ 600 px) | Space between the column and the screen edge |
 
@@ -113,6 +113,7 @@ Type scale. Each step is a set of size, weight and line-height tokens, e.g. `--t
 | JetBrains Mono | 700 | `chip` (and later the bold chord lines, so the same file is reused) |
 
 - Later: JetBrains Mono 400 for song text (M3), if song text uses mono. Add a file only when a screen needs it.
+- The fonts are under the SIL Open Font License: its license file ships next to the font files.
 - Subset: Latin and Latin Extended (Central European letters such as č, ľ, ň). Glyphs a font does not have fall back to the system font.
 
 ## Components (M1)
@@ -120,7 +121,7 @@ Type scale. Each step is a set of size, weight and line-height tokens, e.g. `--t
 ### Page header
 
 - The screen heading (`title`, `--color-ink`), with the count line below it (`small`, `--color-muted`) and a `--space-1` gap between them, e.g. "4 songs" or "1 song".
-- Left-aligned in the column, with `--space-5` above it.
+- Left-aligned in the column, directly at the top of the page (the page's top padding gives the space above it).
 - There is no top app bar: the heading is the top of the screen.
 
 ### Search field
@@ -130,7 +131,7 @@ Type scale. Each step is a set of size, weight and line-height tokens, e.g. `--t
 - **States:**
   - **Empty:** shows the placeholder.
   - **Filled:** shows the text and the browser's built-in clear button, if the browser has one.
-  - **Focus:** 2 px `--color-accent` outline, offset 0, replacing the border color.
+  - **Focus:** the border turns `--color-accent` and a 2 px `--color-accent` outline (offset 0) is added around it.
 - No icon and no custom clear button in M1.
 
 ### Song row
@@ -142,13 +143,13 @@ Type scale. Each step is a set of size, weight and line-height tokens, e.g. `--t
 └──────────────────────────────────────┘   chip: vertically centered
 ```
 
-- **Box:** `--color-surface` background, `--radius-card`, no border, min height 64 px, padding `--space-3` `--space-4`. Rows are separated by a `--space-2` gap.
+- **Box:** `--color-surface` background, `--radius-card`, no border, no fixed height (about 66 px with one-line title and artist), padding `--space-3` `--space-4`. Rows are separated by a `--space-2` gap.
 - **Layout:** two columns. The text column takes the remaining width (`min-width: 0`, so the ellipsis works). The chip column has its natural width, never shrinks, and has a `--space-3` gap before it.
 - **Title and artist:**
   - The title uses `row` in `--color-ink`.
   - The artist uses `small` in `--color-muted`, 2 px below the title, and reads "Unknown artist" when empty.
   - Both stay on one line (`white-space: nowrap; overflow: hidden; text-overflow: ellipsis`).
-- **Key chip:** `chip` in `--color-chord` on `--color-tint`, padding 4 px 8 px, `--radius-chip`. It is left out when the song has no key.
+- **Key chip:** `chip` in `--color-chord` on `--color-tint`, padding `--space-1` `--space-2`, `--radius-chip`. It is left out when the song has no key.
 - **States in M1:** only the default state. Rows are not interactive: no hover, press or pointer cursor. Those arrive with *Song view* (M3).
 
 ### Empty state

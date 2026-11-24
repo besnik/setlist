@@ -46,7 +46,7 @@ Tokens and components: [design guidelines](../design/guidelines.md).
 - Page background `--color-bg`. Text uses `--font-body` with the `body` step in `--color-ink`.
 - The page declares `color-scheme: light dark`.
 - Light and dark values switch with `prefers-color-scheme`, so a change in the system setting applies right away, without a reload.
-- `<meta name="theme-color">` is set once per theme (media query) to `--color-bg`, so the browser's own bar matches.
+- `<meta name="theme-color">` is set once per theme (two meta tags with a `media` attribute) to the hex value of `--color-bg` — a meta tag cannot use `var()` — so the browser's own bar matches.
 - Fonts: four self-hosted WOFF2 files (see the guidelines), `font-display: swap`. The page is readable in the fallback fonts before they load.
 
 **Column**
@@ -59,7 +59,7 @@ phone (320–599 px)                     tablet / desktop (≥ 600 px)
 └────────────────────┘                 └──────────────────────────────────────────┘
 ```
 
-- One column, `max-width: var(--content-max)` (720 px), centered with automatic side margins.
+- One column, `max-width: var(--content-max)` (720 px, the outer width including the gutters, `box-sizing: border-box`), centered with automatic side margins.
 - Side gutter `--gutter`: 16 px below 600 px, 24 px from 600 px.
 - Top and bottom padding `--space-5` (24 px).
 - The page scrolls vertically only. Every flex or grid child that holds text has `min-width: 0`, and long words wrap or ellipsize, so nothing widens the page.

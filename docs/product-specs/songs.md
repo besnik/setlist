@@ -54,7 +54,7 @@ Phone, 320 px wide (288 px column):
 │ └────────────────────────────┘ │
 │                                │  16 px
 │ ┌────────────────────────────┐ │
-│ │ Amazing Grace         ┌─┐  │ │  song row, min 64 px high
+│ │ Amazing Grace         ┌─┐  │ │  song row, about 66 px high
 │ │ Traditional           │G│  │ │
 │ └───────────────────────└─┘──┘ │
 │ ┌────────────────────────────┐ │  8 px gap
