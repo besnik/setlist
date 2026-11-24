@@ -21,3 +21,5 @@ Important decisions are recorded here as short **ADRs** (Architecture Decision R
 | [0001](0001-agentic-operating-model.md) | Agentic operating model and repository harness | accepted (planning part superseded by 0002) |
 | [0002](0002-knowledge-base-and-planning.md) | Repository knowledge base and lightweight planning | accepted |
 | [0003](0003-throwaway-prototypes.md) | Throwaway prototypes outside the harness | accepted |
+| [0004](0004-tech-stack-and-architecture.md) | Tech stack and architecture of the app | accepted |
+| [0005](0005-dev-tooling-tests-and-deployment.md) | Development tooling, tests, CI and deployment | accepted |
