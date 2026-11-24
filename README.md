@@ -3,7 +3,7 @@
 **Setlist and songbook app for guitarists and musicians.**
 Add your songs, create setlists and start your gig — even offline.
 
-> **Status:** early development. Nothing to install yet — follow the repository to see it grow.
+> **Status:** early development — **[try the live preview](https://besnik.github.io/setlist/app/)**. Today it lists a few sample songs with search; adding your own songs, setlists and offline use are coming next.
 
 ## Why Setlist?
 
