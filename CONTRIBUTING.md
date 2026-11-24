@@ -49,6 +49,7 @@ Why: the type tells at a glance whether a change affects users, and enables auto
 - Work is planned in [docs/plan/](docs/plan/) (roadmap, milestones, tasks).
 - Code structure: [ARCHITECTURE.md](ARCHITECTURE.md); coding rules: [docs/golden-principles.md](docs/golden-principles.md).
 - Important decisions are recorded in [docs/decisions/](docs/decisions/).
+- Never commit secrets (passwords, tokens, keys, certificates, `.env` files) — see [SECURITY.md](SECURITY.md).
 
 ## License
 
