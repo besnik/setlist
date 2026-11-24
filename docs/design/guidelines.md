@@ -102,7 +102,7 @@ Type scale. Each step is a set of size, weight and line-height tokens, e.g. `--t
 
 ## Fonts
 
-- Served by the app as **WOFF2** files from `app/assets/` and loaded with `@font-face` (`font-display: swap`). Nothing comes from Google Fonts or another site.
+- Served by the app as **WOFF2** files from `app/assets/fonts/` (how they were made: its README) and loaded with `@font-face` (`font-display: swap`). Nothing comes from Google Fonts or another site.
 - Only the files that screens use. In M1 there are four, with no italics:
 
 | Family | Weight | Used for |

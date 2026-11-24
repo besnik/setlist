@@ -22,8 +22,8 @@ app/                  the PWA — published at /setlist/app/
     data/             storage and seed data — the only code that touches storage
     ui/               views (screens), components, router
     main.js           start-up: wires the layers together
-  styles/             design tokens and styles
-  assets/             fonts, icons
+  styles/             design tokens (tokens.css), fonts (fonts.css), base styles (base.css)
+  assets/             fonts (assets/fonts/), icons
 tests/app/unit/       unit tests (domain logic)
 tests/app/e2e/        end-to-end tests (browser)
 tests/tools/          tests of the development tools
@@ -70,4 +70,4 @@ Each part of the app, its technology and how to run its tests (golden principle 
 | `tools/` | Node.js scripts (development only) | `tests/tools` (`node --test`) | `npm run test:unit` |
 | **All** | | | `npm test` |
 
-Other commands: `npm start` (dev server at `http://localhost:8080/setlist/app/`, with `site/` at `/setlist/`, also reachable from phones in the same network), `npm run check` (project rules: layer and part imports, file header comments). First run `npm install` once (Node.js 22 or newer).
+Other commands: `npm start` (dev server at `http://localhost:8080/setlist/app/`, with `site/` at `/setlist/`, also reachable from phones in the same network), `npm run check` (project rules: layer and part imports, files loaded by HTML and CSS, file header comments). First run `npm install` once (Node.js 22 or newer).

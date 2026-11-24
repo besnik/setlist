@@ -1,10 +1,18 @@
 <!doctype html>
-<!-- Entry page of the Setlist app. The real app shell (tokens, fonts, theme) comes in T-015. -->
+<!-- Entry page of the Setlist app: the app shell (product spec app-shell.md).
+     Styles and fonts come with the app; the screens are rendered by src/main.js. -->
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <!-- The browser's own bar matches --color-bg; a meta tag cannot use var(), so keep in sync with styles/tokens.css. -->
+    <meta name="theme-color" content="#f3f4f6" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0e1013" media="(prefers-color-scheme: dark)">
     <title>Setlist</title>
+    <link rel="stylesheet" href="styles/fonts.css">
+    <link rel="stylesheet" href="styles/tokens.css">
+    <link rel="stylesheet" href="styles/base.css">
     <script type="module" src="src/main.js"></script>
   </head>
   <body>

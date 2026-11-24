@@ -1,0 +1,49 @@
+/* Base styles of the app shell (product spec app-shell.md, "UX and visual design"):
+   the page, the centered content column and default text. Screen and component
+   styles build on these. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Keep the chosen font sizes when a phone turns to landscape. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-body-size);
+  font-weight: var(--text-body-weight);
+  line-height: var(--text-body-leading);
+  /* Long words (URLs, chord runs) wrap instead of widening the page. */
+  overflow-wrap: break-word;
+}
+
+/* The single content column: at most 720 px including the gutters, centered. */
+#app {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-5) var(--gutter);
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-title-size);
+  font-weight: var(--text-title-weight);
+  line-height: var(--text-title-leading);
+}
+
+/* Inputs inherit the page font; 16 px or larger, so iPhone Safari does not zoom on focus. */
+input,
+button {
+  font: inherit;
+  color: inherit;
+}

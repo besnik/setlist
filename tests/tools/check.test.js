@@ -1,9 +1,10 @@
 // Unit tests of the project check (tools/check.js): the rules in ARCHITECTURE.md
-// that the check enforces — header comments, part isolation and app layers.
+// that the check enforces — header comments, part isolation, app layers and the
+// files HTML and CSS load.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { headerProblem, importProblems, importsOf } from '../../tools/check.js';
+import { assetProblems, assetReferencesOf, headerProblem, importProblems, importsOf } from '../../tools/check.js';
 
 const all = () => true;
 
@@ -42,4 +43,24 @@ test('parts are isolated', () => {
   assert.match(importProblems('tools/x.js', `import x from '../app/src/domain/song.js';`, all)[0], /another part/);
   assert.match(importProblems('app/src/ui/a.js', `import x from '../../../tools/serve.js';`, all)[0], /another part/);
   assert.deepEqual(importProblems('tests/app/unit/a.test.js', `import x from '../../../app/src/ui/a.js';`, all), []);
+});
+
+// Files loaded by HTML and CSS are found; canonical links, data: URLs and comments are not.
+test('HTML and CSS references are found', () => {
+  const html = `<link rel="stylesheet" href="styles/a.css"><script type="module" src='src/main.js'></script>
+<link rel="canonical" href="app/"><img src=icon.png><!-- <script src="old.js"></script> -->
+<style>body { background: url("bg.png"); }</style>`;
+  assert.deepEqual(assetReferencesOf('app/index.html', html), ['styles/a.css', 'src/main.js', 'icon.png', 'bg.png']);
+  const css = `@import "b.css";\n@font-face { src: url(../assets/f.woff2) format("woff2"); }\n.x { background: url('data:image/png;base64,AA'); }\n/* url(old.png) */`;
+  assert.deepEqual(assetReferencesOf('app/styles/a.css', css), ['b.css', '../assets/f.woff2']);
+});
+
+// Rule (app-shell.md, Start and address): the app loads nothing from other websites.
+test('HTML and CSS load only existing files of their own part', () => {
+  assert.deepEqual(assetProblems('app/styles/fonts.css', 'src: url("../assets/f.woff2");', all), []);
+  assert.match(assetProblems('app/index.html', '<link rel="stylesheet" href="https://fonts.googleapis.com/css2">', all)[0], /nothing comes from other websites/i);
+  assert.match(assetProblems('app/index.html', '<script src="//cdn.example/x.js"></script>', all)[0], /other websites/);
+  assert.match(assetProblems('app/index.html', '<script src="/src/main.js"></script>', all)[0], /root path/);
+  assert.match(assetProblems('app/styles/a.css', '@import "../../site/x.css";', all)[0], /another part/);
+  assert.match(assetProblems('app/styles/a.css', 'src: url(../assets/missing.woff2);', () => false)[0], /does not exist/);
 });
