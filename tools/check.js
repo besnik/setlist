@@ -10,9 +10,9 @@
 // 4. Layers inside app/src: main.js → ui → data → domain. A layer imports only
 //    itself and layers to its right.
 
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, posix, relative, resolve } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const SOURCE_EXTENSIONS = ['.js', '.css', '.html'];
@@ -113,7 +113,8 @@ function sourceFiles(dir = ROOT) {
 }
 
 function main() {
-  const exists = (path) => existsSync(join(ROOT, path));
+  // Only files count: browsers do not resolve a folder to its index file.
+  const exists = (path) => statSync(join(ROOT, path), { throwIfNoEntry: false })?.isFile() ?? false;
   const files = sourceFiles();
   const problems = files.flatMap((path) => {
     const source = readFileSync(join(ROOT, path), 'utf8');
@@ -129,4 +130,7 @@ function main() {
   console.log(`check: ${files.length} files OK.`);
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) main();
+// Run only when started as a script, not when imported by tests. Paths are compared
+// case-insensitively because Windows may report the drive letter in either case.
+const isScript = resolve(process.argv[1] ?? '').toLowerCase() === fileURLToPath(import.meta.url).toLowerCase();
+if (isScript) main();

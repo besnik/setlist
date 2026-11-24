@@ -38,7 +38,13 @@ function fileFor(urlPath) {
 }
 
 async function handle(req, res) {
-  const { pathname } = new URL(req.url, 'http://localhost');
+  let pathname;
+  try {
+    ({ pathname } = new URL(req.url, 'http://localhost'));
+  } catch {
+    res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' }).end('Bad request');
+    return;
+  }
 
   // The website root redirects to the app, like `site/` does in production.
   if (pathname === '/' || pathname === '/setlist' || pathname === '/setlist/' || pathname === '/setlist/app') {
@@ -49,6 +55,8 @@ async function handle(req, res) {
   try {
     let file = pathname.startsWith(APP_PATH) ? fileFor(pathname) : null;
     if (file && (await stat(file)).isDirectory()) file = join(file, 'index.html');
+    // Like GitHub Pages: a file name followed by a slash is not found.
+    else if (pathname.endsWith('/')) file = null;
     if (!file) throw new Error('outside the app');
     const body = await readFile(file);
     res.writeHead(200, {
