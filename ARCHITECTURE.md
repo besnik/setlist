@@ -26,6 +26,7 @@ app/                  the PWA — published at /setlist/app/
   assets/             fonts, icons
 tests/app/unit/       unit tests (domain logic)
 tests/app/e2e/        end-to-end tests (browser)
+tests/tools/          tests of the development tools
 site/                 root of the website — a redirect to the app today; later a signpost page
 tools/                development tools for the whole repository (dev server, check)
 docs/                 knowledge base (not deployed)
@@ -59,11 +60,12 @@ Storage and installed apps belong to the origin `https://besnik.github.io`; see 
 
 ## Parts and tests
 
-Each part of the app, its technology and how to run its tests (golden principle *A lean test base in the repository*). The commands are created in task T-013.
+Each part of the app, its technology and how to run its tests (golden principle *A lean test base in the repository*).
 
 | Part | Technology | Tests | Command |
 |---|---|---|---|
 | `app/` | HTML, CSS, JavaScript (ES modules) | `tests/app/unit` (`node --test`), `tests/app/e2e` (Playwright: Chromium; WebKit in CI) | `npm run test:unit`, `npm run test:e2e` |
+| `tools/` | Node.js scripts (development only) | `tests/tools` (`node --test`) | `npm run test:unit` |
 | **All** | | | `npm test` |
 
-Other commands: `npm start` (dev server), `npm run check` (project rules: layer and part imports, file header comments).
+Other commands: `npm start` (dev server at `http://localhost:8080/setlist/app/`, also reachable from phones in the same network), `npm run check` (project rules: layer and part imports, file header comments). First run `npm install` once (Node.js 22 or newer).

@@ -14,3 +14,8 @@ id_ed25519*
 # OS and editor clutter
 .DS_Store
 Thumbs.db
+
+# Development tools output
+node_modules/
+test-results/
+playwright-report/
