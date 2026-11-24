@@ -14,3 +14,4 @@ Raw ideas go here — one line each, no filtering. The GM or Product lead turns 
 - User guide screenshots generated automatically by Playwright, so they stay current.
 - Signpost page at the root of the website (links to the app and the guide).
 - Fuzzy search: tolerate typos and approximate matches (e.g. Levenshtein distance), on top of the accent-insensitive search from M1.
+- Own domain for the app before the first public release, e.g. a free subdomain on Netlify or Vercel (`setlist.vercel.app`) or a custom domain — gives Setlist its own origin instead of sharing `besnik.github.io` (see ADR 0005). Decide before the public release: moving later means users move their data with the backup and reinstall the app.
