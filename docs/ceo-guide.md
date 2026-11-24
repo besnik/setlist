@@ -87,14 +87,14 @@ Sleduj PR #<číslo> a zapracuj moje komentáre.
 
 | What | Where |
 |---|---|
-| Overall progress | `docs/plan/roadmap.md` |
-| Current tasks | `docs/plan/milestones/` |
-| What the app does | `docs/product-specs/` |
-| Why something was decided | `docs/decisions/` |
-| Known shortcuts | `docs/plan/tech-debt.md` |
-| What each feature cost (tokens, time per step) | `docs/plan/costs/` |
-| Ideas for later | `docs/plan/inbox.md` |
-| All rules for agents | `AGENTS.md` |
+| Overall progress | [docs/plan/roadmap.md](plan/roadmap.md) |
+| Current tasks | [docs/plan/milestones/](plan/milestones/) |
+| What the app does | [docs/product-specs/](product-specs/) |
+| Why something was decided | [docs/decisions/](decisions/) |
+| Known shortcuts | [docs/plan/tech-debt.md](plan/tech-debt.md) |
+| What each feature cost (tokens, time per step) | [docs/plan/costs/](plan/costs/) |
+| Ideas for later | [docs/plan/inbox.md](plan/inbox.md) |
+| All rules for agents | [AGENTS.md](../AGENTS.md) |
 
 ## GitHub settings already in place
 
