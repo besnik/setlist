@@ -1,7 +1,7 @@
 # M1 — Foundation and song list
 
 - **Description:** milestone M1, built as one PR per task (T-012 … T-017).
-- **PRs:** T-012 and T-013 — see the task table in [M1](../../milestones/M1-foundation-song-list.md).
+- **PRs:** T-012 … T-015 — see the task table in [M1](../../milestones/M1-foundation-song-list.md).
 - **Date:** 2026-11-24 (started)
 
 ## Lead runs
