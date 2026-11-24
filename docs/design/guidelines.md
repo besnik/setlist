@@ -29,7 +29,7 @@ Tokens are CSS custom properties defined once in the app's styles. Colors, type,
 
 ### Color
 
-Provisional — taken from the prototype; the brand is a CEO decision. The theme follows the system (`prefers-color-scheme`); the page declares `color-scheme: light dark` so native controls (scrollbars, the search field) match.
+Provisional — taken from the prototype. The CEO decided to keep them through the MVP and to choose the brand colors later, together with a logo. The theme follows the system (`prefers-color-scheme`); the page declares `color-scheme: light dark` so native controls (scrollbars, the search field) match.
 
 | Token | Light | Dark | Use |
 |---|---|---|---|

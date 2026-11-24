@@ -15,7 +15,7 @@ The songbook: all the musician's songs with lyrics and chords in one place, quic
 - Rule: the Songs screen lists all songs, sorted by title alphabetically, ignoring letter case; accented letters sort together with their base letter (`Čaj` between `Cesta` and `Cibuľa`).
 - Rule: each row shows the song title, the artist (or "Unknown artist" when empty) and, when the song has a key, the key as a small chip (e.g. `Am`).
 - Rule: a long title or artist is shortened with an ellipsis on one line; the page never scrolls horizontally.
-- Rule: the heading shows the number of songs, e.g. "4 songs" (singular "1 song").
+- Rule: the heading shows the number of songs, e.g. "4 songs" (singular "1 song"). It is the total number of songs and does not change while searching.
 - Rule: given the first start of the app, when the Songs screen opens, then it shows the sample songs (see *Sample songs*).
 - Rule: in M1, rows are not interactive yet — opening a song comes with *Song view* (M3).
 
