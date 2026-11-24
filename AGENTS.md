@@ -34,6 +34,9 @@ Sessions have no memory of earlier chats. Before new work, find out where we lef
 3. **The CEO decides** anything hard to reverse, costly, user-facing or public — see [decision rights](docs/company/operating-model.md#decision-rights). When in doubt, ask.
 4. **Plan first when it matters:** for unclear or larger work, write a short plan in chat and wait for the CEO's OK. A clear, specific instruction from the CEO can be carried out right away.
 5. Never push to `main`. **One open topic = one branch = one PR**, opened only when ready for the CEO's review. Branches, commits and PRs: [git workflow](docs/company/git-workflow.md).
+   - **Branch before the first edit:** before changing any file in the repository, switch to the topic's branch (the open PR's branch, or a new `<type>/<short-description>` branch from `origin/main`) — also when the environment starts you on another branch.
+   - **Commit every change, even a small one** (a typo, one line), as `<type>: <summary>` — never leave uncommitted work at the end of a turn.
+   - A `PreToolUse` hook ([.claude/hooks/git-guard.py](.claude/hooks/git-guard.py)) blocks edits and commits on a wrong branch, wrong branch names and commit messages, and pushes to `main`. When it blocks, fix the cause — never work around it.
 6. Work only on **approved** tasks ([docs/plan/](docs/plan/)). An explicit instruction from the CEO in chat counts as approval — record the task row in the same PR.
 7. **Mind the budget.** Do the work yourself unless delegating pays off ([when to delegate](docs/company/operating-model.md#budget)). Warn the CEO about the cost before expensive steps. Record what each lead used in [docs/plan/costs/](docs/plan/costs/).
 8. **No private links and no generated boilerplate.** Never put into commits, PRs, issues, comments or files:

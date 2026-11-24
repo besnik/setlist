@@ -6,6 +6,7 @@ How agents work with branches, commits and pull requests. (The public version fo
 
 - Never push to `main`. Every change goes through a pull request; the CEO squash-merges.
 - Branch name: `<type>/<short-description>`, always from `main`, e.g. `feat/gig-mode`, `fix/offline-save`, `chore/harness-setup`. This applies even if the environment suggests another branch name.
+- **Branch before the first edit.** Before changing any file, switch to the topic's branch (the open PR's branch, or a new branch from `origin/main`).
 - **One open topic = one branch = one PR.** While a PR on the same topic is open, add commits to its branch. No branches stacked on other branches.
 - What a topic is depends on the feature mode (see the `new-feature` skill): in small mode the whole feature; in big mode the spec is one topic and each task is another. Any other change (fix, harness, docs) is one topic.
 
@@ -23,6 +24,17 @@ How agents work with branches, commits and pull requests. (The public version fo
 | `test` | Adding or fixing tests only |
 | `style` | Formatting only |
 | `perf` | Performance improvement |
+
+Commit every change, even a small one, before the turn ends — uncommitted work is lost when the session's container is reclaimed.
+
+## Automatic check
+
+A `PreToolUse` hook in [.claude/settings.json](../../.claude/settings.json) runs [.claude/hooks/git-guard.py](../../.claude/hooks/git-guard.py) before every shell command and file edit. It blocks:
+
+- editing files or committing on `main` or on a branch not named `<type>/<short-description>`,
+- creating a branch with such a name,
+- a commit message whose first line is not `<type>: <summary>`, or that contains AI attribution trailers or links to AI sessions,
+- pushing to `main`.
 
 ## Pull requests
 

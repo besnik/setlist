@@ -20,6 +20,8 @@ Thanks for your interest! Setlist is in early development, but ideas and feedbac
 
 Examples: `feat/gig-mode`, `fix/offline-save`, `docs/readme-screenshots`, `chore/harness-setup`.
 
+If you use Claude Code, the project's hook (`.claude/hooks/git-guard.py`) checks branch names and commit messages for you.
+
 ## Commit messages and PR titles
 
 We follow [Conventional Commits](https://www.conventionalcommits.org):

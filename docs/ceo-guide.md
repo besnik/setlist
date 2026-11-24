@@ -103,6 +103,8 @@ Sleduj PR #<číslo> a zapracuj moje komentáre.
 - **Private vulnerability reporting** (Settings → Advanced Security).
 - **Recommended: Secret scanning and Push protection** (Settings → Advanced Security) — GitHub blocks a push that contains a token or key. Agents never commit secrets (rule in `AGENTS.md`, details in `SECURITY.md`); if one slips in anyway, it must be revoked, not just deleted.
 
+An automatic check (a hook in `.claude/settings.json`) stops agents from editing or committing outside a proper topic branch, from using wrong branch names or commit messages, and from pushing to `main`. It needs `python3` on the machine where Claude Code runs.
+
 Agents can push branches but cannot delete branches or force-push. A leftover branch you delete yourself at https://github.com/besnik/setlist/branches.
 
 ## Tips
