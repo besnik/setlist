@@ -27,7 +27,7 @@ Order: T-012 and T-013 can run in parallel. After T-013: T-014 (deploys the empt
 
 ## CEO actions
 
-- Before T-014 is merged: enable GitHub Pages once (Settings → Pages → Source: *GitHub Actions*).
+- ~~Enable GitHub Pages (Settings → Pages → Source: *GitHub Actions*)~~ — done by the CEO on 2026-11-24.
 
 ## Out of scope
 

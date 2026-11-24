@@ -13,7 +13,7 @@ What surrounds every screen: where the app lives, how it starts, how it adapts t
 ### Start and address
 
 - Rule: the app opens at `https://besnik.github.io/setlist/app/` and shows the Songs screen.
-- Rule: `https://besnik.github.io/setlist/` redirects to the app (until a signpost page and the user guide exist).
+- Rule: `https://besnik.github.io/setlist/` redirects to the app (until a signpost page exists).
 - Rule: the browser tab and the page title read "Setlist".
 - Rule: the app loads nothing from other websites (fonts and all assets come with the app).
 

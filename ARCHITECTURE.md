@@ -26,13 +26,13 @@ app/                  the PWA — published at /setlist/app/
   assets/             fonts, icons
 tests/app/unit/       unit tests (domain logic)
 tests/app/e2e/        end-to-end tests (browser)
-site/                 root of the website — a redirect to the app today; later signpost and user guide
+site/                 root of the website — a redirect to the app today; later a signpost page
 tools/                development tools for the whole repository (dev server, check)
 docs/                 knowledge base (not deployed)
 package.json          development commands and dependencies only
 ```
 
-Future parts get their own folder when they are needed, e.g. `guide/` (user guide, after the MVP), `importer/`, `server/`. Folders are not created in advance.
+Future parts get their own folder when they are needed, e.g. `guide/` (user guide after the MVP, published at `/setlist/guide/`), `importer/`, `server/`. Folders are not created in advance.
 
 ## Layers of the app
 
@@ -52,7 +52,8 @@ main.js  →  ui  →  data  →  domain
 | Address | Content |
 |---|---|
 | `https://besnik.github.io/setlist/app/` | The app (from `app/`). The path is **permanent** — an installed PWA is bound to it. |
-| `https://besnik.github.io/setlist/` | From `site/`: a redirect to the app; later signpost and user guide. |
+| `https://besnik.github.io/setlist/` | From `site/`: a redirect to the app; later a signpost page (what Setlist is, links to the app and the guide). |
+| `https://besnik.github.io/setlist/guide/` | From `guide/` (after the MVP): the user guide. |
 
 Storage and installed apps belong to the origin `https://besnik.github.io`; see [ADR 0005](docs/decisions/0005-dev-tooling-tests-and-deployment.md) for what that means.
 

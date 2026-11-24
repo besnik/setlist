@@ -13,6 +13,6 @@ The **MVP** is milestones M1–M8: the first version the owner can really use at
 | [M6 — Setlists](milestones/M6-setlists.md) | Build and order setlists; bottom navigation | not started |
 | [M7 — Play mode](milestones/M7-play-mode.md) | Play a setlist song by song, one tap per action | not started |
 | [M8 — Backup](milestones/M8-backup.md) | Export and import all data as one file | not started |
-| M9 — User guide *(after the MVP)* | A simple, minimal (text first) user guide at the root of the website | not started |
+| M9 — User guide *(after the MVP)* | A simple, minimal (text first) user guide at `/setlist/guide/`, linked from the root of the website | not started |
 
 Statuses: `not started` · `in-progress` · `done`.

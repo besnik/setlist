@@ -43,7 +43,8 @@ The app itself needs no build ([ADR 0004](0004-tech-stack-and-architecture.md)),
 5. **CI:** a GitHub Actions workflow runs the check and all tests on every pull request; the deploy job runs them again before publishing.
 6. **Deployment:** GitHub Actions publishes `main` to GitHub Pages. The workflow assembles the site from the parts:
    - `https://besnik.github.io/setlist/app/` ← `app/` — the app (PWA). The path is permanent: an installed PWA is bound to it.
-   - `https://besnik.github.io/setlist/` ← `site/` — a redirect to the app today; later a signpost page and the user guide.
+   - `https://besnik.github.io/setlist/` ← `site/` — a redirect to the app today; later a signpost page.
+   - `https://besnik.github.io/setlist/guide/` ← `guide/` — the user guide, after the MVP.
 7. **Origin: we stay on `https://besnik.github.io`** (no custom domain, no separate organization). Browser storage and installed apps belong to the *origin*, not to the path. Consequences we accept:
    - Other projects published under `besnik.github.io` share the origin and could in theory read or clear Setlist data.
    - Moving to another domain later means users must move their data with the backup (M8) and reinstall the app.
