@@ -17,9 +17,12 @@
 | T-014 light QA | qa-lead | Opus 5.5 | 88,843 | 1:00 | 5 | 0 blocking, 3 other — newer action versions and folder redirects in the dev server fixed, 1 note for the PR description |
 | T-015 app shell | GM | n/a | n/a | n/a | n/a | not measured |
 | T-015 light QA | qa-lead | Opus 5.5 | 93,985 | 1:09 | 10 | 0 blocking, 4 other — 2 fixed in the check, 1 recorded as tech debt, 1 plan update; added 2 e2e tests (gutter, Central European letters) |
-| **Total so far** | | | **424,298** | **11:30** | **85** | |
+| T-016 safe rendering | GM | n/a | n/a | n/a | n/a | not measured |
+| T-016 light QA | qa-lead | Opus 5.5 | 104,345 | 2:58 | 13 | 2 blocking (boolean attribute after a quoted one threw; `javascript:` URL through whitespace or a static start), 3 other — escaping fixes done by the GM, 1 product note; added 3 unit tests |
+| **Total so far** | | | **528,643** | **14:28** | **98** | |
 
 ## What drove cost
 
 - A stale local `main` cost one wasted design run: the GM must fetch `main` before branching (the clone is shallow and does not update `origin/main` on its own).
 - The T-013 QA was worth it: it found a crash of the dev server that the GM's own checks missed.
+- The T-016 QA was worth it too: it broke the escaping in ways the GM's tests missed (the dangerous value placed after ordinary markup, not first).

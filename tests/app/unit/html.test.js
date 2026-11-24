@@ -92,3 +92,46 @@ test('render accepts only html templates', () => {
   assert.equal(element.innerHTML, '<p>&lt;b&gt;</p>');
   assert.throws(() => render(element, '<b>x</b>'), /only templates built with html/);
 });
+
+// Bug: a boolean attribute after a quoted attribute throws "must be quoted",
+// which blocks normal view code such as a checkbox.
+test('boolean attributes after quoted attributes', () => {
+  assert.equal(text(html`<input type="checkbox" ${'checked'}>`), '<input type="checkbox" checked>');
+  assert.equal(text(html`<button class="x" ${false}>`), '<button class="x" >');
+});
+
+// Bug: browsers ignore whitespace before a URL, so a wrapped href="\n  ${url}" still runs javascript:.
+test('whitespace before a URL value does not hide its scheme', () => {
+  const out = text(html`<a href="
+    ${'javascript:alert(1)'}">x</a>`);
+  assert.doesNotMatch(out, /javascript:/);
+});
+
+// Bug: a value must not form an attribute name with a value of its own (skips the on…
+// and URL checks) or extend a tag name (<scr${'ipt'}> becomes <script>).
+test('values cannot form attribute or tag names', () => {
+  assert.throws(() => html`<a ${'onclick'}="${'alert(1)'}">`);
+  assert.throws(() => html`<a ${'href'}="${'javascript:alert(1)'}">`);
+  assert.throws(() => html`<scr${'ipt'}>`);
+});
+
+// A URL's scheme cannot be pieced together from values and static text.
+test('URL schemes cannot be pieced together', () => {
+  assert.throws(() => html`<a href="java${'script:alert(1)'}">`, /fixed part/);
+  assert.throws(() => html`<a href="${'java'}script:alert(1)">`, /unsafe scheme/);
+  assert.throws(() => html`<a href="${'java'}\n${'script:alert(1)'}">`, /must come from one value/);
+  assert.equal(text(html`<object data="${'javascript:x'}"></object>`), '<object data="#"></object>');
+  assert.throws(() => html`<svg><set attributeName="href" to="${'javascript:x'}"/></svg>`, /SVG animation/);
+});
+
+// Typical view markup stays allowed (song list, search, links).
+test('typical view markup works', () => {
+  const view = html`<input type="search" value="${'Ľúbostná'}" data-action="search" ${'autofocus'} ${''}>
+    <a class="song" href="/songs/${'a b'}?q=${'x&y'}" data-id="${3}">${'A'}</a>
+    <a href="mailto:${'a@b.c'}">mail</a> <a href="#song-${7}">7</a>`;
+  assert.match(text(view), /value="Ľúbostná" data-action="search" autofocus >/);
+  assert.match(text(view), /href="\/songs\/a b\?q=x&amp;y"/);
+  assert.match(text(view), /href="mailto:a@b\.c"/);
+  assert.match(text(view), /href="#song-7"/);
+  assert.throws(() => html`<input ${'a'}${'b'}>`, /bare attribute name between spaces/);
+});
