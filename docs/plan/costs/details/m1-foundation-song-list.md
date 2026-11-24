@@ -1,8 +1,8 @@
 # M1 — Foundation and song list
 
 - **Description:** milestone M1, built as one PR per task (T-012 … T-017).
-- **PRs:** T-012 … T-015 — see the task table in [M1](../../milestones/M1-foundation-song-list.md).
-- **Date:** 2026-11-24 (started)
+- **PRs:** T-012 … T-017 — see the task table in [M1](../../milestones/M1-foundation-song-list.md).
+- **Date:** 2026-11-24
 
 ## Lead runs
 
@@ -19,7 +19,9 @@
 | T-015 light QA | qa-lead | Opus 5.5 | 93,985 | 1:09 | 10 | 0 blocking, 4 other — 2 fixed in the check, 1 recorded as tech debt, 1 plan update; added 2 e2e tests (gutter, Central European letters) |
 | T-016 safe rendering | GM | n/a | n/a | n/a | n/a | not measured |
 | T-016 light QA | qa-lead | Opus 5.5 | 104,345 | 2:58 | 13 | 2 blocking (boolean attribute after a quoted one threw; `javascript:` URL through whitespace or a static start), 3 other — escaping fixes done by the GM, 1 product note; added 3 unit tests |
-| **Total so far** | | | **528,643** | **14:28** | **98** | |
+| T-017 song list and search | GM | n/a | n/a | n/a | n/a | not measured |
+| T-017 light QA | qa-lead | Opus 5.5 | 96,915 | 1:38 | 13 | 0 blocking, 3 other — Safari search field style fixed, 1 recorded as tech debt, 1 plan update; added 1 unit test (unknown artist, no chip, escaping) |
+| **Total** | | | **625,558** | **16:06** | **111** | |
 
 ## What drove cost
 

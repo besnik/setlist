@@ -1,0 +1,110 @@
+/* Components of the browse screens (docs/design/guidelines.md, "Components (M1)"):
+   page header, search field, song row with key chip, empty state. */
+
+/* Page header: the screen heading with the count line below it. */
+.page-header__count {
+  margin: var(--space-1) 0 0;
+  color: var(--color-muted);
+  font-size: var(--text-small-size);
+  font-weight: var(--text-small-weight);
+  line-height: var(--text-small-leading);
+}
+
+/* Search field: native search input, full column width. */
+.search-field {
+  /* Safari styles native search inputs its own way and ignores padding or radius without this. */
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 48px;
+  margin: var(--space-4) 0;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-leading);
+}
+
+.search-field::placeholder {
+  color: var(--color-muted);
+  opacity: 1;
+}
+
+.search-field:focus {
+  border-color: var(--color-accent);
+  outline: 2px solid var(--color-accent);
+  outline-offset: 0;
+}
+
+/* Song list: rows separated by a gap; not interactive in M1 (no hover or cursor). */
+.song-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.song-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+
+/* min-width: 0 lets the text column shrink, so title and artist end with an ellipsis. */
+.song-row__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.song-row__title,
+.song-row__artist {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  /* The base style's break-word would let a long word count as shrinkable width. */
+  overflow-wrap: normal;
+}
+
+.song-row__title {
+  font-size: var(--text-row-size);
+  font-weight: var(--text-row-weight);
+  line-height: var(--text-row-leading);
+}
+
+.song-row__artist {
+  margin-top: 2px;
+  color: var(--color-muted);
+  font-size: var(--text-small-size);
+  font-weight: var(--text-small-weight);
+  line-height: var(--text-small-leading);
+}
+
+.key-chip {
+  flex-shrink: 0;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-chip);
+  background: var(--color-tint);
+  color: var(--color-chord);
+  font-family: var(--font-mono);
+  font-size: var(--text-chip-size);
+  font-weight: var(--text-chip-weight);
+  line-height: var(--text-chip-leading);
+}
+
+/* Empty state: replaces the list while a search has no match. */
+.empty-state {
+  margin: 0;
+  padding: var(--space-6) var(--space-4);
+  border: 2px dashed var(--color-line);
+  border-radius: var(--radius-card);
+  color: var(--color-muted);
+  text-align: center;
+}
