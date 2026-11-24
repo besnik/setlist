@@ -72,6 +72,7 @@ Repeatable workflows live in [.claude/skills/](.claude/skills/):
 - `open-pr` — commit, push and open a pull request.
 - `new-adr` — record a decision.
 - `update-harness` — change rules or workflow and keep all harness docs consistent.
+- `preview-pr` — run a pull request on the CEO's computer for a try in the browser, then clean up (local sessions only).
 
 ## Definition of done
 

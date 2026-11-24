@@ -16,6 +16,7 @@ You can write in Slovak; these are example openers.
 | Bug in the app | "Našiel som chybu: … (čo som robil, čo som čakal, čo sa stalo)" |
 | Technical decision needed | "Priprav ADR na …" (skill `new-adr`) |
 | Idea for later | "Zapíš do inboxu: …" |
+| Try a pull request before merging | In a **local** session in the `setlist` folder: "Ukáž mi PR <číslo>." (skill `preview-pr`) |
 | Change to how we work, or feedback that should become a rule | "Uprav harness: …" (skill `update-harness`) |
 
 A clear, specific instruction is done right away. For anything unclear or bigger, the GM first sends a short plan and waits for your OK.
@@ -30,6 +31,7 @@ Skills are step-by-step procedures the GM follows. You can name one in chat to m
 | `new-adr` | Recording or proposing an important decision |
 | `update-harness` | Changing rules, principles or workflow |
 | `open-pr` | Opening a pull request (the GM uses it on its own) |
+| `preview-pr` | Trying a pull request on your computer before merging it (in a local session) |
 
 Built-in Claude Code commands you can also ask for: `/code-review` (find bugs in changes), `/security-review`, `/simplify`.
 
@@ -45,9 +47,27 @@ Needs [Node.js](https://nodejs.org) 22 or newer. In the repository folder, once:
 | `npm test` | Runs all tests |
 | `npm run check` | Checks the project rules |
 
+## Previewing a pull request on your computer
+
+Run a **local** Claude Code session (desktop app or terminal on your computer, not the cloud) in the `setlist` folder and write:
+
+```
+Ukáž mi PR <číslo>.
+```
+
+The agent fetches the PR, starts the app and gives you two addresses: one for this computer and one for your phone in the same Wi-Fi. On the first run Windows Firewall may ask for access — allow **private networks**. When you are done, write "hotovo": the agent stops the app and switches back to `main`. Nothing in the repository changes.
+
+**First time on a computer** (Git and [Node.js](https://nodejs.org) 22 or newer installed, no `setlist` folder yet): start the local session in the folder where the project should live (e.g. `Documents`) and write:
+
+```
+Naklonuj https://github.com/besnik/setlist.git do priečinka setlist a potom postupuj podľa setlist/.claude/skills/preview-pr/SKILL.md: ukáž mi PR <číslo>.
+```
+
+Next time start the session directly in the `setlist` folder.
+
 ## Trying the app on your phone
 
-Every merge to `main` is published to **https://besnik.github.io/setlist/app/** a few minutes later (tab *Actions* → workflow *Deploy* shows the progress). There are no previews of pull requests: try a change after merging it, or on your home network with `npm start`.
+Every merge to `main` is published to **https://besnik.github.io/setlist/app/** a few minutes later (tab *Actions* → workflow *Deploy* shows the progress). There are no online previews of pull requests: try a change before merging on your computer (see above), or after merging here.
 
 ## Small and big features
 
