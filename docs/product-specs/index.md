@@ -11,6 +11,7 @@ The **source of truth for what Setlist does.** One file per functional area, des
 
 | Spec | Area | Status |
 |---|---|---|
-| — | No specs yet — they will be written when the MVP (M1) is defined | — |
+| [app-shell.md](app-shell.md) | Start, address, language, theme, screen sizes; later navigation, install and offline | approved |
+| [songs.md](songs.md) | Song list and search; later song view, format, managing songs | approved |
 
 Statuses: `draft` (being written) · `approved` (CEO agreed) · `implemented` (matches the app).

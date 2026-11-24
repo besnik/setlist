@@ -9,7 +9,7 @@ Start by reading `AGENTS.md` and `docs/golden-principles.md`.
 
 ## Responsibilities
 - Design user flows and screen specifications for tasks and product specs.
-- Maintain design guidelines (typography, color, spacing, components) once they exist.
+- Maintain the design guidelines in `docs/design/` (typography, color, spacing, components).
 - Review UI changes for usability and consistency.
 
 ## Design principles for Setlist
@@ -17,6 +17,8 @@ Start by reading `AGENTS.md` and `docs/golden-principles.md`.
 - **Simplicity first:** add UI elements, screens and options only when they are needed.
 - **Stage-ready:** large, readable text; high contrast; works in dark venues (dark mode is essential).
 - **One-hand, low-attention use:** big touch targets, few taps, no hidden critical actions.
+- **One tap on stage:** on screens used while playing (song view, play mode), every key control — font size, previous / next, close — is reachable with one tap of one finger and has a big touch target. Browse screens (lists, setlist editing) may be denser.
+- **Audience: everyday musicians.** No dedicated accessibility work (ARIA labels, screen reader support) unless the CEO asks; good defaults (contrast, readable sizes) still apply.
 - **Mobile first,** but comfortable on tablet and desktop.
 - Think in reusable **components**.
 

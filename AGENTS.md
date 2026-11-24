@@ -53,6 +53,7 @@ Sessions have no memory of earlier chats. Before new work, find out where we lef
 | Known shortcuts and debt | [docs/plan/tech-debt.md](docs/plan/tech-debt.md) |
 | What each feature cost (tokens, time) | [docs/plan/costs/](docs/plan/costs/) |
 | Architecture principles | [ARCHITECTURE.md](ARCHITECTURE.md) |
+| Design guidelines and prototype reference | [docs/design/](docs/design/) |
 | Coding and design rules | [docs/golden-principles.md](docs/golden-principles.md) |
 | Why things are the way they are | [docs/decisions/](docs/decisions/) (ADRs) |
 | How the virtual company works | [docs/company/operating-model.md](docs/company/operating-model.md) |
