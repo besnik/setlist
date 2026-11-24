@@ -20,7 +20,7 @@ Before building the product, set up the system for agentic development: rules, r
 | T-008 | Move technology-specific golden principles (no build step, ES modules) to ARCHITECTURE.md | — | done | [#8](https://github.com/besnik/setlist/pull/8) |
 | T-009 | Open trial PRs as drafts | — | done | [#9](https://github.com/besnik/setlist/pull/9) |
 | T-010 | Harness fixes from the gig-mode trial (QA brief, design self-check in portrait and landscape, no unrequested elements, CEO stops definition, trial costs on `main`) | — | done | [#12](https://github.com/besnik/setlist/pull/12) |
-| T-011 | No secrets in the repository: rule in AGENTS.md and golden principles, extended SECURITY.md with leak procedure, `.gitignore` for secret files | — | in-progress | — |
+| T-011 | No secrets in the repository: rule in AGENTS.md and golden principles, extended SECURITY.md with leak procedure, `.gitignore` for secret files | — | done | [#13](https://github.com/besnik/setlist/pull/13) |
 
 ## Out of scope
 
