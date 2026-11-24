@@ -84,7 +84,7 @@ Fixed constraints set by the CEO (platform, budget) are inputs to the analysis, 
 
 The AI budget is limited. The GM does the work itself — it already has the context — and delegates to a lead only when one of these applies:
 
-1. **Independent view needed** — whoever wrote something hardly finds its own mistakes. QA review is always delegated.
+1. **Independent view needed** — whoever wrote something hardly finds its own mistakes. QA review is always delegated (when a PR needs one — see [QA levels](#qa-levels)).
 2. **Heavy work that would flood the GM's context** — reading many files, long tool output, running tests (e.g. an implementation across more than ~5 files).
 3. **Parallel work** that saves real time.
 
@@ -98,5 +98,7 @@ What each lead used is recorded per feature in [docs/plan/costs/](../plan/costs/
 | Level | When | What |
 |---|---|---|
 | **Base** | Every task, automatically | The project's test command (golden principle *A lean test base in the repository*) |
-| **Light QA** | Every PR | The GM's brief names the task, the spec, the changed files and what to check (e.g. screen sizes). The QA lead checks acceptance criteria against the code and runs the base tests; adds repository tests for uncovered spec rules and for bugs found (no throwaway scripts); at most 2–3 screenshots and only if the look changed |
+| **Light QA** | Every PR, except PRs that change only harness documents (see below) | The GM's brief names the task, the spec, the changed files and what to check (e.g. screen sizes). The QA lead checks acceptance criteria against the code and runs the base tests; adds repository tests for uncovered spec rules and for bugs found (no throwaway scripts); at most 2–3 screenshots and only if the look changed |
 | **Full QA** | Only when the CEO asks (the GM proposes it before a public release) | Many screen sizes, edge cases; only tests that found a bug stay in the repository |
+
+**No QA for harness documents.** A PR that changes only harness documents — rules, workflow, skills, agent prompts, the CEO guide — skips light QA: a QA run costs more than such a change risks. The PR says so under *Decisions made*. As soon as a PR also touches code, tests, CI, specs or ADRs, light QA applies (CEO decision, 2026-11-24).
