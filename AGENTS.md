@@ -91,5 +91,6 @@ Always cover these three things, but choose short Slovak headings that fit the c
 - Agents can push branches but cannot delete branches or force-push. Branches are auto-deleted after merge.
 - GitHub GraphQL is blocked (`gh pr create` fails) — open PRs via the REST API, see the `open-pr` skill.
 - To use the preinstalled Playwright from the scratchpad, run node with `NODE_PATH=$(npm root -g)`.
+- `origin/main` is not updated on its own. Run `git fetch origin main` before creating a branch or a worktree for a lead, and branch from `origin/main` — otherwise the work starts from stale files.
 - The clone is shallow and tracks only `main`. After checking out or pushing another branch, register it so git (and the stop hook) can see it is pushed:
   `git config --add remote.origin.fetch '+refs/heads/<branch>:refs/remotes/origin/<branch>' && git fetch origin <branch>`
