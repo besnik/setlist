@@ -12,6 +12,8 @@
 // 5. HTML and CSS load only files of their own part, by relative path: <script src>,
 //    <link href>, src of media and frames, CSS url() and @import (nothing from other
 //    websites, no root paths that break under /setlist/app/).
+// 6. Only app/src/ui/html.js writes HTML into the page (innerHTML and similar);
+//    everything else renders through its escaping `html` template (ADR 0004).
 
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, posix, relative, resolve } from 'node:path';
@@ -22,6 +24,7 @@ const SOURCE_EXTENSIONS = ['.js', '.css', '.html'];
 const SKIP_DIRS = new Set(['.git', '.github', '.claude', 'node_modules', 'docs', 'test-results', 'playwright-report']);
 const LAYERS = ['domain', 'data', 'ui', 'main'];
 const DOMAIN_DIR = 'app/src/domain/';
+const RENDERER = 'app/src/ui/html.js';
 
 /**
  * Returns a problem message when the file does not start with a header comment.
@@ -163,6 +166,21 @@ export function assetProblems(path, source, exists) {
   return problems;
 }
 
+/**
+ * Checks rule 6: app code other than the renderer must not write HTML strings into
+ * the page, because they bypass escaping.
+ * @param {string} path repository-relative path with forward slashes
+ * @param {string} source file content
+ * @returns {string[]} problem messages
+ */
+export function rawHtmlProblems(path, source) {
+  if (!path.startsWith('app/') || !path.endsWith('.js') || path === RENDERER) return [];
+  const code = source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  const pattern = /\.(?:inner|outer)HTML\s*\+?=(?!=)|\b(?:insertAdjacentHTML|createContextualFragment|setHTMLUnsafe|parseHTMLUnsafe)\b|\bdocument\.write(?:ln)?\b/g;
+  return [...new Set(code.match(pattern) ?? [])].map((found) =>
+    `${path}: writes HTML directly ('${found.trim()}'). Build it with the html\`…\` template and insert it with render() from ${RENDERER}, which escape values (see ARCHITECTURE.md, "Layers of the app").`);
+}
+
 /** Repository-relative paths (forward slashes) of all source files to check. */
 function sourceFiles(dir = ROOT) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -181,7 +199,7 @@ function main() {
     const source = readFileSync(join(ROOT, path), 'utf8');
     const header = headerProblem(path, source);
     const references = path.endsWith('.js') ? importProblems(path, source, exists) : assetProblems(path, source, exists);
-    return [...(header ? [header] : []), ...references];
+    return [...(header ? [header] : []), ...references, ...rawHtmlProblems(path, source)];
   });
 
   if (problems.length) {

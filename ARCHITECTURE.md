@@ -45,7 +45,7 @@ main.js  →  ui  →  data  →  domain
 - Tests may import anything; `tools/` import nothing from `app/`.
 - **domain** — data types (JSDoc), validation, chord detection, setlist operations. Fully unit-testable in Node.
 - **data** — repositories. Validate everything read from storage (golden principle *Validate at the boundary*). Functions are asynchronous (return promises).
-- **ui** — views are functions *state → HTML* built with our own `html` tagged template, which escapes every value by default. One delegated listener per event type maps `data-action` attributes to actions. Routing uses the URL hash.
+- **ui** — views are functions *state → HTML* built with our own `html` tagged template (`ui/html.js`), which escapes every value by default; only its `render()` writes HTML into the page. One delegated listener per event type (`ui/events.js`) maps `data-action` attributes to actions. Routing uses the URL hash.
 - A service layer is added only when real cross-cutting logic appears.
 
 ## Addresses
@@ -70,4 +70,4 @@ Each part of the app, its technology and how to run its tests (golden principle 
 | `tools/` | Node.js scripts (development only) | `tests/tools` (`node --test`) | `npm run test:unit` |
 | **All** | | | `npm test` |
 
-Other commands: `npm start` (dev server at `http://localhost:8080/setlist/app/`, with `site/` at `/setlist/`, also reachable from phones in the same network), `npm run check` (project rules: layer and part imports, files loaded by HTML and CSS, file header comments). First run `npm install` once (Node.js 22 or newer).
+Other commands: `npm start` (dev server at `http://localhost:8080/setlist/app/`, with `site/` at `/setlist/`, also reachable from phones in the same network), `npm run check` (project rules: layer and part imports, files loaded by HTML and CSS, file header comments, HTML written into the page only by `ui/html.js`). First run `npm install` once (Node.js 22 or newer).
