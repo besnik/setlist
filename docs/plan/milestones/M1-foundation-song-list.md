@@ -1,6 +1,6 @@
 # M1 — Foundation and song list
 
-- **Status:** in-progress
+- **Status:** done
 - **Specs:** [app-shell.md](../../product-specs/app-shell.md), [songs.md](../../product-specs/songs.md)
 - **Decisions:** [ADR 0004](../../decisions/0004-tech-stack-and-architecture.md), [ADR 0005](../../decisions/0005-dev-tooling-tests-and-deployment.md)
 
@@ -23,7 +23,7 @@ Order: T-012 and T-013 can run in parallel. After T-013: T-014 (deploys the empt
 | T-014 | Deployment to GitHub Pages: workflow that runs the check and tests, assembles the site (`app/` → `/setlist/app/`, `site/` → `/setlist/` with a redirect to the app) and publishes `main` | [app-shell.md#start-and-address](../../product-specs/app-shell.md#start-and-address) | done | [#19](https://github.com/besnik/setlist/pull/19) |
 | T-015 | App shell: `index.html`, design tokens and base styles, self-hosted fonts, light and dark theme, responsive single column | [app-shell.md](../../product-specs/app-shell.md) | done | [#23](https://github.com/besnik/setlist/pull/23) |
 | T-016 | Safe rendering: the auto-escaping `html` tagged template (attributes, lists, nested templates, no `javascript:` URLs) and delegated `data-action` events, with unit tests | [ADR 0004](../../decisions/0004-tech-stack-and-architecture.md) | done | [#25](https://github.com/besnik/setlist/pull/25) |
-| T-017 | Song list and search: song type, sorting and accent-insensitive search (domain), sample songs and song repository (data), Songs screen with search (ui), unit and e2e tests | [songs.md#song-list](../../product-specs/songs.md#song-list), [#search](../../product-specs/songs.md#search), [#sample-songs](../../product-specs/songs.md#sample-songs) | approved | — |
+| T-017 | Song list and search: song type, sorting and accent-insensitive search (domain), sample songs and song repository (data), Songs screen with search (ui), unit and e2e tests | [songs.md#song-list](../../product-specs/songs.md#song-list), [#search](../../product-specs/songs.md#search), [#sample-songs](../../product-specs/songs.md#sample-songs) | done | PR |
 
 ## CEO actions
 

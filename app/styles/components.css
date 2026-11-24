@@ -12,6 +12,9 @@
 
 /* Search field: native search input, full column width. */
 .search-field {
+  /* Safari styles native search inputs its own way and ignores padding or radius without this. */
+  -webkit-appearance: none;
+  appearance: none;
   display: block;
   width: 100%;
   height: 48px;
