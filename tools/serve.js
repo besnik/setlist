@@ -1,6 +1,7 @@
-// Development server: serves the app under the same path as production
-// (`/setlist/app/` ← `app/`) with correct content types, so path and scope
-// bugs show up locally. No caching, so a reload always shows the latest files.
+// Development server: serves the website under the same paths as production
+// (`/setlist/app/` ← `app/`, `/setlist/` ← `site/`) with correct content types,
+// so path and scope bugs show up locally. No caching, so a reload always shows
+// the latest files.
 //
 // Usage: npm start            (port 8080, reachable from the home network)
 //        PORT=4173 npm start
@@ -12,8 +13,14 @@ import { extname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
-const APP_DIR = join(ROOT, 'app');
 const APP_PATH = '/setlist/app/';
+const SITE_PATH = '/setlist/';
+// URL path prefix → folder, like the deploy workflow assembles the site.
+// The longer prefix comes first, so /setlist/app/ is never looked up in site/.
+const MOUNTS = [
+  [APP_PATH, join(ROOT, 'app')],
+  [SITE_PATH, join(ROOT, 'site')],
+];
 const PORT = Number(process.env.PORT) || 8080;
 
 const CONTENT_TYPES = {
@@ -29,12 +36,15 @@ const CONTENT_TYPES = {
   '.txt': 'text/plain; charset=utf-8',
 };
 
-/** Maps a URL path to a file inside `app/`, or returns null when it is outside. */
+/** Maps a URL path to a file inside its mounted folder, or returns null when it is outside. */
 function fileFor(urlPath) {
-  const relative = decodeURIComponent(urlPath.slice(APP_PATH.length));
-  const file = resolve(APP_DIR, relative);
-  // Refuse `..` tricks: the file must stay inside app/.
-  return file === APP_DIR || file.startsWith(APP_DIR + sep) ? file : null;
+  // `${urlPath}/` also matches a mounted folder without its slash (`/setlist/app`).
+  const mount = MOUNTS.find(([prefix]) => `${urlPath}/`.startsWith(prefix));
+  if (!mount) return null;
+  const [prefix, dir] = mount;
+  const file = resolve(dir, decodeURIComponent(urlPath.slice(prefix.length)));
+  // Refuse `..` tricks: the file must stay inside its folder.
+  return file === dir || file.startsWith(dir + sep) ? file : null;
 }
 
 async function handle(req, res) {
@@ -46,18 +56,26 @@ async function handle(req, res) {
     return;
   }
 
-  // The website root redirects to the app, like `site/` does in production.
-  if (pathname === '/' || pathname === '/setlist' || pathname === '/setlist/' || pathname === '/setlist/app') {
-    res.writeHead(302, { Location: APP_PATH }).end();
+  // The server root leads to the website (site/ itself redirects to the app).
+  if (pathname === '/' || pathname === '/setlist') {
+    res.writeHead(302, { Location: SITE_PATH }).end();
     return;
   }
 
   try {
-    let file = pathname.startsWith(APP_PATH) ? fileFor(pathname) : null;
-    if (file && (await stat(file)).isDirectory()) file = join(file, 'index.html');
+    let file = fileFor(pathname);
+    if (file && (await stat(file)).isDirectory()) {
+      // Like GitHub Pages: a folder without its trailing slash redirects to the
+      // folder, so relative URLs on its page resolve inside it.
+      if (!pathname.endsWith('/')) {
+        res.writeHead(302, { Location: `${pathname}/` }).end();
+        return;
+      }
+      file = join(file, 'index.html');
+    }
     // Like GitHub Pages: a file name followed by a slash is not found.
     else if (pathname.endsWith('/')) file = null;
-    if (!file) throw new Error('outside the app');
+    if (!file) throw new Error('outside the website');
     const body = await readFile(file);
     res.writeHead(200, {
       'Content-Type': CONTENT_TYPES[extname(file)] ?? 'application/octet-stream',

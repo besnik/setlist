@@ -13,3 +13,11 @@ test('the app opens and shows Setlist', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Setlist' })).toBeVisible();
   expect(errors).toEqual([]);
 });
+
+// Rule (app-shell.md, Start and address): the website root leads to the app.
+test('the website root opens the app', async ({ page }) => {
+  await page.goto('/setlist/');
+
+  await expect(page).toHaveURL(/\/setlist\/app\/$/);
+  await expect(page.getByRole('heading', { name: 'Setlist' })).toBeVisible();
+});

@@ -56,6 +56,8 @@ main.js  →  ui  →  data  →  domain
 | `https://besnik.github.io/setlist/` | From `site/`: a redirect to the app; later a signpost page (what Setlist is, links to the app and the guide). |
 | `https://besnik.github.io/setlist/guide/` | From `guide/` (after the MVP): the user guide. |
 
+**Deployment:** every merge to `main` runs the workflow `.github/workflows/deploy.yml`: the check and all tests again, then it assembles the site (`site/` → `/setlist/`, `app/` → `/setlist/app/`) and publishes it to GitHub Pages. The dev server serves the same paths.
+
 Storage and installed apps belong to the origin `https://besnik.github.io`; see [ADR 0005](docs/decisions/0005-dev-tooling-tests-and-deployment.md) for what that means.
 
 ## Parts and tests
@@ -68,4 +70,4 @@ Each part of the app, its technology and how to run its tests (golden principle 
 | `tools/` | Node.js scripts (development only) | `tests/tools` (`node --test`) | `npm run test:unit` |
 | **All** | | | `npm test` |
 
-Other commands: `npm start` (dev server at `http://localhost:8080/setlist/app/`, also reachable from phones in the same network), `npm run check` (project rules: layer and part imports, file header comments). First run `npm install` once (Node.js 22 or newer).
+Other commands: `npm start` (dev server at `http://localhost:8080/setlist/app/`, with `site/` at `/setlist/`, also reachable from phones in the same network), `npm run check` (project rules: layer and part imports, file header comments). First run `npm install` once (Node.js 22 or newer).

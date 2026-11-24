@@ -1,6 +1,6 @@
 // Tests of the dev server (tools/serve.js): it serves app/ at the production path
-// /setlist/app/ with correct content types (ADR 0005), never serves files outside
-// app/, and survives malformed requests.
+// /setlist/app/ and site/ at /setlist/ with correct content types (ADR 0005),
+// never serves files outside them, and survives malformed requests.
 
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
@@ -29,21 +29,29 @@ async function raw(target) {
   await once(socket, 'close');
 }
 
-// Rule: the app is served at /setlist/app/ with correct content types; the site root redirects to it.
+// Rule: the app is served at /setlist/app/ with correct content types; site/ at /setlist/.
 test('serves the app at its production path', async () => {
   const page = await fetch(`${base}/setlist/app/`);
   assert.equal(page.status, 200);
   assert.match(page.headers.get('content-type'), /^text\/html/);
   const script = await fetch(`${base}/setlist/app/src/main.js`);
   assert.match(script.headers.get('content-type'), /^text\/javascript/);
-  const root = await fetch(`${base}/`, { redirect: 'manual' });
-  assert.equal(root.status, 302);
-  assert.equal(root.headers.get('location'), '/setlist/app/');
+  const site = await fetch(`${base}/setlist/`);
+  assert.equal(site.status, 200);
+  assert.match(await site.text(), /url=app\//);
+  for (const [path, location] of [['/', '/setlist/'], ['/setlist', '/setlist/'], ['/setlist/app', '/setlist/app/']]) {
+    const response = await fetch(`${base}${path}`, { redirect: 'manual' });
+    assert.equal(response.status, 302, path);
+    assert.equal(response.headers.get('location'), location, path);
+  }
 });
 
-// Rule: no file outside app/ is served, even with encoded `..` segments.
-test('does not serve files outside app/', async () => {
-  for (const path of ['/setlist/app/..%2fpackage.json', '/setlist/app/..%5cpackage.json', '/setlist/app/%2e%2e/package.json']) {
+// Rule: no file outside app/ and site/ is served, even with encoded `..` segments.
+test('does not serve files outside app/ and site/', async () => {
+  for (const path of [
+    '/setlist/app/..%2fpackage.json', '/setlist/app/..%5cpackage.json', '/setlist/app/%2e%2e/package.json',
+    '/setlist/..%2fpackage.json', '/setlist/%2e%2e/package.json', '/package.json',
+  ]) {
     assert.equal((await fetch(`${base}${path}`)).status, 404, path);
   }
 });
