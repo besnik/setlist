@@ -1,10 +1,10 @@
 // Unit tests of the project check (tools/check.js): the rules in ARCHITECTURE.md
 // that the check enforces — header comments, part isolation, app layers and the
-// files HTML and CSS load.
+// files HTML and CSS load, and HTML written into the page only by the renderer.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { assetProblems, assetReferencesOf, headerProblem, importProblems, importsOf } from '../../tools/check.js';
+import { assetProblems, assetReferencesOf, headerProblem, importProblems, importsOf, rawHtmlProblems } from '../../tools/check.js';
 
 const all = () => true;
 
@@ -63,4 +63,14 @@ test('HTML and CSS load only existing files of their own part', () => {
   assert.match(assetProblems('app/index.html', '<script src="/src/main.js"></script>', all)[0], /root path/);
   assert.match(assetProblems('app/styles/a.css', '@import "../../site/x.css";', all)[0], /another part/);
   assert.match(assetProblems('app/styles/a.css', 'src: url(../assets/missing.woff2);', () => false)[0], /does not exist/);
+});
+
+// Only the renderer (app/src/ui/html.js) writes HTML into the page; reading it or a comment is fine.
+test('app code writes HTML only through the renderer', () => {
+  assert.match(rawHtmlProblems('app/src/ui/songs.js', `list.innerHTML = '<li>' + title;`)[0], /html`…` template/);
+  assert.match(rawHtmlProblems('app/src/ui/songs.js', `el.insertAdjacentHTML('beforeend', x);`)[0], /insertAdjacentHTML/);
+  assert.match(rawHtmlProblems('app/src/main.js', `document.write(x);`)[0], /document\.write/);
+  assert.deepEqual(rawHtmlProblems('app/src/ui/html.js', `element.innerHTML = template.value;`), []);
+  assert.deepEqual(rawHtmlProblems('app/src/ui/songs.js', `// never set innerHTML = x\nif (el.innerHTML === '') el.textContent = 'x';`), []);
+  assert.deepEqual(rawHtmlProblems('tests/app/unit/x.test.js', `el.innerHTML = x;`), []);
 });
