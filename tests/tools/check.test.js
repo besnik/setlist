@@ -1,10 +1,14 @@
 // Unit tests of the project check (tools/check.js): the rules in ARCHITECTURE.md
 // that the check enforces — header comments, part isolation, app layers and the
-// files HTML and CSS load, and HTML written into the page only by the renderer.
+// files HTML and CSS load, HTML written into the page only by the renderer, the
+// offline file list of the service worker and a new version for every app change.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { assetProblems, assetReferencesOf, headerProblem, importProblems, importsOf, rawHtmlProblems } from '../../tools/check.js';
+import {
+  assetProblems, assetReferencesOf, headerProblem, importProblems, importsOf, offlineFilesOf, offlineListProblems,
+  rawHtmlProblems, versionOf, versionProblems,
+} from '../../tools/check.js';
 
 const all = () => true;
 
@@ -73,4 +77,33 @@ test('app code writes HTML only through the renderer', () => {
   assert.deepEqual(rawHtmlProblems('app/src/ui/html.js', `element.innerHTML = template.value;`), []);
   assert.deepEqual(rawHtmlProblems('app/src/ui/songs.js', `// never set innerHTML = x\nif (el.innerHTML === '') el.textContent = 'x';`), []);
   assert.deepEqual(rawHtmlProblems('tests/app/unit/x.test.js', `el.innerHTML = x;`), []);
+});
+
+// The offline list and the version are read from the service worker; commented-out entries do not count.
+test('offline list and version are read from sw.js', () => {
+  const source = `const VERSION = '2026.11.30';\nconst FILES = [\n  'index.html',\n  // 'old.js',\n  "src/main.js",\n];`;
+  assert.deepEqual(offlineFilesOf(source), ['index.html', 'src/main.js']);
+  assert.equal(versionOf(source), '2026.11.30');
+  assert.equal(offlineFilesOf('const VERSION = "1";'), null);
+  assert.equal(versionOf('const FILES = [];'), null);
+});
+
+// Rule (install-offline.md, Offline): every published app file is stored; sw.js and documentation are not.
+test('offline list matches the published files of the app', () => {
+  const files = ['app/index.html', 'app/sw.js', 'app/src/main.js', 'app/assets/fonts/README.md', 'app/assets/fonts/OFL-x.txt'];
+  assert.deepEqual(offlineListProblems(['index.html', 'src/main.js'], files), []);
+  assert.match(offlineListProblems(['index.html'], files)[0], /app\/src\/main\.js is missing from the offline file list/);
+  assert.match(offlineListProblems(['index.html', 'src/main.js', 'gone.js'], files)[0], /names 'gone\.js', which is not a published file/);
+  assert.match(offlineListProblems(['index.html', 'src/main.js', 'sw.js'], files)[0], /names 'sw\.js'/);
+  assert.match(offlineListProblems(['index.html', 'src/main.js', 'assets/fonts/README.md'], files)[0], /names 'assets\/fonts\/README\.md'/);
+  assert.match(offlineListProblems(null, files)[0], /no offline file list found/);
+});
+
+// Rule (install-offline.md, Updates): a change under app/ must come with a new version.
+test('a change under app/ changes the version', () => {
+  assert.deepEqual(versionProblems(['docs/a.md', 'tools/check.js'], '1', '1', 'origin/main'), []);
+  assert.deepEqual(versionProblems(['app/src/main.js'], '2', '1', 'origin/main'), []);
+  assert.deepEqual(versionProblems(['app/sw.js'], '1', null, 'HEAD^'), []); // the worker is new in the base
+  assert.match(versionProblems(['app/src/main.js'], '1', '1', 'origin/main')[0], /changed against origin\/main \(app\/src\/main\.js\), but VERSION is still '1'/);
+  assert.match(versionProblems(['app/README.md'], '1', '1', 'HEAD^')[0], /against HEAD\^/);
 });

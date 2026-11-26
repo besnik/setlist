@@ -1,5 +1,8 @@
 # Runs the project check and all tests on every pull request (ADR 0005).
 # The deploy workflow calls it too, before publishing.
+# The check's version rule compares app/ with a base: origin/main on a pull
+# request, the parent commit HEAD^ on deploy (which also catches two pull
+# requests that merged with the same version).
 name: CI
 
 on:
@@ -14,6 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+      - if: github.event_name == 'pull_request'
+        run: git fetch --no-tags --depth=1 origin main:refs/remotes/origin/main
       - uses: actions/setup-node@v7
         with:
           node-version: 22
@@ -21,4 +28,6 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium webkit
       - run: npm run check
+        env:
+          CHECK_VERSION_BASE: ${{ github.event_name == 'pull_request' && 'origin/main' || 'HEAD^' }}
       - run: npm test

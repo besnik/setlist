@@ -58,7 +58,7 @@ Spec: [install-offline.md](docs/product-specs/install-offline.md).
 - It holds the **offline file list** (every published file of the app except `sw.js` and documentation) and the **version** (`VERSION`, format `YYYY.MM.DD`, `.2`, `.3` for more releases on one day), which names the cache.
 - On install it downloads every file past the HTTP cache and stores them only when all arrived; one failure fails the install, so the app keeps its current version. It answers the app's requests from its own version's cache (cache-first). On activate it removes older caches.
 - A new version is used from the next start: the browser activates the new worker only when no page of the app is open (no `skipWaiting`, no forced reload).
-- **Every change to a file under `app/` changes `VERSION`, and every new file goes into the offline list** — without a build there are no content hashes. (A check for both is task T-023.)
+- **Every change to a file under `app/` changes `VERSION`, and every new file goes into the offline list** — without a build there are no content hashes. `npm run check` enforces both: the offline list must match the files under `app/`, and when a file under `app/` differs from the base, `VERSION` must differ too. The base is `origin/main` on a pull request and the parent commit `HEAD^` on deploy (which also catches two pull requests merged with the same version); locally it is `origin/main` (or `CHECK_VERSION_BASE`), and the rule is skipped with a note when that is missing — run `git fetch origin main` first.
 - **Development:** on `localhost` the worker is not registered (and one left from an earlier visit is removed), so a reload always shows edited files. `?sw` in the address turns it on there; the e2e tests of offline and updates (`tests/app/e2e/offline.spec.js`, Chromium only) use it with their own small server that can publish a new version, fail a file or stop.
 
 ## Addresses
@@ -83,4 +83,4 @@ Each part of the app, its technology and how to run its tests (golden principle 
 | `tools/` | Node.js scripts (development only) | `tests/tools` (`node --test`) | `npm run test:unit` |
 | **All** | | | `npm test` |
 
-Other commands: `npm start` (dev server at `http://localhost:8080/setlist/app/`, with `site/` at `/setlist/`, also reachable from phones in the same network), `npm run check` (project rules: layer and part imports, files loaded by HTML and CSS, file header comments, HTML written into the page only by `ui/html.js`). First run `npm install` once (Node.js 22 or newer).
+Other commands: `npm start` (dev server at `http://localhost:8080/setlist/app/`, with `site/` at `/setlist/`, also reachable from phones in the same network), `npm run check` (project rules: layer and part imports, files loaded by HTML and CSS, file header comments, HTML written into the page only by `ui/html.js`, the offline file list and a new version for every app change). First run `npm install` once (Node.js 22 or newer).
