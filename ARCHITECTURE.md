@@ -47,7 +47,8 @@ main.js  →  ui  →  data  →  domain
 - Tests may import anything; `tools/` import nothing from `app/`.
 - **domain** — data types (JSDoc), validation, chord detection, setlist operations. Fully unit-testable in Node.
 - **data** — repositories. Validate everything read from storage (golden principle *Validate at the boundary*). Functions are asynchronous (return promises).
-- **ui** — views are functions *state → HTML* built with our own `html` tagged template (`ui/html.js`), which escapes every value by default; only its `render()` writes HTML into the page. One delegated listener per event type (`ui/events.js`) maps `data-action` attributes to actions. Routing uses the URL hash.
+- **ui** — views are functions *state → HTML* built with our own `html` tagged template (`ui/html.js`), which escapes every value by default; only its `render()` writes HTML into the page. One delegated listener per event type (`ui/events.js`) maps `data-action` attributes to actions; key presses not tied to an element (Escape) go through `onKeys` in the same module.
+- **Routing** uses the URL hash: `ui/router.js` turns a hash into a route (`#/song/<id>` → the Song view, with the id encoded; anything else → the Songs screen) and builds song addresses. `main.js` shows the route's screen on start and on every `hashchange`, so links, Back, reload and the Android back gesture need no extra code. It also keeps the Songs screen state (search text, scroll position) in memory and restores the scroll itself (`history.scrollRestoration = 'manual'`).
 - A service layer is added only when real cross-cutting logic appears.
 
 ## Offline and updates

@@ -14,7 +14,7 @@
 // Change on every release: the browser installs a new worker only when this file
 // changes, and the cache name keeps versions apart. Format: date of the change,
 // YYYY.MM.DD (.2, .3 for more releases on one day).
-const VERSION = '2026.11.26';
+const VERSION = '2026.11.26.2';
 const CACHE = `setlist-${VERSION}`;
 
 // Every published file of the app except this worker and documentation (README,
@@ -29,6 +29,8 @@ const FILES = [
   'src/domain/songs.js',
   'src/ui/events.js',
   'src/ui/html.js',
+  'src/ui/router.js',
+  'src/ui/song-view.js',
   'src/ui/songs-view.js',
   'styles/base.css',
   'styles/components.css',
@@ -37,6 +39,7 @@ const FILES = [
   'assets/fonts/bricolage-grotesque-700.woff2',
   'assets/fonts/dm-sans-400.woff2',
   'assets/fonts/dm-sans-600.woff2',
+  'assets/fonts/jetbrains-mono-400.woff2',
   'assets/fonts/jetbrains-mono-700.woff2',
   'assets/icons/apple-touch-icon-180.png',
   'assets/icons/icon-192.png',

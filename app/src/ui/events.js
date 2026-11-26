@@ -33,3 +33,21 @@ export function delegate(root, type, actions) {
   root.addEventListener(type, listener);
   return () => root.removeEventListener(type, listener);
 }
+
+/**
+ * Listens for key presses on `target` and calls the action named by the key
+ * (`event.key`, e.g. 'Escape'). Keys are not tied to an element, so they do not
+ * use data-action; a press with a modifier key or during text composition (an
+ * input method editor) is left to the browser.
+ * @param {EventTarget} target usually `document`
+ * @param {Record<string, (event: KeyboardEvent) => void>} actions key → function
+ * @returns {() => void} stops listening
+ */
+export function onKeys(target, actions) {
+  const listener = (event) => {
+    if (event.isComposing || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+    if (Object.hasOwn(actions, event.key)) actions[event.key](event);
+  };
+  target.addEventListener('keydown', listener);
+  return () => target.removeEventListener('keydown', listener);
+}

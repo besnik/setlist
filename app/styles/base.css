@@ -33,6 +33,11 @@ body {
   padding: var(--space-5) var(--gutter);
 }
 
+/* A stage screen starts with its sticky top bar at the very top (songs.md, Song view screen). */
+#app[data-screen="song"] {
+  padding-top: 0;
+}
+
 h1 {
   margin: 0;
   font-family: var(--font-display);

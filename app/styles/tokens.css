@@ -1,5 +1,5 @@
 /* Design tokens (docs/design/guidelines.md). Components use these custom properties
-   for colors, type, spacing and radius. Only tokens an M1 screen uses are defined;
+   for colors, type, spacing and radius. Only tokens a screen uses are defined;
    the rest are added with the screen that needs them. Light values are the default;
    dark values follow the system setting and switch without a reload. */
 
@@ -46,7 +46,9 @@
   --space-6: 32px;
   --radius-chip: 8px;
   --radius-card: 14px;
+  --radius-pill: 999px;
   --touch-min: 44px;
+  --touch-stage: 56px;
   --content-max: 720px;
   --gutter: var(--space-4);
 }
