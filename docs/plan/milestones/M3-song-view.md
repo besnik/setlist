@@ -1,6 +1,6 @@
 # M3 — Song view
 
-- **Status:** in-progress
+- **Status:** done
 - **Spec:** [songs.md — Song view](../../product-specs/songs.md#song-view-m3), [UX](../../product-specs/songs.md#song-view-screen-m3)
 
 ## Goal
@@ -28,7 +28,11 @@ Order: T-024 first. Then T-025, T-026 and T-027 can run in parallel — each cha
 | T-024 | Song view: hash router, rows as links (row states), `getSong(id)`, the Song view screen (stage top bar with ×, song header, sheet in mono without highlighting), close with ×, Back and Escape keeping the search text and scroll, unknown id → Songs screen, JetBrains Mono 400 in the offline list; e2e tests; ARCHITECTURE.md (router) updated | [Open and close, Content](../../product-specs/songs.md#song-view-m3), [UX](../../product-specs/songs.md#song-view-screen-m3) | done | [#37](https://github.com/besnik/setlist/pull/37) |
 | T-025 | Chord lines: `isChordLine` in `domain/` with unit tests for every example and counter-example of the rules; the sheet shows chord lines bold in the chord color; e2e check of one chord and one lyric line | [Chord lines](../../product-specs/songs.md#song-view-m3) | done | [#40](https://github.com/besnik/setlist/pull/40) |
 | T-026 | Font size: A− / A+ in the stage top bar, 12–32 px in steps of 2, default 16, disabled at the limits; a settings repository in `data/` (`localStorage`, validated, safe when storage is unavailable); e2e tests of the limits and of the size kept across songs and a reload; ARCHITECTURE.md (data: settings repository, first storage) updated | [Font size](../../product-specs/songs.md#song-view-m3) | done | [#41](https://github.com/besnik/setlist/pull/41) |
-| T-027 | Screen stays on: Screen Wake Lock while the Song view is shown, released on close, requested again when the page becomes visible; no error when unsupported (e2e) | [Screen stays on](../../product-specs/songs.md#song-view-m3) | in-progress | [#42](https://github.com/besnik/setlist/pull/42) |
+| T-027 | Screen stays on: Screen Wake Lock while the Song view is shown, released on close, requested again when the page becomes visible; no error when unsupported (e2e) | [Screen stays on](../../product-specs/songs.md#song-view-m3) | done | [#42](https://github.com/besnik/setlist/pull/42) |
+
+## End-of-milestone architecture check
+
+Done by the Engineering lead on 2026-11-26: the codebase is healthy, nothing blocks M4. Proposed cleanup tasks T-028–T-030 are in [M4](M4-song-format.md#cleanup-from-m3); two stale ARCHITECTURE.md notes were fixed right away; one design note for M6 went to [tech-debt.md](../tech-debt.md).
 
 ## CEO actions
 

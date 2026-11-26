@@ -13,7 +13,8 @@
 | T-027 implementation and tests | GM | n/a | n/a | n/a | n/a | not measured |
 | T-027 architecture check | engineering-lead | inherited | 78,340 | 0:45 | 4 | 0 blocking, 3 other (2 fixed, 1 to tech debt) |
 | T-027 light QA | qa-lead | inherited | 84,647 | 0:34 | 4 | 0 blocking, 2 other (both already handled) |
-| **Total** | | | **246,212** | **1:42** | **10** | |
+| M3 end-of-milestone architecture check | engineering-lead | inherited | 112,850 | 0:55 | 6 | 3 cleanup tasks proposed (T-028–T-030), 2 doc fixes, 1 tech-debt note |
+| **Total** | | | **359,062** | **2:37** | **16** | |
 
 ## What drove cost
 
