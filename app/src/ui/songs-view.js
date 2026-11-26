@@ -1,7 +1,8 @@
 // The Songs screen (product spec songs.md, "Song list" and "Search"): page header
 // with the song count, the search field, then the list or the empty state.
 // The list sits in its own element, so typing re-renders only the list and the
-// search field keeps its focus and cursor.
+// search field keeps its focus and cursor. The app version is filled in below the
+// list once the service worker has answered.
 
 import { html } from './html.js';
 import { songCountLabel } from '../domain/songs.js';
@@ -20,7 +21,16 @@ export function songsScreen({ songs, shown, query }) {
     <input class="search-field" type="search" placeholder="Search title, artist, key"
       aria-label="Search songs" autocomplete="off" value="${query}" data-action="search">
     <div id="song-list">${songList(shown)}</div>
+    <div id="app-version"></div>
   `;
+}
+
+/**
+ * The version line below the list (product spec install-offline.md, "Updates").
+ * @param {string} version
+ */
+export function versionLine(version) {
+  return html`<p class="version-line">Version ${version}</p>`;
 }
 
 /**

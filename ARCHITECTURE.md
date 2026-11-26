@@ -17,6 +17,7 @@ The repository holds **isolated parts**, one top-level folder each. Parts never 
 ```
 app/                  the PWA — published at /setlist/app/
   index.html
+  sw.js               service worker: offline use and updates (outside the layers)
   src/
     domain/           pure logic: no DOM, no storage, no browser APIs
     data/             storage and seed data — the only code that touches storage
@@ -48,6 +49,17 @@ main.js  →  ui  →  data  →  domain
 - **data** — repositories. Validate everything read from storage (golden principle *Validate at the boundary*). Functions are asynchronous (return promises).
 - **ui** — views are functions *state → HTML* built with our own `html` tagged template (`ui/html.js`), which escapes every value by default; only its `render()` writes HTML into the page. One delegated listener per event type (`ui/events.js`) maps `data-action` attributes to actions. Routing uses the URL hash.
 - A service layer is added only when real cross-cutting logic appears.
+
+## Offline and updates
+
+Spec: [install-offline.md](docs/product-specs/install-offline.md).
+
+- `app/sw.js` is a standalone classic script at the root of `app/`, outside the layers: it imports nothing and nothing imports it. `data/app-version.js` registers it (`./sw.js`, scope `/setlist/app/`) and asks it for the version shown below the song list.
+- It holds the **offline file list** (every published file of the app except `sw.js` and documentation) and the **version** (`VERSION`, format `YYYY.MM.DD`, `.2`, `.3` for more releases on one day), which names the cache.
+- On install it downloads every file past the HTTP cache and stores them only when all arrived; one failure fails the install, so the app keeps its current version. It answers the app's requests from its own version's cache (cache-first). On activate it removes older caches.
+- A new version is used from the next start: the browser activates the new worker only when no page of the app is open (no `skipWaiting`, no forced reload).
+- **Every change to a file under `app/` changes `VERSION`, and every new file goes into the offline list** — without a build there are no content hashes. (A check for both is task T-023.)
+- **Development:** on `localhost` the worker is not registered (and one left from an earlier visit is removed), so a reload always shows edited files. `?sw` in the address turns it on there; the e2e tests of offline and updates (`tests/app/e2e/offline.spec.js`, Chromium only) use it with their own small server that can publish a new version, fail a file or stop.
 
 ## Addresses
 
