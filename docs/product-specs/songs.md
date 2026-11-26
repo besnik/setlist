@@ -55,12 +55,14 @@ A stage screen: one song full screen, read while playing. The controls follow th
 **Chord lines** (provisional — replaced by the song format in M4)
 
 - Rule: chord lines are shown bold in the chord color; all other lines are shown as lyrics.
-- Rule: a line is a chord line when it contains at least one chord and every word on it (separated by spaces) is a chord or a bar mark. An empty line is not a chord line.
-- Rule: a chord is a root `A`–`H` (`H` is the Central European name of B; `B` is also accepted), optionally followed by `#` or `b`, then optionally by a quality and extensions, then optionally by a slash and a bass note. Examples that are chords: `C`, `Am`, `Ami`, `Hmi`, `F#m`, `Bb`, `G7`, `Cmaj7`, `Dsus4`, `Asus2`, `Gadd9`, `Bdim`, `Caug`, `C+`, `Em7b5`, `E7/G#`, `D/F#`, `C/H`.
-  - Qualities and extensions: `m`, `mi`, `min`, `maj`, `dim`, `aug`, `sus`, `add`, `+`, the numbers `2`, `4`, `5`, `6`, `7`, `9`, `11`, `13`, and `#` or `b` before a number (`7b9`, `7#5`).
+- Rule: a line is a chord line when it contains at least one chord and every word on it is a chord or a bar mark. Words are separated by one or more spaces or tabs; spaces at the start and end of the line are ignored. An empty line, or a line of only spaces, is not a chord line.
+- Rule: a chord is, in this order: a root `A`–`H` (`H` is the Central European name of B; `B` is also accepted); optionally `#` or `b`; any sequence (also none) of the qualities and extensions below, e.g. `m7`, `mi7`, `m7b5`, `7sus4`, `maj7`; optionally a slash and a bass note, which is a root with an optional `#` or `b` (`/G#`, `/Bb`, `/H`). Examples that are chords: `C`, `Am`, `Ami`, `Hmi`, `F#m`, `Bb`, `G7`, `Cmaj7`, `Dsus4`, `Asus2`, `Gadd9`, `Bdim`, `Caug`, `C+`, `Em7b5`, `E7/G#`, `D/F#`, `C/H`.
+  - Qualities and extensions: `m`, `mi`, `min`, `maj`, `dim`, `aug`, `sus`, `add`, `+`, the numbers `2`, `4`, `5`, `6`, `7`, `9`, `11`, `13`, and `#` or `b` directly before a number (`7b9`, `7#5`).
+  - Not chords in M3 (rare; the song format in M4 decides): `CM7` (capital `M` for major) and `C6/9` (a slash followed by a number). A line containing them is shown as a lyric line.
 - Rule: bar marks are `|`, `||`, `/`, `-`, a repeat count (`x2`, `2x`, `x3`, …) and `N.C.` (no chord). A line with bar marks only is not a chord line.
 - Rule: a lyric line whose words happen to look like chords only partly is a lyric line: `A man walks in` and `Am I wrong` contain words that are not chords.
-- Rule: letter case matters. The root is an upper-case letter and the quality is written as listed (`Am`, `Ami`, `Cmaj7`), so lyric words such as `a`, `am`, `be` or `add` are never chords.
+- Rule: letter case matters. The root is an upper-case letter and the quality is written as listed (`Am`, `Ami`, `Cmaj7`), so lyric words such as `a`, `v`, `am`, `be` or `add` are never chords.
+- Rule (accepted false positive): a lyric line made only of words that are chords, such as a line `A` or `Hm` or `E A`, is shown as a chord line. This is rare and harmless; M4 removes it.
 
 **Font size**
 
@@ -150,8 +152,8 @@ A stage screen ([guidelines](../design/guidelines.md#principles)): content first
 
 ```
 ┌────────────────────────────────┐
-│ ┌──┐               ┌──┐  ┌──┐  │  stage top bar, sticky: 72 px
-│ │× │               │A−│  │A+│  │  (8 px padding + 56 px buttons)
+│ ┌──┐               ┌──┐  ┌──┐  │  stage top bar, sticky: 73 px
+│ │× │               │A−│  │A+│  │  (8 + 56 + 8 px padding + 1 px border)
 │ └──┘               └──┘  └──┘  │
 ├────────────────────────────────┤  1 px --color-line
 │                                │  24 px
@@ -170,13 +172,14 @@ A stage screen ([guidelines](../design/guidelines.md#principles)): content first
 └────────────────────────────────┘
 ```
 
-- **Page:** the same column, gutters and background as every screen ([app shell](app-shell.md#ux-and-visual-design)). The Songs screen is replaced, not covered.
+- **Page:** the same column, gutters and background as every screen ([app shell](app-shell.md#ux-and-visual-design)), but **without the column's top padding**: the bar sits at the very top of the screen from the start. The Songs screen is replaced, not covered.
 - **Stage top bar:** sticky at the top (`position: sticky; top: 0`), full column width, `--color-bg` background (opaque, so the text scrolls under it unseen), 1 px `--color-line` bottom border, padding `--space-2` 0.
   - Left: the close button. Right: A− and A+ with a `--space-2` gap between them. Nothing in the middle — the title lives in the song header, so it can wrap.
 - **Stage button:** a new component (guidelines). 56 × 56 px (`--touch-stage`), `--radius-pill` (round), `--color-surface` background, no border, content in `--color-ink`.
   - Close: an × drawn as an inline SVG, 24 px, 2 px stroke, `currentColor`.
   - A− / A+: text in the `row` step (17 px, 600), with a real minus sign (−, U+2212).
-  - States: pressed — background `--color-line`; keyboard focus — 2 px `--color-accent` outline, offset 2 px; disabled — opacity 0.4, no press state.
+  - Names: each button has a name shown as a tooltip with a mouse — "Close", "Smaller text", "Larger text".
+  - States: pressed — background `--color-line`; keyboard focus — 2 px `--color-accent` outline, offset 2 px; disabled — opacity 0.4, no press state (a disabled button loses keyboard focus — accepted).
 - **Song header:** the title in the `title` step (wraps, no ellipsis); below it, `--space-1` apart, a row with the artist (`small`, muted) and the key chip, `--space-2` gap, wrapping when needed. The header scrolls with the text.
 - **Song sheet:** directly on `--color-bg`, no card. `--space-5` between the header and the sheet.
   - All lines in `--font-mono`, size from the user's choice (`--sheet-size`, 12–32 px, default 16 px), line height 1.5, `white-space: pre-wrap` and `overflow-wrap: anywhere` (keeps spaces, wraps long lines, never widens the page).
@@ -204,11 +207,11 @@ A stage screen ([guidelines](../design/guidelines.md#principles)): content first
 
 Song view (M3):
 
-- **Routing:** the first router (`ui/`, URL hash, ARCHITECTURE.md): `#/song/<id>` shows the Song view, anything else the Songs screen. Rows are links (`<a href="#/song/<id>">`), so Back, reload and the Android back gesture work without extra code. The × goes `history.back()` when the Song view was opened from the Songs screen in this app, otherwise it replaces the address with the Songs screen. The Songs screen state (search text, scroll position) is kept in memory while the app is open.
+- **Routing:** the first router (`ui/`, URL hash, ARCHITECTURE.md): `#/song/<id>` shows the Song view, anything else the Songs screen. Rows are links (`<a href="#/song/<id>">`), so Back, reload and the Android back gesture work without extra code. Song ids in addresses are encoded (`encodeURIComponent`), so ids created in M5 stay safe. The × goes `history.back()` when the Song view was opened from the Songs screen in this app, otherwise it replaces the address with the Songs screen. Escape does exactly what × does (a `keydown` handler through `ui/events.js`). The Songs screen state (search text, scroll position) is kept in memory while the app is open; set `history.scrollRestoration = 'manual'` and scroll the Song view to the top on open, so the browser's own scroll restore does not fight the remembered position.
 - **Repository:** `getSong(id)` in `data/song-repository.js` (asynchronous, returns a copy or `null`).
 - **Chord lines:** `isChordLine(line)` in `domain/` (pure, unit tests with every example of the rules above, also the counter-examples). Provisional: M4 replaces it with the song format, so keep it small and do not build other features on it.
 - **Font size:** a small settings repository in `data/` reads and writes the size in `localStorage` (first storage of the app). It validates what it reads (even number 12–32, else 16) and never throws when storage is unavailable. One setting does not decide the storage of songs (M5, its own decision); `localStorage` is enough for a preference. The size is a CSS custom property `--sheet-size` on the sheet; the limits and the step are domain constants.
-- **Screen stays on:** Screen Wake Lock API (`navigator.wakeLock.request('screen')`), only while the Song view is shown; released when it closes; requested again on `visibilitychange` when the page becomes visible (the browser releases it when the page is hidden). Feature-detect, ignore errors. Browser API code sits in `ui/` (the view's side effect), not in `domain/`. Supported in Chrome/Edge and in Safari on iPhone from iOS 16.4 (in a home-screen app from iOS 18.4).
+- **Screen stays on:** needs a secure context (`https` or `localhost`) — on a phone it works only on the deployed site, not through the dev server's LAN address. Screen Wake Lock API (`navigator.wakeLock.request('screen')`), only while the Song view is shown; released when it closes; requested again on `visibilitychange` when the page becomes visible (the browser releases it when the page is hidden). Feature-detect, ignore errors. Browser API code sits in `ui/` (the view's side effect), not in `domain/`. Supported in Chrome/Edge and in Safari on iPhone from iOS 16.4 (in a home-screen app from iOS 18.4).
 - **Fonts:** the sheet's lyric lines need JetBrains Mono 400 — a fifth WOFF2 file in `app/assets/fonts/` (same subset as the others), in the offline file list.
 - **Tests:** e2e for opening (tap, address, unknown id), closing (×, Back, Escape, direct address) with the search text and scroll kept, no horizontal scroll at 320 px with the longest sample line at 32 px, chord lines styled, font size limits and memory across a reload. The screen lock cannot be checked by a test in Playwright beyond "no error when unsupported" — the CEO checks it on a phone.
 

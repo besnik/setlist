@@ -39,7 +39,7 @@ Provisional — taken from the prototype. The CEO decided to keep them through t
 | `--color-muted` | `#677081` | `#9aa1ad` | Secondary text (artist, count, hints, placeholder) |
 | `--color-line` | `#e1e4e9` | `#2a2f38` | Borders and dividers (decorative only) |
 | `--color-accent` | `#e8501f` | `#ff7a4d` | Focus ring; later primary actions (next, save) |
-| `--color-chord` | `#c2410c` | `#ffa27d` | Key chip text; later chord lines |
+| `--color-chord` | `#c2410c` | `#ffa27d` | Key chip text; chord lines of the song sheet (from M3) |
 | `--color-tint` | `#fdece5` | `#2a1a14` | Key chip background |
 | `--color-danger` | `#c8372a` | `#ff6b5e` | Destructive actions (from M5; unused in M1) |
 
@@ -66,7 +66,7 @@ Fonts are self-hosted (see *Fonts*). Each stack falls back to system fonts.
 |---|---|
 | `--font-display` | `"Bricolage Grotesque", system-ui, sans-serif` — screen headings |
 | `--font-body` | `"DM Sans", system-ui, sans-serif` — all UI text |
-| `--font-mono` | `"JetBrains Mono", ui-monospace, monospace` — key chips; later chords and song text |
+| `--font-mono` | `"JetBrains Mono", ui-monospace, monospace` — key chips; the song sheet (from M3) |
 
 Type scale. Each step is a set of size, weight and line-height tokens, e.g. `--text-title-size`, `--text-title-weight`, `--text-title-leading`.
 
