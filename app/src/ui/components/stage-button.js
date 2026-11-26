@@ -1,15 +1,15 @@
 // Stage button (product spec songs.md, "Song view screen (M3)"): a round 56 px
 // button for stage screens, one tap on stage. Its name is the accessible name and
-// the tooltip shown with a mouse.
+// the tooltip shown with a mouse. A disabled button is shown faded and ignores taps.
 
 import { html } from '../html.js';
 
 /**
- * @param {{ name: string, action: string, content: ReturnType<typeof html> | string }} button
+ * @param {{ name: string, action: string, content: ReturnType<typeof html> | string, disabled?: boolean }} button
  *   name: e.g. 'Close'; action: the data-action of the click (ui/events.js); content: icon or text
  */
-export function stageButton({ name, action, content }) {
-  return html`<button class="stage-button" type="button" aria-label="${name}" title="${name}" data-action="${action}">${content}</button>`;
+export function stageButton({ name, action, content, disabled = false }) {
+  return html`<button class="stage-button" type="button" aria-label="${name}" title="${name}" data-action="${action}" ${disabled && 'disabled'}>${content}</button>`;
 }
 
 /** The close icon: an × drawn as a 24 px line icon in the text color. */

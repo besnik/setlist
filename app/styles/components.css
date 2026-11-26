@@ -16,7 +16,7 @@
 }
 
 /* Stage top bar: sticky at the top of a stage screen; opaque, so the song text
-   scrolls under it unseen. Close on the left; the font size buttons come on the right. */
+   scrolls under it unseen. Close on the left; the font size buttons on the right. */
 .stage-bar {
   position: sticky;
   top: 0;
@@ -28,7 +28,14 @@
   background: var(--color-bg);
 }
 
-/* Stage button: a round 56 px button, one tap on stage. */
+/* The font size buttons, pushed to the right end of the bar. */
+.stage-bar__end {
+  display: flex;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+/* Stage button: a round 56 px button, one tap on stage; text content (A−, A+) in the row step. */
 .stage-button {
   display: inline-flex;
   flex-shrink: 0;
@@ -41,12 +48,21 @@
   border-radius: var(--radius-pill);
   background: var(--color-surface);
   color: var(--color-ink);
+  font-size: var(--text-row-size);
+  font-weight: var(--text-row-weight);
+  line-height: var(--text-row-leading);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 
-.stage-button:active {
+.stage-button:active:not(:disabled) {
   background: var(--color-line);
+}
+
+/* Disabled (a font size limit): faded, no press state. */
+.stage-button:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 
 .stage-button:focus-visible {
