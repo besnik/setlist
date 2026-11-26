@@ -79,7 +79,7 @@ Type scale. Each step is a set of size, weight and line-height tokens, e.g. `--t
 | `chip` | mono | 13 px | 700 | 1 | Key chip |
 
 - Inputs are 16 px or larger, otherwise iPhone Safari zooms in on focus.
-- Stage screens add their own steps (song text 12–32 px) in M3.
+- Stage screens: the song sheet uses `--font-mono` at the size the user chooses (`--sheet-size`, 12–32 px in steps of 2, default 16 px), line height 1.5; lyric lines 400 in `--color-ink`, chord lines 700 in `--color-chord` (from M3; layout in [songs.md](../product-specs/songs.md#song-view-screen-m3)).
 
 ### Spacing, shape, sizes
 
@@ -103,16 +103,17 @@ Type scale. Each step is a set of size, weight and line-height tokens, e.g. `--t
 ## Fonts
 
 - Served by the app as **WOFF2** files from `app/assets/fonts/` (how they were made: its README) and loaded with `@font-face` (`font-display: swap`). Nothing comes from Google Fonts or another site.
-- Only the files that screens use. In M1 there are four, with no italics:
+- Only the files that screens use, with no italics. In M1 there are four, from M3 five:
 
 | Family | Weight | Used for |
 |---|---|---|
 | Bricolage Grotesque | 700 | `title` |
 | DM Sans | 400 | `body`, `small` |
 | DM Sans | 600 | `row` |
-| JetBrains Mono | 700 | `chip` (and later the bold chord lines, so the same file is reused) |
+| JetBrains Mono | 700 | `chip`, chord lines of the song sheet (from M3) |
+| JetBrains Mono | 400 | Lyric lines of the song sheet (from M3) |
 
-- Later: JetBrains Mono 400 for song text (M3), if song text uses mono. Add a file only when a screen needs it.
+- From M3: JetBrains Mono 400 for the lyric lines of the song sheet (a fifth file). Add a file only when a screen needs it.
 - The fonts are under the SIL Open Font License: its license file ships next to the font files.
 - Subset: Latin and Latin Extended (Central European letters such as č, ľ, ň). Glyphs a font does not have fall back to the system font.
 
@@ -150,7 +151,10 @@ Type scale. Each step is a set of size, weight and line-height tokens, e.g. `--t
   - The artist uses `small` in `--color-muted`, 2 px below the title, and reads "Unknown artist" when empty.
   - Both stay on one line (`white-space: nowrap; overflow: hidden; text-overflow: ellipsis`).
 - **Key chip:** `chip` in `--color-chord` on `--color-tint`, padding `--space-1` `--space-2`, `--radius-chip`. It is left out when the song has no key.
-- **States in M1:** only the default state. Rows are not interactive: no hover, press or pointer cursor. Those arrive with *Song view* (M3).
+- **States in M1:** only the default state; rows are not interactive.
+- **From M3:** the whole row is a link that opens the Song view (no underline, colors as above).
+  - Pointer cursor. Hover (mouse) and pressed: background `--color-line`.
+  - Keyboard focus: 2 px `--color-accent` outline, offset 2 px.
 
 ### Empty state
 
@@ -163,5 +167,6 @@ Type scale. Each step is a set of size, weight and line-height tokens, e.g. `--t
 Specified with their milestone; the look comes from the [prototype reference](prototype-reference.md):
 
 - **Tab bar** (M6): fixed at the bottom, Songs / Setlists, slightly translucent with blur, targets ≥ `--touch-min`.
-- **Play bars** (M3, M7): a top bar (close, context, A−, A+, edit) and a bottom bar with big previous / next buttons (64 px, next in accent) and the position between them. All are stage controls, ≥ `--touch-stage`.
+- **Stage top bar and stage button** (M3): specified in [songs.md](../product-specs/songs.md#song-view-screen-m3) — a sticky bar with round 56 px buttons (close, A−, A+). Move them here when a second screen (play mode) uses them.
+- **Play bars** (M7): the stage top bar gains context and edit; a bottom bar with big previous / next buttons (64 px, next in accent) and the position between them. All are stage controls, ≥ `--touch-stage`.
 - **Dialogs and forms** (M5): `--radius-dialog`, pill buttons ≥ `--touch-min` high, danger color for delete.

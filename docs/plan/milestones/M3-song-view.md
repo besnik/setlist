@@ -1,6 +1,7 @@
 # M3 — Song view
 
-- **Status:** not started — spec and tasks are written when M2 is done
+- **Status:** in-progress
+- **Spec:** [songs.md — Song view](../../product-specs/songs.md#song-view-m3), [UX](../../product-specs/songs.md#song-view-screen-m3)
 
 ## Goal
 
@@ -8,15 +9,32 @@ Tap a song in the list and read it full screen, as on stage: lyrics with chords,
 
 ## Try it
 
-Open *House of the Rising Sun* on the tablet, make the text bigger with A+, close it, open another song: the size is remembered.
+Open *House of the Rising Sun* on the tablet, make the text bigger with A+, close it, open another song: the size is remembered. Leave the song open for a few minutes: the screen does not turn off.
 
 ## Scope
 
-- Full-screen view of one song: title, artist, key, the chord sheet.
-- Chord lines detected and highlighted (provisional rendering of the "chords over lyrics" text; replaced in M4).
-- Big A− / A+ buttons, size remembered across songs and restarts; close button.
+- Full-screen view of one song: title, artist, key, the chord sheet; its own address, closed with ×, Back or Escape.
+- Chord lines detected and highlighted (provisional rendering of the "chords over lyrics" text; replaced by the song format in M4).
+- Big A− / A+ buttons, size remembered across songs and restarts.
+- The screen stays on while a song is shown.
 - **One tap on stage:** every key control of the view is one tap away with a big touch target (design principle, see [design-lead](../../../.claude/agents/design-lead.md)).
+
+## Tasks
+
+Order: T-024 first. Then T-025, T-026 and T-027 can run in parallel — each changes the version in `sw.js`, so whichever merges later picks a new one.
+
+| ID | Task | Spec | Status | PR |
+|---|---|---|---|---|
+| T-024 | Song view: hash router, rows as links (row states), `getSong(id)`, the Song view screen (stage top bar with ×, song header, sheet in mono without highlighting), close with ×, Back and Escape keeping the search text and scroll, unknown id → Songs screen, JetBrains Mono 400 in the offline list; e2e tests; ARCHITECTURE.md (router) updated | [Open and close, Content](../../product-specs/songs.md#song-view-m3), [UX](../../product-specs/songs.md#song-view-screen-m3) | proposed | — |
+| T-025 | Chord lines: `isChordLine` in `domain/` with unit tests for every example and counter-example of the rules; the sheet shows chord lines bold in the chord color; e2e check of one chord and one lyric line | [Chord lines](../../product-specs/songs.md#song-view-m3) | proposed | — |
+| T-026 | Font size: A− / A+ in the stage top bar, 12–32 px in steps of 2, default 16, disabled at the limits; a settings repository in `data/` (`localStorage`, validated, safe when storage is unavailable); e2e tests of the limits and of the size kept across songs and a reload | [Font size](../../product-specs/songs.md#song-view-m3) | proposed | — |
+| T-027 | Screen stays on: Screen Wake Lock while the Song view is shown, released on close, requested again when the page becomes visible; no error when unsupported (e2e) | [Screen stays on](../../product-specs/songs.md#song-view-m3) | proposed | — |
+
+## CEO actions
+
+- From M2: install the app on the iPhone (Safari, *Share → Add to Home Screen*), turn on airplane mode, open it.
+- After T-027 is deployed: open a song on the phone and the iPhone and wait longer than the screen timeout — the screen stays on.
 
 ## Out of scope
 
-Previous / next song (M7), editing (M5), transposition (after the MVP).
+Previous / next song (M7), editing (M5), transposition (after the MVP), the song format (M4).
