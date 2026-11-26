@@ -53,7 +53,7 @@ Setlist is a Progressive Web App: it can be installed like an app and it works w
 
 **Offline**
 
-- Rule: given the app was opened once with a network and finished loading, when it is opened again without a network (airplane mode), then it starts and everything it offers works — the song list, search and the fonts — in the browser tab and in the installed app.
+- Rule: given the app was opened once with a network and finished loading, when it is opened again without a network (airplane mode), then it starts and everything it offers works — the song list, search and the fonts — in the browser tab and in the installed app. Exception: in a Safari tab on iPhone (not on the home screen), Safari may delete the stored app after about seven days without use; then the next visit needs a network again.
 - Rule: everything the app needs to start is stored on the device on the first visit; there are no files that load only later and might be missing offline.
 - Rule: the very first visit needs a network; if there is none, the browser shows its own error.
 - Rule: offline support covers only the app (`/setlist/app/`); the root of the website (`/setlist/`) is not part of it.
@@ -61,7 +61,7 @@ Setlist is a Progressive Web App: it can be installed like an app and it works w
 **Updates**
 
 - Rule: given a new version was published, when the app is opened with a network, then the new version downloads in the background; the screen the user is on is not interrupted and the page never reloads by itself.
-- Rule: the downloaded version is used from the next start of the app (after it was closed and opened again, or after a reload).
+- Rule: the downloaded version is used from the next start of the app: after every window and tab of the app has been closed and the app is opened again. A reload alone keeps the current version, and so does an open browser tab of the app while the installed app restarts.
 - Rule: given the download of a new version fails or is incomplete (for example the network drops), then the app keeps working in its current version and tries again on a later start.
 - Rule: given there is no network, then the app starts in the version it already has.
 - Rule *(if the CEO approves, see Open questions)*: the bottom of the Songs screen shows the app version in small muted text, e.g. `Version 2026.11.30`, so the user can see that an update has arrived.
@@ -114,10 +114,10 @@ phone (320–599 px)                     tablet / desktop (≥ 600 px)
 **App icon and install** *(draft — M2)*
 
 - Provisional icon until the CEO chooses the logo and brand colors: a rounded square in `--color-accent` (light value `#e8501f`) with a white bold "S" in Bricolage Grotesque 700, centered.
-- The "S" stays inside the central 80 % circle (safe zone), so Android can cut the icon into a circle, a squircle or a rounded square without cutting the letter. White on the accent is about 3.8 : 1, enough for one large bold letter.
+- The "S" stays inside the central 80 % circle (safe zone), so Android can cut the icon into a circle, a squircle or a rounded square without cutting the letter. White on the accent is 3.75 : 1, above the 3 : 1 minimum for large bold text.
 - Files (PNG, served by the app): 192 × 192 and 512 × 512 px with rounded corners (browsers, Windows); 512 × 512 px *maskable* — full bleed, square, no transparent corners — for Android, which cuts its own shape; 180 × 180 px full bleed for the iPhone home screen, which rounds the corners itself.
 - Name and short name: "Setlist".
-- Splash screen and window background (Android): `#0e1013` (dark `--color-bg`) — a short dark splash is harmless in daylight and never blinds on a dark stage. The window bar follows the theme through the existing `theme-color` meta tags.
+- Splash screen and window background (Android): `#0e1013` (dark `--color-bg`) — a short dark splash is harmless in daylight and never blinds on a dark stage. The manifest has no `theme_color`, so the window bar follows the theme through the existing `theme-color` meta tags. On Windows in light mode the window may show the dark background for a moment while starting — accepted.
 - iPhone: status bar in the default style (dark text on light, light text on dark), content below it — no `viewport-fit=cover` in M2.
 
 **Version line** *(only if approved, see Open questions)*
@@ -136,14 +136,15 @@ phone (320–599 px)                     tablet / desktop (≥ 600 px)
 
 - **Install and offline (M2)** — no new dependency, no build step and no change to the layers; no ADR needed: the cache strategy follows from this spec and [ADR 0004](../decisions/0004-tech-stack-and-architecture.md) / [ADR 0005](../decisions/0005-dev-tooling-tests-and-deployment.md). Record the service worker in [ARCHITECTURE.md](../../ARCHITECTURE.md) (layout and the check rules).
 - Manifest `app/manifest.webmanifest` with the values above (`display: standalone`, relative URLs only), linked from `index.html` with the iPhone tags (`apple-touch-icon`, `apple-mobile-web-app-title`).
-- `app/sw.js` is a standalone script at the root of `app/`, outside the layers (it is not imported by and imports nothing from `app/src`). Registered from `main.js` with a relative URL.
-- Strategy: on `install`, put the complete list of app files into a cache named after the version, and fail the install if any file fails (so a partial update never becomes active). Serve every request of the app cache-first; the navigation to `./` or `./index.html` is answered with `index.html`. On `activate`, delete caches of older versions.
-- Updates take effect on the next start: the new worker waits (no `skipWaiting()` while a page is open, no forced reload). Browsers check for a new `sw.js` on start; the dev and Pages servers must not let it be cached for long (GitHub Pages sends `max-age=600`, which is acceptable).
-- **Version** in one place, shared by the worker (cache name) and, if approved, the version line. Every change to a file under `app/` must change the version — without a build there are no content hashes. Format proposal: the date of the change, `YYYY.MM.DD` (with `.2`, `.3` for more releases on one day).
+- `app/sw.js` is a standalone classic script at the root of `app/`, outside the layers (it is not imported by and imports nothing from `app/src`), with a header comment. Registered from `main.js` as `navigator.serviceWorker.register('./sw.js')` — the URL resolves against the page, not the module.
+- Strategy: on `install`, put the complete list of app files into a cache named after the version, fetching each file with `{ cache: 'reload' }` so the HTTP cache cannot put old files under the new version's name, and fail the install if any file fails (so a partial update never becomes active). Serve every request of the app cache-first; the navigation to `./` or `./index.html` is answered with `index.html`. On `activate`, delete caches of older versions.
+- Updates take effect on the next start: the new worker waits until no page of the app is open (no `skipWaiting()`, no forced reload). Browsers check `sw.js` itself past the HTTP cache by default, so GitHub Pages' `max-age=600` does not delay the check; it only matters for the install fetches above.
+- **Version:** one constant `VERSION` in `app/sw.js` (so every release is also a byte change of the worker, which is what the browser compares). It names the cache. The version line, if approved, asks the active worker for it (`postMessage`) through a small function in `data/`; with no active worker (first visit, dev server) the line is not shown. Every change to a file under `app/` must change the version — without a build there are no content hashes. Format proposal: the date of the change, `YYYY.MM.DD` (with `.2`, `.3` for more releases on one day).
 - **Check** (new rules in `npm run check`, with messages that say how to fix):
   1. The offline file list in `app/sw.js` contains every file of the app that is published (all files under `app/` except `sw.js` itself and documentation such as `README.md` and licence texts, which must still be published), and nothing that does not exist.
-  2. When a file under `app/` differs from `origin/main`, the version must differ too. CI needs the history of `main` for this (`fetch-depth: 0` or a fetch of `main`); locally the rule is skipped with a note when `origin/main` is missing.
-- **Development:** a cache-first worker would hide edits behind the old cache. On `localhost` the app must show edited files after a reload (e.g. do not register the worker on the dev server unless a test asks for it). The e2e tests must be able to test offline in Chromium (Playwright `context.setOffline(true)`) and the update path.
+  2. When a file under `app/` differs from the base, the version must differ too. Base: `origin/main` on a pull request (CI fetches `main`); the parent commit `HEAD^` in the deploy workflow (`fetch-depth: 2`), which also catches two PRs that merged with the same version. Locally the rule is skipped with a note when the base is missing.
+  - The manifest is not covered by the existing rules 1 and 5 (JSON has no comments); its icon paths are checked by the T-021 e2e test.
+- **Development:** a cache-first worker would hide edits behind the old cache. On `localhost` the app must show edited files after a reload (e.g. do not register the worker on the dev server unless a test asks for it). The e2e tests test offline and updates in **Chromium only**: offline with `context.setOffline(true)` *and* all requests blocked (`context.route('**', (r) => r.abort())`, or the server stopped), because `setOffline` alone may not cover the worker's own requests; an update by closing all pages of the context and opening a new one; a failed update by blocking one file during the update and checking that the old version keeps working.
 - WebKit in Playwright does not cover the iPhone home screen; installing on Android and iPhone is tested by the CEO by hand on the deployed site.
 
 ## Out of scope
