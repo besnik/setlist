@@ -2,7 +2,8 @@
 // and shows it; closes with the close button or Escape. Back and the Android back
 // gesture need no code: they change the address and the router shows the list.
 // A− and A+ change the font size of the song text, the same for every song and
-// remembered on the device (data/settings-repository.js).
+// remembered on the device (data/settings-repository.js). While the view is shown,
+// the screen stays on (wake-lock.js).
 
 import { canGrowFontSize, canShrinkFontSize, largerFontSize, smallerFontSize } from '../../domain/font-size.js';
 import { getFontSize, setFontSize } from '../../data/settings-repository.js';
@@ -10,6 +11,7 @@ import { getSong } from '../../data/song-repository.js';
 import { delegate, onKeys } from '../events.js';
 import { render } from '../html.js';
 import { songView } from '../views/song-view.js';
+import { keepScreenOn } from '../wake-lock.js';
 
 /** @returns {import('../router.js').Screen} */
 export function createSongScreen() {
@@ -36,6 +38,7 @@ export function createSongScreen() {
       const stops = [
         delegate(root, 'click', { 'close-song': close, 'smaller-text': resize(smallerFontSize), 'larger-text': resize(largerFontSize) }),
         onKeys(document, { Escape: close }),
+        keepScreenOn(),
       ];
       return () => stops.forEach((stop) => stop());
     },

@@ -60,6 +60,7 @@ Decision: [ADR 0006](docs/decisions/0006-screens-views-and-components.md).
 ```
 app/src/ui/
   html.js, events.js  safe rendering; delegated events and keys
+  wake-lock.js        keeps the screen on (Screen Wake Lock), started and stopped by a screen
   routes.js           pure: address hash → route, song → address
   router.js           follows the address and shows one screen at a time
   screens/            one module per screen: state, actions, side effects
