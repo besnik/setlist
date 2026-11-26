@@ -20,6 +20,11 @@
 // 8. When a file under app/ differs from the base, VERSION in app/sw.js differs too.
 //    Base: $CHECK_VERSION_BASE (CI: origin/main on a pull request, HEAD^ on deploy),
 //    else origin/main. Skipped with a note when that base is missing locally.
+// 9. Views and components (app/src/ui/views/, app/src/ui/components/) are pure:
+//    state in, HTML out. They import only ui/html.js, ui/routes.js, other views
+//    and components, and the domain layer, and use no browser globals.
+// 10. app/src/main.js only wires the layers together: no state (let), no own
+//    functions, no event listeners, no rendering and no work with the address.
 
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -190,6 +195,51 @@ export function rawHtmlProblems(path, source) {
     `${path}: writes HTML directly ('${found.trim()}'). Build it with the html\`…\` template and insert it with render() from ${RENDERER}, which escape values (see ARCHITECTURE.md, "Layers of the app").`);
 }
 
+const PURE_UI_DIRS = ['app/src/ui/views/', 'app/src/ui/components/'];
+const PURE_UI_IMPORTS = ['app/src/ui/html.js', 'app/src/ui/routes.js', ...PURE_UI_DIRS, DOMAIN_DIR];
+const BROWSER_GLOBALS = /\b(?:window|document|location|history|navigator|localStorage|sessionStorage|indexedDB|fetch)\b/g;
+
+/**
+ * Checks rule 9: views and components only turn state into HTML. Loading data,
+ * reacting to events and other side effects belong to the screens (ui/screens/).
+ * @param {string} path repository-relative path with forward slashes
+ * @param {string} source file content
+ * @returns {string[]} problem messages
+ */
+export function pureViewProblems(path, source) {
+  if (!path.endsWith('.js') || !PURE_UI_DIRS.some((dir) => path.startsWith(dir))) return [];
+  const hint = 'Views and components are pure: state in, HTML out. Do loading, events and other side effects in a screen (app/src/ui/screens/) and pass the result in (see ARCHITECTURE.md, "Screens and routing").';
+  const problems = [];
+  for (const specifier of importsOf(source)) {
+    const target = posix.normalize(posix.join(posix.dirname(path), specifier));
+    if (!PURE_UI_IMPORTS.some((allowed) => target === allowed || (allowed.endsWith('/') && target.startsWith(allowed)))) {
+      problems.push(`${path}: imports '${specifier}'. ${hint}`);
+    }
+  }
+  const code = source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '').replace(/import\([^)]*\)/g, '');
+  for (const name of new Set(code.match(BROWSER_GLOBALS) ?? [])) {
+    problems.push(`${path}: uses '${name}'. ${hint}`);
+  }
+  return problems;
+}
+
+const MAIN = 'app/src/main.js';
+const MAIN_FORBIDDEN = /\blet\b|\bfunction\b|\baddEventListener\b|\bdelegate\(|\bonKeys\(|\brender\(|\bhistory\b|\blocation\b/g;
+
+/**
+ * Checks rule 10: start-up code stays small. Screen state, actions and routing
+ * belong to the screens and the router (ARCHITECTURE.md, "Screens and routing").
+ * @param {string} path repository-relative path with forward slashes
+ * @param {string} source file content
+ * @returns {string[]} problem messages
+ */
+export function mainProblems(path, source) {
+  if (path !== MAIN) return [];
+  const code = source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  return [...new Set(code.match(MAIN_FORBIDDEN) ?? [])].map((found) =>
+    `${MAIN}: uses '${found.replace('(', '')}'. main.js only wires the layers together: create the screens, start the router and the service worker. Put state, actions, rendering and work with the address into a screen (app/src/ui/screens/) or the router (see ARCHITECTURE.md, "Screens and routing").`);
+}
+
 /** Whether an app file is documentation, which is published but not stored offline. */
 export function isDocumentation(path) {
   return /\.(md|txt)$/i.test(path);
@@ -301,7 +351,7 @@ function main() {
     const source = readFileSync(join(ROOT, path), 'utf8');
     const header = headerProblem(path, source);
     const references = path.endsWith('.js') ? importProblems(path, source, exists) : assetProblems(path, source, exists);
-    return [...(header ? [header] : []), ...references, ...rawHtmlProblems(path, source)];
+    return [...(header ? [header] : []), ...references, ...rawHtmlProblems(path, source), ...pureViewProblems(path, source), ...mainProblems(path, source)];
   });
   problems.push(...offlineListProblems(offlineFilesOf(readFileSync(join(ROOT, WORKER), 'utf8')), appFiles()));
   const version = versionCheck();

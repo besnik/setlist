@@ -1,0 +1,40 @@
+/* The Song view screen (product spec songs.md, "Song view screen (M3)"): the stage
+   layout, the song header and the song sheet. The stage bar and buttons are shared
+   components (components.css). */
+
+/* A stage screen starts with its sticky top bar at the very top: no top padding of the column. */
+#app[data-screen="song"] {
+  padding-top: 0;
+}
+
+/* Song header: the title wraps (never shortened on stage); artist and key chip below. */
+.song-header {
+  margin-top: var(--space-5);
+}
+
+.song-header__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.song-header__artist {
+  color: var(--color-muted);
+  font-size: var(--text-small-size);
+  font-weight: var(--text-small-weight);
+  line-height: var(--text-small-leading);
+}
+
+/* Song sheet: the text as written — spaces kept, so chords stay above their words,
+   and long lines wrap instead of widening the page. */
+.song-sheet {
+  margin-top: var(--space-5);
+  font-family: var(--font-mono);
+  font-size: var(--sheet-size, 16px);
+  font-weight: 400;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

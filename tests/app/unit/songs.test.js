@@ -4,8 +4,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { searchSongs, songCountLabel, sortSongs } from '../../../app/src/domain/songs.js';
-import { listSongs } from '../../../app/src/data/song-repository.js';
-import { songList } from '../../../app/src/ui/songs-view.js';
+import { getSong, listSongs } from '../../../app/src/data/song-repository.js';
+import { songList } from '../../../app/src/ui/views/songs-view.js';
 
 const song = (title, artist = '', key = '', id = title) => ({ id, title, artist, key, text: '' });
 const titles = (songs) => songs.map((s) => s.title);
@@ -74,4 +74,13 @@ test('a row without artist or key shows "Unknown artist" and no chip; song data 
   assert.match(markup, /Unknown artist/);
   assert.doesNotMatch(markup, /key-chip/);
   assert.match(markup, /&lt;b&gt;Tom &amp; Jerry&lt;\/b&gt;/);
+});
+
+// Routing (Song view, M3): getSong returns a copy of one song, or null for an unknown id.
+test('getSong returns a copy of the song or null', async () => {
+  const song = await getSong('sample-amazing-grace');
+  assert.equal(song.title, 'Amazing Grace');
+  song.title = 'changed';
+  assert.equal((await getSong('sample-amazing-grace')).title, 'Amazing Grace', 'callers get copies');
+  assert.equal(await getSong('no-such-song'), null);
 });

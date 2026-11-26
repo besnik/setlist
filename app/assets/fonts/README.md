@@ -7,6 +7,7 @@ Self-hosted fonts of the app (see [design guidelines](../../../docs/design/guide
 | `bricolage-grotesque-700.woff2` | Bricolage Grotesque | 700 (optical size 28, width 100) | `ofl/bricolagegrotesque/` |
 | `dm-sans-400.woff2` | DM Sans | 400 (optical size 14) | `ofl/dmsans/` |
 | `dm-sans-600.woff2` | DM Sans | 600 (optical size 14) | `ofl/dmsans/` |
+| `jetbrains-mono-400.woff2` | JetBrains Mono | 400 | `ofl/jetbrainsmono/` |
 | `jetbrains-mono-700.woff2` | JetBrains Mono | 700 | `ofl/jetbrainsmono/` |
 
 ## How they were made
@@ -19,4 +20,4 @@ fonttools varLib.instancer --static "DMSans[opsz,wght].ttf" wght=400 opsz=14 -o 
 pyftsubset tmp.ttf --unicodes="$U" --layout-features='*' --flavor=woff2 --output-file=dm-sans-400.woff2
 ```
 
-Bricolage Grotesque uses `wght=700 wdth=100 opsz=28`, JetBrains Mono `wght=700`.
+Bricolage Grotesque uses `wght=700 wdth=100 opsz=28`, JetBrains Mono `wght=400` and `wght=700` (from version 2.211 of the variable font).

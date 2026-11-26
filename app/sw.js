@@ -14,7 +14,7 @@
 // Change on every release: the browser installs a new worker only when this file
 // changes, and the cache name keeps versions apart. Format: date of the change,
 // YYYY.MM.DD (.2, .3 for more releases on one day).
-const VERSION = '2026.11.26';
+const VERSION = '2026.11.26.2';
 const CACHE = `setlist-${VERSION}`;
 
 // Every published file of the app except this worker and documentation (README,
@@ -29,14 +29,24 @@ const FILES = [
   'src/domain/songs.js',
   'src/ui/events.js',
   'src/ui/html.js',
-  'src/ui/songs-view.js',
+  'src/ui/routes.js',
+  'src/ui/router.js',
+  'src/ui/components/key-chip.js',
+  'src/ui/components/stage-button.js',
+  'src/ui/screens/song-screen.js',
+  'src/ui/screens/songs-screen.js',
+  'src/ui/views/song-view.js',
+  'src/ui/views/songs-view.js',
   'styles/base.css',
   'styles/components.css',
   'styles/fonts.css',
+  'styles/song-screen.css',
+  'styles/songs-screen.css',
   'styles/tokens.css',
   'assets/fonts/bricolage-grotesque-700.woff2',
   'assets/fonts/dm-sans-400.woff2',
   'assets/fonts/dm-sans-600.woff2',
+  'assets/fonts/jetbrains-mono-400.woff2',
   'assets/fonts/jetbrains-mono-700.woff2',
   'assets/icons/apple-touch-icon-180.png',
   'assets/icons/icon-192.png',

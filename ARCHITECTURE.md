@@ -1,7 +1,7 @@
 # Architecture
 
 Setlist is an offline-first Progressive Web App. All data lives on the user's device; there is no backend.
-Decisions behind this page: [ADR 0004](docs/decisions/0004-tech-stack-and-architecture.md) (stack and architecture), [ADR 0005](docs/decisions/0005-dev-tooling-tests-and-deployment.md) (tooling, tests, deployment).
+Decisions behind this page: [ADR 0004](docs/decisions/0004-tech-stack-and-architecture.md) (stack and architecture), [ADR 0005](docs/decisions/0005-dev-tooling-tests-and-deployment.md) (tooling, tests, deployment), [ADR 0006](docs/decisions/0006-screens-views-and-components.md) (screens, views and components).
 
 ## Technical constraints
 
@@ -21,9 +21,9 @@ app/                  the PWA — published at /setlist/app/
   src/
     domain/           pure logic: no DOM, no storage, no browser APIs
     data/             storage and seed data — the only code that touches storage
-    ui/               views (screens), components, router
+    ui/               screens/, views/, components/, router (see "Screens and routing")
     main.js           start-up: wires the layers together
-  styles/             design tokens (tokens.css), fonts (fonts.css), base styles (base.css)
+  styles/             design tokens (tokens.css), fonts (fonts.css), base styles (base.css), shared components (components.css), one file per screen
   assets/             fonts (assets/fonts/), app icons (assets/icons/)
   manifest.webmanifest  web app manifest (install; its id, scope and start_url are permanent)
 tests/app/unit/       unit tests (domain logic)
@@ -47,8 +47,30 @@ main.js  →  ui  →  data  →  domain
 - Tests may import anything; `tools/` import nothing from `app/`.
 - **domain** — data types (JSDoc), validation, chord detection, setlist operations. Fully unit-testable in Node.
 - **data** — repositories. Validate everything read from storage (golden principle *Validate at the boundary*). Functions are asynchronous (return promises).
-- **ui** — views are functions *state → HTML* built with our own `html` tagged template (`ui/html.js`), which escapes every value by default; only its `render()` writes HTML into the page. One delegated listener per event type (`ui/events.js`) maps `data-action` attributes to actions. Routing uses the URL hash.
+- **ui** — views are functions *state → HTML* built with our own `html` tagged template (`ui/html.js`), which escapes every value by default; only its `render()` writes HTML into the page. One delegated listener per event type (`ui/events.js`) maps `data-action` attributes to actions; key presses not tied to an element (Escape) go through `onKeys` in the same module.
+- **Screens and routing** — see the next section.
 - A service layer is added only when real cross-cutting logic appears.
+
+## Screens and routing
+
+Decision: [ADR 0006](docs/decisions/0006-screens-views-and-components.md).
+
+```
+app/src/ui/
+  html.js, events.js  safe rendering; delegated events and keys
+  routes.js           pure: address hash → route, song → address
+  router.js           follows the address and shows one screen at a time
+  screens/            one module per screen: state, actions, side effects
+  views/              pure: state → HTML, one per screen
+  components/         pure: small templates shared by views (key chip, stage button)
+```
+
+- **Routing** uses the URL hash: `#/song/<id>` (id encoded) is the Song view, anything else the Songs screen. Links, Back, reload and the Android back gesture need no extra code.
+- **A screen** is made by a factory (`createSongsScreen()`) and is `{ load?(route), show(root, data, navigation) }`. `load` returns the data or `null` for something that does not exist (the router then replaces the address with the Songs screen's). `show` renders a view, registers the screen's actions (`delegate`, `onKeys`) and side effects, and returns `hide()`, which undoes them. A screen keeps its own state in memory (e.g. the search text and scroll position of the Songs screen); the router sets `history.scrollRestoration = 'manual'`, so screens set their scroll position themselves.
+- **The router** calls `load`, then `hide()` of the old screen and `show` of the new one, and sets `data-screen` on the root (styles per screen). Data that arrives after a newer address is dropped. `navigation` tells the screen where it came from and lets it go `back()` or `home()`.
+- **Views and components are pure** (state in, HTML out): they import only `ui/html.js`, `ui/routes.js`, other views and components, and `domain/`, and use no browser globals — `npm run check` enforces it. They are unit-tested in Node.
+- **Styles** follow the same split: `styles/components.css` for shared components, one file per screen (`songs-screen.css`, `song-screen.css`).
+- `main.js` only wires: it creates the screens, starts the router and the service worker — `npm run check` enforces it (no state, own functions, listeners, rendering or work with the address).
 
 ## Offline and updates
 
@@ -83,4 +105,4 @@ Each part of the app, its technology and how to run its tests (golden principle 
 | `tools/` | Node.js scripts (development only) | `tests/tools` (`node --test`) | `npm run test:unit` |
 | **All** | | | `npm test` |
 
-Other commands: `npm start` (dev server at `http://localhost:8080/setlist/app/`, with `site/` at `/setlist/`, also reachable from phones in the same network), `npm run check` (project rules: layer and part imports, files loaded by HTML and CSS, file header comments, HTML written into the page only by `ui/html.js`, the offline file list and a new version for every app change). First run `npm install` once (Node.js 22 or newer).
+Other commands: `npm start` (dev server at `http://localhost:8080/setlist/app/`, with `site/` at `/setlist/`, also reachable from phones in the same network), `npm run check` (project rules: layer and part imports, pure views and components, `main.js` only wiring, files loaded by HTML and CSS, file header comments, HTML written into the page only by `ui/html.js`, the offline file list and a new version for every app change). First run `npm install` once (Node.js 22 or newer).
