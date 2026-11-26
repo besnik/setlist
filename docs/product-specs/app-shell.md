@@ -64,7 +64,7 @@ Setlist is a Progressive Web App: it can be installed like an app and it works w
 - Rule: the downloaded version is used from the next start of the app: after every window and tab of the app has been closed and the app is opened again. A reload alone keeps the current version, and so does an open browser tab of the app while the installed app restarts.
 - Rule: given the download of a new version fails or is incomplete (for example the network drops), then the app keeps working in its current version and tries again on a later start.
 - Rule: given there is no network, then the app starts in the version it already has.
-- Rule *(if the CEO approves, see Open questions)*: the bottom of the Songs screen shows the app version in small muted text, e.g. `Version 2026.11.30`, so the user can see that an update has arrived.
+- Rule: the bottom of the Songs screen shows the app version in small muted text, e.g. `Version 2026.11.30`, so the user can see that an update has arrived. It may move to a Settings or About screen once one exists.
 
 **Permanent identity**
 
@@ -120,7 +120,7 @@ phone (320–599 px)                     tablet / desktop (≥ 600 px)
 - Splash screen and window background (Android): `#0e1013` (dark `--color-bg`) — a short dark splash is harmless in daylight and never blinds on a dark stage. The manifest has no `theme_color`, so the window bar follows the theme through the existing `theme-color` meta tags. On Windows in light mode the window may show the dark background for a moment while starting — accepted.
 - iPhone: status bar in the default style (dark text on light, light text on dark), content below it — no `viewport-fit=cover` in M2.
 
-**Version line** *(only if approved, see Open questions)*
+**Version line**
 
 ```
 │  ...                               │
@@ -139,7 +139,7 @@ phone (320–599 px)                     tablet / desktop (≥ 600 px)
 - `app/sw.js` is a standalone classic script at the root of `app/`, outside the layers (it is not imported by and imports nothing from `app/src`), with a header comment. Registered from `main.js` as `navigator.serviceWorker.register('./sw.js')` — the URL resolves against the page, not the module.
 - Strategy: on `install`, put the complete list of app files into a cache named after the version, fetching each file with `{ cache: 'reload' }` so the HTTP cache cannot put old files under the new version's name, and fail the install if any file fails (so a partial update never becomes active). Serve every request of the app cache-first; the navigation to `./` or `./index.html` is answered with `index.html`. On `activate`, delete caches of older versions.
 - Updates take effect on the next start: the new worker waits until no page of the app is open (no `skipWaiting()`, no forced reload). Browsers check `sw.js` itself past the HTTP cache by default, so GitHub Pages' `max-age=600` does not delay the check; it only matters for the install fetches above.
-- **Version:** one constant `VERSION` in `app/sw.js` (so every release is also a byte change of the worker, which is what the browser compares). It names the cache. The version line, if approved, asks the active worker for it (`postMessage`) through a small function in `data/`; with no active worker (first visit, dev server) the line is not shown. Every change to a file under `app/` must change the version — without a build there are no content hashes. Format proposal: the date of the change, `YYYY.MM.DD` (with `.2`, `.3` for more releases on one day).
+- **Version:** one constant `VERSION` in `app/sw.js` (so every release is also a byte change of the worker, which is what the browser compares). It names the cache. The version line asks the active worker for it (`postMessage`) through a small function in `data/`; with no active worker (first visit, dev server) the line is not shown. Every change to a file under `app/` must change the version — without a build there are no content hashes. Format proposal: the date of the change, `YYYY.MM.DD` (with `.2`, `.3` for more releases on one day).
 - **Check** (new rules in `npm run check`, with messages that say how to fix):
   1. The offline file list in `app/sw.js` contains every file of the app that is published (all files under `app/` except `sw.js` itself and documentation such as `README.md` and licence texts, which must still be published), and nothing that does not exist.
   2. When a file under `app/` differs from the base, the version must differ too. Base: `origin/main` on a pull request (CI fetches `main`); the parent commit `HEAD^` in the deploy workflow (`fetch-depth: 2`), which also catches two PRs that merged with the same version. Locally the rule is skipped with a note when the base is missing.
@@ -157,6 +157,4 @@ phone (320–599 px)                     tablet / desktop (≥ 600 px)
 
 ## Open questions
 
-1. **Version line on the Songs screen?** Without it the user (and the CEO testing M2) cannot see whether an update has arrived. **Recommendation: yes** — one line of small muted text below the song list; it also helps when reporting a bug.
-2. **How does the user get an update?** Options: (a) silently, from the next start of the app; (b) a notice "New version — Reload" that the user taps. **Recommendation: (a)** — nothing ever changes or pops up during a gig, and there is no extra UI; a notice can be added later if updates feel too slow.
-3. **Provisional icon** — a white "S" on the accent color (see *UX and visual design*) until the logo is chosen. **Recommendation: accept it**; changing an icon later is easy (unlike `id` and `scope`).
+None. Decided by the CEO on 2026-11-26: the version line is shown below the song list; updates arrive silently from the next start (no "Reload" notice); the provisional "S" icon is accepted until the logo is chosen.
