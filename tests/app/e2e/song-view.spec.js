@@ -107,3 +107,25 @@ test('the Song view fits a 320 px phone', async ({ page }) => {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBe(0);
 });
+
+// Rule (Chord lines) and UX (Song sheet): a chord line is bold in the chord color,
+// a lyric line keeps weight 400 in ink.
+test('chord lines are bold in the chord color, lyric lines are not', async ({ page }) => {
+  await page.goto('./#/song/sample-house-of-the-rising-sun');
+  const chordLine = page.locator('.song-sheet .chord-line').first();
+  await expect(chordLine).toHaveText('   Am      C        D          F');
+  const style = (locator) => locator.evaluate((el) => ({ weight: getComputedStyle(el).fontWeight, color: getComputedStyle(el).color }));
+  const chord = await style(chordLine);
+  const sheet = await style(page.locator('.song-sheet'));
+  const chordColor = await page.evaluate(() => {
+    const probe = document.createElement('span');
+    probe.style.color = 'var(--color-chord)';
+    document.body.append(probe);
+    return getComputedStyle(probe).color;
+  });
+  expect(chord).toEqual({ weight: '700', color: chordColor });
+  // The lyric line "There is a house in New Orleans" is plain text of the sheet.
+  expect(await page.locator('.song-sheet').evaluate((el) => el.childNodes[1].textContent)).toContain('There is a house in New Orleans');
+  expect(sheet.weight).toBe('400');
+  expect(sheet.color).not.toBe(chordColor);
+});
