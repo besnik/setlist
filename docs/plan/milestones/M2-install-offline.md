@@ -32,6 +32,8 @@ Order: T-021 and T-022 can run in parallel — whichever merges second adds the 
 ## CEO actions
 
 - After T-022 is deployed: install the app on the Android phone and the iPhone, turn on airplane mode, open it (see *Try it*).
+  - 2026-11-26: done on Windows (Chrome: install offered by itself, own window) and Android (Chrome: *Install app* from the menu, works in airplane mode).
+  - iPhone: not tested yet — still open.
 
 ## Out of scope
 
