@@ -14,7 +14,7 @@ Open *House of the Rising Sun* on the tablet, make the text bigger with A+, clos
 ## Scope
 
 - Full-screen view of one song: title, artist, key, the chord sheet; its own address, closed with ×, Back or Escape.
-- Chord lines detected and highlighted (provisional rendering of the "chords over lyrics" text; replaced by the song format in M4).
+- Chord lines detected and highlighted (provisional rendering of the "chords over lyrics" text; M4 decides the song format — the detection may stay as the reader of plain-text input).
 - Big A− / A+ buttons, size remembered across songs and restarts.
 - The screen stays on while a song is shown.
 - **One tap on stage:** every key control of the view is one tap away with a big touch target (design principle, see [design-lead](../../../.claude/agents/design-lead.md)).

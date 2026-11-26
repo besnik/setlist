@@ -52,17 +52,18 @@ A stage screen: one song full screen, read while playing. The controls follow th
 - Rule: a long title wraps; it is never shortened on the stage screen.
 - Rule: the close button and the font size buttons stay visible at the top of the screen while the song text scrolls.
 
-**Chord lines** (provisional — replaced by the song format in M4)
+**Chord lines** (provisional — M4 decides the song format; this detection may live on as the reader of plain-text input)
 
 - Rule: chord lines are shown bold in the chord color; all other lines are shown as lyrics.
 - Rule: a line is a chord line when it contains at least one chord and every word on it is a chord or a bar mark. Words are separated by one or more spaces or tabs; spaces at the start and end of the line are ignored. An empty line, or a line of only spaces, is not a chord line.
 - Rule: a chord is, in this order: a root `A`–`H` (`H` is the Central European name of B; `B` is also accepted); optionally `#` or `b`; any sequence (also none) of the qualities and extensions below, e.g. `m7`, `mi7`, `m7b5`, `7sus4`, `maj7`; optionally a slash and a bass note, which is a root with an optional `#` or `b` (`/G#`, `/Bb`, `/H`). Examples that are chords: `C`, `Am`, `Ami`, `Hmi`, `F#m`, `Bb`, `G7`, `Cmaj7`, `Dsus4`, `Asus2`, `Gadd9`, `Bdim`, `Caug`, `C+`, `Em7b5`, `E7/G#`, `D/F#`, `C/H`.
   - Qualities and extensions: `m`, `mi`, `min`, `maj`, `dim`, `aug`, `sus`, `add`, `+`, the numbers `2`, `4`, `5`, `6`, `7`, `9`, `11`, `13`, and `#` or `b` directly before a number (`7b9`, `7#5`).
   - Not chords in M3 (rare; the song format in M4 decides): `CM7` (capital `M` for major) and `C6/9` (a slash followed by a number). A line containing them is shown as a lyric line.
-- Rule: bar marks are `|`, `||`, `/`, `-`, a repeat count (`x2`, `2x`, `x3`, …) and `N.C.` (no chord). A line with bar marks only is not a chord line.
+- Rule: bar marks are `|`, `||`, the repeat signs `|:` and `:|`, `%` (repeat the previous bar), `/`, `-`, a repeat count (`x2`, `2x`, `x3`, …) and `N.C.` (no chord). A line with bar marks only is not a chord line.
+- Rule: a chord in parentheses, such as `(G)` or `(E7/G#)`, counts as a chord (an optional or passing chord); it is shown as written, with the parentheses. Parentheses around a word that is not a chord, such as `(chorus)`, make the line a lyric line.
 - Rule: a lyric line whose words happen to look like chords only partly is a lyric line: `A man walks in` and `Am I wrong` contain words that are not chords.
 - Rule: letter case matters. The root is an upper-case letter and the quality is written as listed (`Am`, `Ami`, `Cmaj7`), so lyric words such as `a`, `v`, `am`, `be` or `add` are never chords.
-- Rule (accepted false positive): a lyric line made only of words that are chords, such as a line `A` or `Hm` or `E A`, is shown as a chord line. This is rare and harmless; M4 removes it.
+- Rule (accepted false positive): a lyric line made only of words that are chords, such as a line `A` or `Hm` or `E A`, is shown as a chord line. This is rare and harmless; M4 decides whether it stays.
 
 **Font size**
 
