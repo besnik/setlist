@@ -4,7 +4,7 @@
 
 import { test, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { DEFAULT_FONT_SIZE, isFontSize, largerFontSize, smallerFontSize } from '../../../app/src/domain/font-size.js';
+import { DEFAULT_FONT_SIZE, canGrowFontSize, canShrinkFontSize, isFontSize, largerFontSize, smallerFontSize } from '../../../app/src/domain/font-size.js';
 
 // Rule: from 12 to 32 px in steps of 2; the default is 16.
 test('valid font sizes are the even sizes from 12 to 32', () => {
@@ -19,6 +19,8 @@ test('one step smaller or larger stops at the limits', () => {
   assert.equal(largerFontSize(16), 18);
   assert.equal(smallerFontSize(12), 12);
   assert.equal(largerFontSize(32), 32);
+  assert.deepEqual([12, 14, 30, 32].map(canShrinkFontSize), [false, true, true, true]);
+  assert.deepEqual([12, 14, 30, 32].map(canGrowFontSize), [true, true, true, false]);
 });
 
 // The repository keeps the size in memory once set, so each test loads a fresh copy.

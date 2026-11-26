@@ -4,7 +4,7 @@
 // A− and A+ change the font size of the song text, the same for every song and
 // remembered on the device (data/settings-repository.js).
 
-import { MAX_FONT_SIZE, MIN_FONT_SIZE, largerFontSize, smallerFontSize } from '../../domain/font-size.js';
+import { canGrowFontSize, canShrinkFontSize, largerFontSize, smallerFontSize } from '../../domain/font-size.js';
 import { getFontSize, setFontSize } from '../../data/settings-repository.js';
 import { getSong } from '../../data/song-repository.js';
 import { delegate, onKeys } from '../events.js';
@@ -46,6 +46,6 @@ export function createSongScreen() {
 // button keeps its keyboard focus and the text its scroll position.
 function applyFontSize(root, size) {
   root.querySelector('.song-sheet').style.setProperty('--sheet-size', `${size}px`);
-  root.querySelector('[data-action="smaller-text"]').disabled = size <= MIN_FONT_SIZE;
-  root.querySelector('[data-action="larger-text"]').disabled = size >= MAX_FONT_SIZE;
+  root.querySelector('[data-action="smaller-text"]').disabled = !canShrinkFontSize(size);
+  root.querySelector('[data-action="larger-text"]').disabled = !canGrowFontSize(size);
 }

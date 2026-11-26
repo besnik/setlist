@@ -7,7 +7,7 @@
 
 import { html } from '../html.js';
 import { isChordLine } from '../../domain/chords.js';
-import { MAX_FONT_SIZE, MIN_FONT_SIZE } from '../../domain/font-size.js';
+import { canGrowFontSize, canShrinkFontSize } from '../../domain/font-size.js';
 import { keyChip } from '../components/key-chip.js';
 import { CLOSE_ICON, stageButton } from '../components/stage-button.js';
 
@@ -38,8 +38,8 @@ export function songView(song, fontSize) {
  */
 function fontSizeButtons(fontSize) {
   return [
-    stageButton({ name: 'Smaller text', action: 'smaller-text', content: 'A\u2212', disabled: fontSize <= MIN_FONT_SIZE }),
-    stageButton({ name: 'Larger text', action: 'larger-text', content: 'A+', disabled: fontSize >= MAX_FONT_SIZE }),
+    stageButton({ name: 'Smaller text', action: 'smaller-text', content: 'A\u2212', disabled: !canShrinkFontSize(fontSize) }),
+    stageButton({ name: 'Larger text', action: 'larger-text', content: 'A+', disabled: !canGrowFontSize(fontSize) }),
   ];
 }
 

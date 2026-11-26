@@ -22,6 +22,24 @@ export function isFontSize(value) {
 }
 
 /**
+ * True when the size can get one step smaller (A− is enabled).
+ * @param {number} size
+ * @returns {boolean}
+ */
+export function canShrinkFontSize(size) {
+  return size > MIN_FONT_SIZE;
+}
+
+/**
+ * True when the size can get one step larger (A+ is enabled).
+ * @param {number} size
+ * @returns {boolean}
+ */
+export function canGrowFontSize(size) {
+  return size < MAX_FONT_SIZE;
+}
+
+/**
  * The size one step smaller, or the same size at the minimum.
  * @param {number} size
  * @returns {number}

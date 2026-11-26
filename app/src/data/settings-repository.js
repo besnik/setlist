@@ -24,7 +24,7 @@ export async function getFontSize() {
   } catch {
     // Storage not allowed: the default below.
   }
-  const size = Number(stored ?? NaN);
+  const size = Number(stored);
   return isFontSize(size) ? size : DEFAULT_FONT_SIZE;
 }
 
