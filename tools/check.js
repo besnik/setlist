@@ -14,8 +14,15 @@
 //    websites, no root paths that break under /setlist/app/).
 // 6. Only app/src/ui/html.js writes HTML into the page (innerHTML and similar);
 //    everything else renders through its escaping `html` template (ADR 0004).
+// 7. The offline file list (FILES in app/sw.js) holds every published file of the
+//    app — all files under app/ except sw.js itself and documentation (.md, .txt) —
+//    and nothing that does not exist.
+// 8. When a file under app/ differs from the base, VERSION in app/sw.js differs too.
+//    Base: $CHECK_VERSION_BASE (CI: origin/main on a pull request, HEAD^ on deploy),
+//    else origin/main. Skipped with a note when that base is missing locally.
 
 import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { join, posix, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -25,6 +32,8 @@ const SKIP_DIRS = new Set(['.git', '.github', '.claude', 'node_modules', 'docs',
 const LAYERS = ['domain', 'data', 'ui', 'main'];
 const DOMAIN_DIR = 'app/src/domain/';
 const RENDERER = 'app/src/ui/html.js';
+const WORKER = 'app/sw.js';
+const DEFAULT_BASE = 'origin/main';
 
 /**
  * Returns a problem message when the file does not start with a header comment.
@@ -181,6 +190,99 @@ export function rawHtmlProblems(path, source) {
     `${path}: writes HTML directly ('${found.trim()}'). Build it with the html\`…\` template and insert it with render() from ${RENDERER}, which escape values (see ARCHITECTURE.md, "Layers of the app").`);
 }
 
+/** Whether an app file is documentation, which is published but not stored offline. */
+export function isDocumentation(path) {
+  return /\.(md|txt)$/i.test(path);
+}
+
+/**
+ * Reads the offline file list (the FILES array) from the service worker.
+ * @param {string} source content of app/sw.js
+ * @returns {string[] | null} paths relative to app/, or null when there is no list
+ */
+export function offlineFilesOf(source) {
+  const list = /\bconst\s+FILES\s*=\s*\[([\s\S]*?)\]/.exec(source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, ''));
+  return list ? [...list[1].matchAll(/['"]([^'"]+)['"]/g)].map((match) => match[1]) : null;
+}
+
+/**
+ * Reads VERSION from the service worker.
+ * @param {string} source content of app/sw.js
+ * @returns {string | null}
+ */
+export function versionOf(source) {
+  return /\bconst\s+VERSION\s*=\s*['"]([^'"]+)['"]/.exec(source)?.[1] ?? null;
+}
+
+/**
+ * Checks rule 7: the offline list matches the published files of the app.
+ * @param {string[] | null} listed the offline list, relative to app/
+ * @param {string[]} appFiles repository-relative paths of all files under app/
+ * @returns {string[]} problem messages
+ */
+export function offlineListProblems(listed, appFiles) {
+  if (!listed) return [`${WORKER}: no offline file list found. Keep the list as 'const FILES = [ ... ];' (see ARCHITECTURE.md, "Offline and updates").`];
+  const expected = appFiles.filter((path) => path !== WORKER && !isDocumentation(path)).map((path) => path.slice('app/'.length));
+  const listedSet = new Set(listed);
+  const expectedSet = new Set(expected);
+  return [
+    ...expected.filter((file) => !listedSet.has(file)).map((file) =>
+      `${WORKER}: app/${file} is missing from the offline file list (FILES). Add '${file}' there and change VERSION, or the app breaks offline (see ARCHITECTURE.md, "Offline and updates").`),
+    ...[...new Set(listed)].filter((file) => !expectedSet.has(file)).map((file) =>
+      `${WORKER}: the offline file list (FILES) names '${file}', which is not a published file of the app (app/${file} does not exist, or it is sw.js or documentation). Remove it or fix the path; one missing file fails the whole install.`),
+  ];
+}
+
+/**
+ * Checks rule 8: a change under app/ comes with a new VERSION.
+ * @param {string[]} changed repository-relative paths that differ from the base
+ * @param {string | null} version VERSION now
+ * @param {string | null} baseVersion VERSION in the base
+ * @param {string} base the git revision compared against
+ * @returns {string[]} problem messages
+ */
+export function versionProblems(changed, version, baseVersion, base) {
+  const appChanges = changed.filter((path) => path.startsWith('app/'));
+  if (!appChanges.length || version !== baseVersion) return [];
+  const shown = appChanges.slice(0, 5).join(', ') + (appChanges.length > 5 ? ', …' : '');
+  return [`${WORKER}: files under app/ changed against ${base} (${shown}), but VERSION is still '${version}'. Change VERSION in ${WORKER} (YYYY.MM.DD, .2, .3 for more releases on one day), otherwise installed apps never get the change (see ARCHITECTURE.md, "Offline and updates").`];
+}
+
+/** Runs git in the repository and returns its output, or null when it fails. */
+function git(...args) {
+  try {
+    return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+  } catch {
+    return null;
+  }
+}
+
+/** Rule 8 against git: returns problems, or a note when the rule is skipped. */
+function versionCheck() {
+  const base = process.env.CHECK_VERSION_BASE || DEFAULT_BASE;
+  const required = Boolean(process.env.CHECK_VERSION_BASE);
+  if (git('rev-parse', '--verify', '--quiet', `${base}^{commit}`) === null) {
+    if (required) return { problems: [`check: base ${base} for the version rule (CHECK_VERSION_BASE) is missing. Fetch it (e.g. 'git fetch origin main') or fix the workflow.`] };
+    return { note: `check: version rule skipped — ${base} is missing (run 'git fetch origin main' to check it).` };
+  }
+  // Compares the base with the working tree, so uncommitted edits count too.
+  const diff = git('diff', '--name-only', base, '--', 'app/');
+  const untracked = git('ls-files', '--others', '--exclude-standard', '--', 'app/');
+  if (diff === null || untracked === null) return { problems: [`check: could not compare app/ with ${base} (git diff failed).`] };
+  const changed = [...diff.split('\n'), ...untracked.split('\n')].filter(Boolean);
+  const baseSource = git('show', `${base}:${WORKER}`);
+  const version = versionOf(readFileSync(join(ROOT, WORKER), 'utf8'));
+  return { problems: versionProblems(changed, version, baseSource === null ? null : versionOf(baseSource), base) };
+}
+
+/** Repository-relative paths of all files under app/. */
+function appFiles(dir = join(ROOT, 'app')) {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const full = join(dir, entry.name);
+    return entry.isDirectory() ? appFiles(full) : [relative(ROOT, full).split('\\').join('/')];
+  });
+}
+
 /** Repository-relative paths (forward slashes) of all source files to check. */
 function sourceFiles(dir = ROOT) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -201,6 +303,10 @@ function main() {
     const references = path.endsWith('.js') ? importProblems(path, source, exists) : assetProblems(path, source, exists);
     return [...(header ? [header] : []), ...references, ...rawHtmlProblems(path, source)];
   });
+  problems.push(...offlineListProblems(offlineFilesOf(readFileSync(join(ROOT, WORKER), 'utf8')), appFiles()));
+  const version = versionCheck();
+  problems.push(...(version.problems ?? []));
+  if (version.note) console.log(version.note);
 
   if (problems.length) {
     console.error(problems.join('\n'));
