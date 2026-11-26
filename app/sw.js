@@ -14,7 +14,7 @@
 // Change on every release: the browser installs a new worker only when this file
 // changes, and the cache name keeps versions apart. Format: date of the change,
 // YYYY.MM.DD (.2, .3 for more releases on one day).
-const VERSION = '2026.11.26.5';
+const VERSION = '2026.11.26.6';
 const CACHE = `setlist-${VERSION}`;
 
 // Every published file of the app except this worker and documentation (README,
@@ -32,6 +32,7 @@ const FILES = [
   'src/domain/songs.js',
   'src/ui/events.js',
   'src/ui/html.js',
+  'src/ui/log.js',
   'src/ui/routes.js',
   'src/ui/router.js',
   'src/ui/components/key-chip.js',

@@ -10,6 +10,14 @@ Decide how songs are stored and entered, and replace the provisional rendering f
 
 A song displays well on a narrow phone too (chords stay above the right syllables when lines wrap), and both input styles work.
 
+## Cross-cutting
+
+Approved by the CEO in chat (2026-11-26), done before the M4 work starts.
+
+| ID | Task | Spec | Status | PR |
+|---|---|---|---|---|
+| T-031 | Error handling and logging: golden principle, ADR 0007, `ui/log.js` (levels, prefix), uncaught errors logged once, an info line at start-up, every `catch` narrowed to its expected case (app and tools), check rules 11–12 against swallowed errors and console use outside the log; unit and e2e tests | [ADR 0007](../../decisions/0007-error-handling-and-logging.md) | in-progress | — |
+
 ## Questions for the analysis (ADR)
 
 1. **Internal format.** Plain text "chords over lyrics", ChordPro (`[G]Amazing [C]grace`), an own structured format, or a combination (store one format, accept several on input). Criteria: open and human-readable, future import and export, transposition, wrapping on narrow screens.

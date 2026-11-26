@@ -60,6 +60,7 @@ Decision: [ADR 0006](docs/decisions/0006-screens-views-and-components.md).
 ```
 app/src/ui/
   html.js, events.js  safe rendering; delegated events and keys
+  log.js              the app's log (see "Errors and logging")
   wake-lock.js        keeps the screen on (Screen Wake Lock), started and stopped by a screen
   routes.js           pure: address hash → route, song → address
   router.js           follows the address and shows one screen at a time
@@ -74,6 +75,16 @@ app/src/ui/
 - **Views and components are pure** (state in, HTML out): they import only `ui/html.js`, `ui/routes.js`, other views and components, and `domain/`, and use no browser globals — `npm run check` enforces it. They are unit-tested in Node.
 - **Styles** follow the same split: `styles/components.css` for shared components, one file per screen (`songs-screen.css`, `song-screen.css`).
 - `main.js` only wires: it creates the screens, starts the router and the service worker — `npm run check` enforces it (no state, own functions, listeners, rendering or work with the address).
+
+## Errors and logging
+
+Decision: [ADR 0007](docs/decisions/0007-error-handling-and-logging.md). Rules: golden principle *Errors are handled or seen, never swallowed*.
+
+- **Catch only the expected case**, named by `error.name`, type or code: the browser refused the screen lock (`NotAllowedError`), storage is not allowed or full (`SecurityError`, `QuotaExceededError`), a broken escape in an address (`URIError`). Anything else is rethrown or logged.
+- **`ui/log.js`** is the only code in `app/` that writes to the console: `log.error`, `log.warn`, `log.info`, each prefixed with `[setlist]`. *error* — a bug or a failure that breaks the app; *warn* — a feature does not work, the app does; *info* — one line at start-up with the version. No song texts or other user data in the log.
+- **One boundary:** `logUncaughtErrors()` (called first in `main.js`) logs every error and rejected promise nothing else caught, once, as *error*. The user sees no message (that would be a spec change); the log stays on the device — nothing is sent anywhere.
+- `tools/` are command-line scripts: they write to the console directly, and the dev server answers an unexpected error with 500 and logs it instead of hiding it behind 404.
+- `npm run check` enforces it: no `catch` without its error, no empty `catch` block or `.catch()` handler in `app/` and `tools/`, and no console use in `app/` outside `ui/log.js`.
 
 ## Offline and updates
 
@@ -108,4 +119,4 @@ Each part of the app, its technology and how to run its tests (golden principle 
 | `tools/` | Node.js scripts (development only) | `tests/tools` (`node --test`) | `npm run test:unit` |
 | **All** | | | `npm test` |
 
-Other commands: `npm start` (dev server at `http://localhost:8080/setlist/app/`, with `site/` at `/setlist/`, also reachable from phones in the same network), `npm run check` (project rules: layer and part imports, pure views and components, `main.js` only wiring, files loaded by HTML and CSS, file header comments, HTML written into the page only by `ui/html.js`, the offline file list and a new version for every app change). First run `npm install` once (Node.js 22 or newer).
+Other commands: `npm start` (dev server at `http://localhost:8080/setlist/app/`, with `site/` at `/setlist/`, also reachable from phones in the same network), `npm run check` (project rules: layer and part imports, pure views and components, `main.js` only wiring, files loaded by HTML and CSS, file header comments, HTML written into the page only by `ui/html.js`, no swallowed errors and console use only in `ui/log.js`, the offline file list and a new version for every app change). First run `npm install` once (Node.js 22 or newer).
