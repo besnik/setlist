@@ -12,7 +12,8 @@
 | T-026 architecture check | engineering-lead | inherited | 83,225 | 0:23 | 2 | 0 blocking, 3 other (2 fixed, 1 guidance for T-027) |
 | T-027 implementation and tests | GM | n/a | n/a | n/a | n/a | not measured |
 | T-027 architecture check | engineering-lead | inherited | 78,340 | 0:45 | 4 | 0 blocking, 3 other (2 fixed, 1 to tech debt) |
-| **Total** | | | **161,565** | **1:08** | **6** | |
+| T-027 light QA | qa-lead | inherited | 84,647 | 0:34 | 4 | 0 blocking, 2 other (both already handled) |
+| **Total** | | | **246,212** | **1:42** | **10** | |
 
 ## What drove cost
 
