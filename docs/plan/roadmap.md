@@ -6,7 +6,7 @@ The **MVP** is milestones M1–M8: the first version the owner can really use at
 |---|---|---|
 | [M0 — Harness](milestones/M0-harness.md) | Rules, roles and knowledge base for agentic development | done |
 | [M1 — Foundation and song list](milestones/M1-foundation-song-list.md) | Project skeleton, deployment, design foundation; list and search of sample songs | done |
-| [M2 — Install and offline](milestones/M2-install-offline.md) | Installable PWA that works without a network | not started |
+| [M2 — Install and offline](milestones/M2-install-offline.md) | Installable PWA that works without a network | in-progress |
 | [M3 — Song view](milestones/M3-song-view.md) | Read a song full screen with highlighted chords and adjustable font size | not started |
 | [M4 — Song format](milestones/M4-song-format.md) | Decide and build the song format (ChordPro / plain text, B vs. H) | not started |
 | [M5 — Manage songs](milestones/M5-manage-songs.md) | Add, edit and delete songs; data saved on the device | not started |
