@@ -1,7 +1,7 @@
 # M3 — Song view
 
 - **Description:** Implementation of the song view tasks T-024–T-027 (rows for tasks whose PRs used leads).
-- **PRs:** T-026 (this file's first row)
+- **PRs:** [#41](https://github.com/besnik/setlist/pull/41) (T-026)
 - **Date:** 2026-11-26
 
 ## Lead runs
