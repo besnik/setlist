@@ -1,7 +1,7 @@
 # Error handling and logging
 
 - **Description:** General rules for errors and logging (golden principle 20, ADR 0007), the app's log module, every `catch` narrowed, check rules against swallowed errors (T-031).
-- **PR:** see the T-031 row in [M4](../../milestones/M4-song-format.md)
+- **PR:** [#44](https://github.com/besnik/setlist/pull/44)
 - **Date:** 2026-11-26
 
 ## Lead runs
