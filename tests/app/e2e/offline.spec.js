@@ -13,7 +13,7 @@ import { test as base, expect } from '@playwright/test';
 const APP = new URL('../../../app/', import.meta.url);
 const WORKER = readFileSync(new URL('sw.js', APP), 'utf8');
 const VERSION = /const VERSION = '([^']+)'/.exec(WORKER)[1];
-const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.woff2': 'font/woff2' };
+const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.woff2': 'font/woff2', '.png': 'image/png', '.webmanifest': 'application/manifest+json' };
 
 /** A server for app/ at /setlist/app/ whose published version and failures the test controls. */
 async function startServer() {

@@ -21,6 +21,7 @@ const CACHE = `setlist-${VERSION}`;
 // licence texts), relative to this file. Missing a file here breaks offline use.
 const FILES = [
   'index.html',
+  'manifest.webmanifest',
   'src/main.js',
   'src/data/app-version.js',
   'src/data/sample-songs.js',
@@ -37,6 +38,10 @@ const FILES = [
   'assets/fonts/dm-sans-400.woff2',
   'assets/fonts/dm-sans-600.woff2',
   'assets/fonts/jetbrains-mono-700.woff2',
+  'assets/icons/apple-touch-icon-180.png',
+  'assets/icons/icon-192.png',
+  'assets/icons/icon-512.png',
+  'assets/icons/icon-maskable-512.png',
 ];
 
 const START_PAGES = new Set([new URL('./', self.location).href, new URL('index.html', self.location).href]);

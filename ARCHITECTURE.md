@@ -24,7 +24,8 @@ app/                  the PWA — published at /setlist/app/
     ui/               views (screens), components, router
     main.js           start-up: wires the layers together
   styles/             design tokens (tokens.css), fonts (fonts.css), base styles (base.css)
-  assets/             fonts (assets/fonts/), icons
+  assets/             fonts (assets/fonts/), app icons (assets/icons/)
+  manifest.webmanifest  web app manifest (install; its id, scope and start_url are permanent)
 tests/app/unit/       unit tests (domain logic)
 tests/app/e2e/        end-to-end tests (browser)
 tests/tools/          tests of the development tools
