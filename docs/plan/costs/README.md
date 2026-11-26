@@ -9,6 +9,7 @@ One row per feature here; the step-by-step breakdown lives in one file per featu
 | [Gig mode (trial)](details/gig-mode-trial.md)* | Static gig mode screen (HTML + CSS) to test the harness after its improvements | small | [#10](https://github.com/besnik/setlist/pull/10) | 83,112 | 0:49 | 1 | 0 / 4 | closed without merge (trial) |
 | [MVP plan](details/mvp-plan.md)* | MVP milestones, architecture and tooling ADRs, M1 specs and tasks | big (spec PR) | [#14](https://github.com/besnik/setlist/pull/14) | 92,953 | 1:09 | 3 | — (engineering review: 2 / 13) | proposed |
 | [M1 — Foundation and song list](details/m1-foundation-song-list.md) | Design foundation, project skeleton and tooling, deployment, app shell, safe rendering, song list | big (task PRs) | [#15](https://github.com/besnik/setlist/pull/15), [#16](https://github.com/besnik/setlist/pull/16), [#19](https://github.com/besnik/setlist/pull/19), [#23](https://github.com/besnik/setlist/pull/23), [#25](https://github.com/besnik/setlist/pull/25) | 528,643 | 14:28 | 0 | 3 / 29 (so far) | in progress |
+| [M2 spec — Install and offline](details/m2-spec.md)* | Spec of install, offline and updates, tasks T-021–T-023 | big (spec PR) | — | 94,316 | 1:34 | 0 | 2 / 10 | proposed |
 
 Only lead runs are measured. The GM's own work cannot be measured from inside the session, so it is **not included** — no estimates. In the detail files, GM steps show `n/a`.
 
