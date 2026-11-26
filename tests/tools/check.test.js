@@ -7,7 +7,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   assetProblems, assetReferencesOf, headerProblem, importProblems, importsOf, offlineFilesOf, offlineListProblems,
-  pureViewProblems, rawHtmlProblems, versionOf, versionProblems,
+  mainProblems, pureViewProblems, rawHtmlProblems, versionOf, versionProblems,
 } from '../../tools/check.js';
 
 const all = () => true;
@@ -123,4 +123,19 @@ test('views and components are pure', () => {
   assert.match(pureViewProblems('app/src/ui/components/x.js', `const w = window.innerWidth;`)[0], /uses 'window'/);
   assert.match(pureViewProblems(view, `document.title = song.title;`)[0], /uses 'document'/);
   assert.deepEqual(pureViewProblems('app/src/ui/screens/song-screen.js', `window.scrollTo(0, 0);`), []);
+});
+
+test('main.js only wires the layers together', () => {
+  const wiring = [
+    `// start-up: never let state live here`,
+    `const songsScreen = createSongsScreen();`,
+    `await startRouter(document.getElementById('app'), { songs: songsScreen });`,
+    `appVersion().then((version) => songsScreen.setVersion(version));`,
+  ].join('\n');
+  assert.deepEqual(mainProblems('app/src/main.js', wiring), []);
+  assert.match(mainProblems('app/src/main.js', `let query = '';`)[0], /uses 'let'.*only wires/);
+  assert.match(mainProblems('app/src/main.js', `window.addEventListener('hashchange', show);`)[0], /addEventListener/);
+  assert.match(mainProblems('app/src/main.js', `function closeSong() { history.back(); }`).join(), /'function'.*'history'/s);
+  assert.match(mainProblems('app/src/main.js', `delegate(root, 'click', {});`)[0], /uses 'delegate'/);
+  assert.deepEqual(mainProblems('app/src/ui/router.js', `let latest = 0; history.back();`), []);
 });

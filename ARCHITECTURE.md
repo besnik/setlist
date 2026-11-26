@@ -70,7 +70,7 @@ app/src/ui/
 - **The router** calls `load`, then `hide()` of the old screen and `show` of the new one, and sets `data-screen` on the root (styles per screen). Data that arrives after a newer address is dropped. `navigation` tells the screen where it came from and lets it go `back()` or `home()`.
 - **Views and components are pure** (state in, HTML out): they import only `ui/html.js`, `ui/routes.js`, other views and components, and `domain/`, and use no browser globals — `npm run check` enforces it. They are unit-tested in Node.
 - **Styles** follow the same split: `styles/components.css` for shared components, one file per screen (`songs-screen.css`, `song-screen.css`).
-- `main.js` only wires: it creates the screens, starts the router and the service worker.
+- `main.js` only wires: it creates the screens, starts the router and the service worker — `npm run check` enforces it (no state, own functions, listeners, rendering or work with the address).
 
 ## Offline and updates
 
@@ -105,4 +105,4 @@ Each part of the app, its technology and how to run its tests (golden principle 
 | `tools/` | Node.js scripts (development only) | `tests/tools` (`node --test`) | `npm run test:unit` |
 | **All** | | | `npm test` |
 
-Other commands: `npm start` (dev server at `http://localhost:8080/setlist/app/`, with `site/` at `/setlist/`, also reachable from phones in the same network), `npm run check` (project rules: layer and part imports, pure views and components, files loaded by HTML and CSS, file header comments, HTML written into the page only by `ui/html.js`, the offline file list and a new version for every app change). First run `npm install` once (Node.js 22 or newer).
+Other commands: `npm start` (dev server at `http://localhost:8080/setlist/app/`, with `site/` at `/setlist/`, also reachable from phones in the same network), `npm run check` (project rules: layer and part imports, pure views and components, `main.js` only wiring, files loaded by HTML and CSS, file header comments, HTML written into the page only by `ui/html.js`, the offline file list and a new version for every app change). First run `npm install` once (Node.js 22 or newer).
