@@ -19,7 +19,8 @@ export function routeOf(hash) {
   if (encoded === undefined) return { screen: 'songs' };
   try {
     return { screen: 'song', id: decodeURIComponent(encoded) };
-  } catch {
+  } catch (error) {
+    if (!(error instanceof URIError)) throw error;
     return { screen: 'songs' }; // a broken escape such as '%E0' names no song
   }
 }

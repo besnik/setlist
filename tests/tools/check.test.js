@@ -6,7 +6,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  assetProblems, assetReferencesOf, headerProblem, importProblems, importsOf, offlineFilesOf, offlineListProblems,
+  assetProblems, assetReferencesOf, errorHandlingProblems, headerProblem, importProblems, importsOf, offlineFilesOf, offlineListProblems,
   mainProblems, pureViewProblems, rawHtmlProblems, versionOf, versionProblems,
 } from '../../tools/check.js';
 
@@ -138,4 +138,29 @@ test('main.js only wires the layers together', () => {
   assert.match(mainProblems('app/src/main.js', `function closeSong() { history.back(); }`).join(), /'function'.*'history'/s);
   assert.match(mainProblems('app/src/main.js', `delegate(root, 'click', {});`)[0], /uses 'delegate'/);
   assert.deepEqual(mainProblems('app/src/ui/router.js', `let latest = 0; history.back();`), []);
+});
+
+// Rule 11 (golden principle 20): an error is caught only for an expected case;
+// nothing is swallowed silently.
+test('no error is swallowed silently in app/ and tools/', () => {
+  const handled = [
+    `try { a(); } catch (error) {\n  if (error.name !== 'NotAllowedError') log.warn('x', error);\n}`,
+    `promise.catch((error) => log.warn('x', error));`,
+    `// a comment about catch {} is fine`,
+    `return () => {};`,
+  ];
+  for (const source of handled) assert.deepEqual(errorHandlingProblems('app/src/ui/x.js', source), [], source);
+  assert.match(errorHandlingProblems('app/src/ui/x.js', `try { a(); } catch {\n  // refused\n}`)[0], /catch without its error.*golden principle 20/);
+  assert.match(errorHandlingProblems('tools/x.js', `try { a(); } catch (error) {\n  // ignored\n}`)[0], /empty catch block/);
+  assert.match(errorHandlingProblems('app/src/ui/x.js', `lock.release().catch(() => {});`)[0], /empty \.catch\(\) handler/);
+  assert.match(errorHandlingProblems('app/src/ui/x.js', `p.catch(() => undefined);`)[0], /empty \.catch\(\) handler/);
+  // Tests may build servers that answer anything with 404.
+  assert.deepEqual(errorHandlingProblems('tests/app/e2e/x.spec.js', `try { a(); } catch {}`), []);
+});
+
+// Rule 12: the app writes to the console only through its log.
+test('only the app log writes to the console', () => {
+  assert.deepEqual(errorHandlingProblems('app/src/ui/log.js', `console.warn(PREFIX, message);`), []);
+  assert.match(errorHandlingProblems('app/src/main.js', `p.catch((error) => console.warn('x', error));`)[0], /writes to the console.*ui\/log\.js/);
+  assert.deepEqual(errorHandlingProblems('tools/serve.js', `console.log('dev server');`), []);
 });

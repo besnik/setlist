@@ -62,3 +62,9 @@ test('survives a malformed request target', async () => {
   await raw('/setlist/app/%E0%A4%A');
   assert.equal((await fetch(`${base}/setlist/app/`)).status, 200);
 });
+
+// Bug (T-031 QA): an address with an encoded null byte names no file, so it is "Not
+// found" as before; the narrowed catch answered it with 500 and logged a stack trace.
+test('an encoded null byte in the address is not found', async () => {
+  assert.equal((await fetch(`${base}/setlist/app/%00`)).status, 404);
+});

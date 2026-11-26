@@ -24,3 +24,4 @@ Important decisions are recorded here as short **ADRs** (Architecture Decision R
 | [0004](0004-tech-stack-and-architecture.md) | Tech stack and architecture of the app | accepted |
 | [0005](0005-dev-tooling-tests-and-deployment.md) | Development tooling, tests, CI and deployment | accepted |
 | [0006](0006-screens-views-and-components.md) | Screens, views and components in the UI layer | accepted |
+| [0007](0007-error-handling-and-logging.md) | Error handling and logging | accepted |

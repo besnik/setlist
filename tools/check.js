@@ -25,6 +25,9 @@
 //    and components, and the domain layer, and use no browser globals.
 // 10. app/src/main.js only wires the layers together: no state (let), no own
 //    functions, no event listeners, no rendering and no work with the address.
+// 11. No error is silently swallowed in app/ and tools/: no catch without its
+//    error, no empty catch block and no .catch() with an empty handler.
+// 12. In app/, only app/src/ui/log.js writes to the console.
 
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -240,6 +243,31 @@ export function mainProblems(path, source) {
     `${MAIN}: uses '${found.replace('(', '')}'. main.js only wires the layers together: create the screens, start the router and the service worker. Put state, actions, rendering and work with the address into a screen (app/src/ui/screens/) or the router (see ARCHITECTURE.md, "Screens and routing").`);
 }
 
+const SWALLOWED = [
+  [/\bcatch\s*\{/, 'a catch without its error'],
+  [/\bcatch\s*\(\s*\w+\s*\)\s*\{\s*\}/, 'an empty catch block'],
+  [/\.catch\(\s*(\(\s*\w*\s*\)|\w+)\s*=>\s*(\{\s*\}|undefined|null)\s*\)/, 'an empty .catch() handler'],
+];
+const LOG = 'app/src/ui/log.js';
+
+/**
+ * Checks rules 11 and 12: errors are handled or seen, and the app logs only
+ * through its log (ARCHITECTURE.md, "Errors and logging"; golden principle 20).
+ * @param {string} path repository-relative path with forward slashes
+ * @param {string} source file content
+ * @returns {string[]} problem messages
+ */
+export function errorHandlingProblems(path, source) {
+  if (!path.endsWith('.js') || !/^(app|tools)\//.test(path)) return [];
+  const code = source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  const problems = SWALLOWED.filter(([pattern]) => pattern.test(code)).map(([, what]) =>
+    `${path}: ${what} hides every error. Catch only the expected case (by error name, type or code) and rethrow or log the rest (golden principle 20; ARCHITECTURE.md, "Errors and logging").`);
+  if (path.startsWith('app/') && path !== LOG && /\bconsole\./.test(code)) {
+    problems.push(`${path}: writes to the console. Use log.error / log.warn / log.info from ${LOG} (ARCHITECTURE.md, "Errors and logging").`);
+  }
+  return problems;
+}
+
 /** Whether an app file is documentation, which is published but not stored offline. */
 export function isDocumentation(path) {
   return /\.(md|txt)$/i.test(path);
@@ -298,11 +326,13 @@ export function versionProblems(changed, version, baseVersion, base) {
   return [`${WORKER}: files under app/ changed against ${base} (${shown}), but VERSION is still '${version}'. Change VERSION in ${WORKER} (YYYY.MM.DD, .2, .3 for more releases on one day), otherwise installed apps never get the change (see ARCHITECTURE.md, "Offline and updates").`];
 }
 
-/** Runs git in the repository and returns its output, or null when it fails. */
+/** Runs git in the repository and returns its output, or null when git fails or is missing. */
 function git(...args) {
   try {
     return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
-  } catch {
+  } catch (error) {
+    // Expected: git exits with an error (e.g. no such base) or is not installed.
+    if (error.status === undefined && error.code !== 'ENOENT') throw error;
     return null;
   }
 }
@@ -351,7 +381,7 @@ function main() {
     const source = readFileSync(join(ROOT, path), 'utf8');
     const header = headerProblem(path, source);
     const references = path.endsWith('.js') ? importProblems(path, source, exists) : assetProblems(path, source, exists);
-    return [...(header ? [header] : []), ...references, ...rawHtmlProblems(path, source), ...pureViewProblems(path, source), ...mainProblems(path, source)];
+    return [...(header ? [header] : []), ...references, ...rawHtmlProblems(path, source), ...pureViewProblems(path, source), ...mainProblems(path, source), ...errorHandlingProblems(path, source)];
   });
   problems.push(...offlineListProblems(offlineFilesOf(readFileSync(join(ROOT, WORKER), 'utf8')), appFiles()));
   const version = versionCheck();

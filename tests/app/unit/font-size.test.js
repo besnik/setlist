@@ -76,3 +76,18 @@ test('without storage the size is kept in memory and nothing throws', async () =
   const other = await freshRepository();
   assert.equal(await other.getFontSize(), 16);
 });
+
+// Golden principle 20 (errors are handled or seen): only refused storage is expected; any
+// other error is a bug and is not hidden behind the default size.
+test('an unexpected storage error is not hidden', async () => {
+  globalThis.localStorage = { getItem: () => { throw new TypeError('bug'); }, setItem: () => { throw new TypeError('bug'); } };
+  const { getFontSize, setFontSize } = await freshRepository();
+  await assert.rejects(getFontSize(), TypeError);
+  await assert.rejects(setFontSize(20), TypeError);
+
+  globalThis.localStorage = fakeStorage();
+  globalThis.localStorage.setItem = () => { throw new DOMException('full', 'QuotaExceededError'); };
+  const full = await freshRepository();
+  await full.setFontSize(20);
+  assert.equal(await full.getFontSize(), 20);
+});

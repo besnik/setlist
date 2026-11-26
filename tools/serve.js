@@ -51,7 +51,8 @@ async function handle(req, res) {
   let pathname;
   try {
     ({ pathname } = new URL(req.url, 'http://localhost'));
-  } catch {
+  } catch (error) {
+    if (!(error instanceof TypeError)) throw error; // TypeError: not a valid URL
     res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' }).end('Bad request');
     return;
   }
@@ -75,16 +76,28 @@ async function handle(req, res) {
     }
     // Like GitHub Pages: a file name followed by a slash is not found.
     else if (pathname.endsWith('/')) file = null;
-    if (!file) throw new Error('outside the website');
+    if (!file) return notFound(res); // outside the website
     const body = await readFile(file);
     res.writeHead(200, {
       'Content-Type': CONTENT_TYPES[extname(file)] ?? 'application/octet-stream',
       'Cache-Control': 'no-store',
     });
     res.end(body);
-  } catch {
-    res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }).end('Not found');
+  } catch (error) {
+    // Expected: no such file, or a broken escape (URIError) that names no file.
+    if (NOT_FOUND.has(error?.code) || error instanceof URIError) return notFound(res);
+    // A bug or a disk error: say so instead of hiding it behind "Not found".
+    console.error(`Setlist dev server: ${pathname}:`, error);
+    res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' }).end('Server error');
   }
+}
+
+// Errors that mean the address names no file; ERR_INVALID_ARG_VALUE: a null byte
+// (%00) in the path.
+const NOT_FOUND = new Set(['ENOENT', 'ENOTDIR', 'EISDIR', 'ERR_INVALID_ARG_VALUE']);
+
+function notFound(res) {
+  res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }).end('Not found');
 }
 
 createServer(handle).listen(PORT, () => {
