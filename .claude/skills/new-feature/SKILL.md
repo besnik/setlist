@@ -96,6 +96,7 @@ For the CEO, write a **short design summary in chat** (layout, key decisions, an
 
 Check against `ARCHITECTURE.md` and the golden principles:
 - Does it fit the current structure?
+- **Where does the code go?** Name the new or changed files or modules and the one job of each (e.g. a new screen module, a new repository). Check that no existing file takes on a second job, and that the next planned tasks have a place too.
 - Does it need an ADR, a new dependency or a larger refactoring?
 
 Record the result in the spec's "Notes for Design / Engineering" section.
@@ -103,7 +104,7 @@ Record the result in the spec's "Notes for Design / Engineering" section.
 
 ## 7. Break it into tasks
 
-Add rows `T-NNN` with status `proposed` to the milestone's task table, each linked to a spec section. Small, independently mergeable tasks.
+Add rows `T-NNN` with status `proposed` to the milestone's task table, each linked to a spec section. A task that adds code names the files or modules from the technical impact. Small, independently mergeable tasks.
 
 🛑 **The CEO approves** — in small mode, spec, design and task in one chat message; in big mode, by merging the spec PR. The GM then records the approval: spec status `approved`, task status `approved`.
 

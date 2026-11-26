@@ -75,7 +75,7 @@ Fixed constraints set by the CEO (platform, budget) are inputs to the analysis, 
 2. **Plan** — for unclear or larger work, the GM writes a short plan in chat and waits for the CEO's OK. A clear, specific instruction is carried out right away.
 3. **Delegate** — GM assigns parts to leads.
 4. **Build** — work happens on a branch ([git workflow](git-workflow.md)).
-5. **Review** — the QA lead reviews before the PR is opened (see [QA levels](#qa-levels)). The GM fixes trivial findings itself (a line of CSS, a spec wording; no behavior change); everything else goes back to the lead who built it.
+5. **Review** — for a larger change, the [architecture check](#architecture-checks) first; then the QA lead reviews before the PR is opened (see [QA levels](#qa-levels)). The GM fixes trivial findings itself (a line of CSS, a spec wording; no behavior change); everything else goes back to the lead who built it.
 6. **Pull request** — small, explained, using the PR template.
 7. **Report** — GM reports to the CEO in Slovak: what changed, what was decided, and what the CEO needs to decide or do.
 8. **Merge** — CEO reviews and squash-merges.
@@ -102,3 +102,18 @@ What each lead used is recorded per feature in [docs/plan/costs/](../plan/costs/
 | **Full QA** | Only when the CEO asks (the GM proposes it before a public release) | Many screen sizes, edge cases; only tests that found a bug stay in the repository |
 
 **No QA for harness documents.** A PR that changes only harness documents — rules, workflow, skills, agent prompts, the CEO guide — skips light QA: a QA run costs more than such a change risks. The PR says so under *Decisions made*. As soon as a PR also touches code, tests, CI, specs or ADRs, light QA applies (CEO decision, 2026-11-24).
+
+## Architecture checks
+
+Tests and QA check *what* the app does; these checks look at *how* the code is built, so spaghetti code and needless complexity are caught while they are cheap to fix (golden principle *Keep the structure clean as you go*). Machine-checkable parts of the structure are enforced by the project's check command (see [ARCHITECTURE.md](../../ARCHITECTURE.md)); these checks cover what needs judgment.
+
+**Questions** (both checks):
+
+1. Does the change fit the structure in `ARCHITECTURE.md`? If the structure itself should change, propose it.
+2. Did a file, function or module take on a second job (e.g. start-up code that also holds screen state)?
+3. Which files would grow with the next 2–3 planned tasks? Will they stay readable?
+4. Is anything duplicated, or more complex than today's requirements need?
+
+**At the end of a larger task** — one that adds a screen, a module, a layer or a cross-cutting mechanism, or changes more than ~5 code files. Before the PR, the Engineering lead answers the questions with an independent view (not the author's own review). Findings that are cheap to fix go into the same PR; bigger ones go into [tech-debt.md](../plan/tech-debt.md) and, as a proposal with a recommendation, to the CEO. The PR says the check was done under *How it was verified*. Small tasks: the author answers the questions alone.
+
+**At the end of a milestone** — before its status becomes `done`, the Engineering lead reviews the whole codebase with the same questions and proposes cleanup tasks (spaghetti code, duplication, needless complexity, stale docs) to the CEO. Approved cleanup tasks go into the next milestone.
