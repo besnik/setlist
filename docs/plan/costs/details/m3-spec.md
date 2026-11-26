@@ -1,7 +1,7 @@
 # M3 spec — Song view
 
 - **Description:** Spec of the song view (songs.md: open and close, content, provisional chord lines, font size, screen stays on), its stage design, tasks T-024–T-027.
-- **PR:** see the table in [README](../README.md)
+- **PR:** [#36](https://github.com/besnik/setlist/pull/36)
 - **Date:** 2026-11-26
 
 ## Lead runs
