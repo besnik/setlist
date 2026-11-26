@@ -38,3 +38,9 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+
+/* Chord lines: bold in the chord color; lyric lines keep the sheet's ink and weight. */
+.chord-line {
+  color: var(--color-chord);
+  font-weight: 700;
+}

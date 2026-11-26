@@ -1,9 +1,11 @@
 // The Song view (product spec songs.md, "Song view screen (M3)"): a stage screen
 // with a sticky top bar (close button) above the song header and the song sheet.
 // The sheet shows the text as written, in the mono font; lines keep their spaces
-// and wrap instead of widening the page. A pure view: state in, HTML out.
+// and wrap instead of widening the page. Chord lines are marked for highlighting.
+// A pure view: state in, HTML out.
 
 import { html } from '../html.js';
+import { isChordLine } from '../../domain/chords.js';
 import { keyChip } from '../components/key-chip.js';
 import { CLOSE_ICON, stageButton } from '../components/stage-button.js';
 
@@ -20,6 +22,15 @@ export function songView(song) {
         ${keyChip(song.key)}
       </div>
     </header>
-    <div class="song-sheet">${song.text}</div>
+    <div class="song-sheet">${sheetLines(song.text)}</div>
   `;
+}
+
+// The lines of the sheet, joined by line breaks; each chord line in its own span.
+/** @param {string} text */
+function sheetLines(text) {
+  return text.split('\n').map((line, index) => {
+    const separator = index === 0 ? '' : '\n';
+    return isChordLine(line) ? html`${separator}<span class="chord-line">${line}</span>` : html`${separator}${line}`;
+  });
 }
