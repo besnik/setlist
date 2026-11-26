@@ -78,6 +78,7 @@ Repeatable workflows live in [.claude/skills/](.claude/skills/):
 
 - The approved task's acceptance criteria are met.
 - Product specs, plan files and ADRs are updated in the same PR.
+- A larger change passed the [architecture check](docs/company/operating-model.md#architecture-checks).
 - If the way we work changed (rules, skills, workflow), [docs/ceo-guide.md](docs/ceo-guide.md) is updated too.
 - If leads were used, their costs are recorded in [docs/plan/costs/](docs/plan/costs/).
 - The PR follows the [template](.github/pull_request_template.md) and its description matches the change.

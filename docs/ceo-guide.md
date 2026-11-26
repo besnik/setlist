@@ -50,6 +50,15 @@ Built-in Claude Code commands you can also ask for: `/code-review` (find bugs in
 
 Planned skills (when there is code): `implement-task`, `fix-bug`, `cleanup` — see `docs/plan/inbox.md`.
 
+## Architecture checks
+
+Besides tests and QA, the code's structure is checked, so spaghetti code is caught while it is cheap to fix ([details](company/operating-model.md#architecture-checks)):
+
+- **End of a larger task** (new screen, module or mechanism): the Engineering lead looks at the structure before the PR. Cheap fixes go into the same PR; bigger ones come to you as a proposal and land in [tech-debt.md](plan/tech-debt.md).
+- **End of a milestone:** a review of the whole codebase; you get a list of proposed cleanup tasks to approve.
+- **Planning:** the technical impact of a feature names where the new code goes.
+- You can ask for one any time: "Pozri sa na architektúru …".
+
 ## Running the app on your computer
 
 Needs [Node.js](https://nodejs.org) 22 or newer. In the repository folder, once: `npm install`. Then:
