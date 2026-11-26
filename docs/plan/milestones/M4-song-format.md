@@ -35,6 +35,16 @@ Approved by the CEO in chat (2026-11-26), done before the M4 work starts.
 3. **Song header and source.** CEO (2026-11-26): besides the format, the header may hold where the song came from — the source (e.g. "supermusic.cz"), a link to the original and the date of import. Being transparent about the source is fair to the platform the song came from. Proposal (GM): show the source quietly at the end of the Song view (small muted text with the link); songs typed in by hand have no source. Decide which fields are in the MVP.
    - Related: the importer should work on single songs the user chooses (paste or open one song), not collect whole databases — song texts are usually copyrighted and websites' terms often forbid bulk downloading (see the importer idea in the [inbox](../inbox.md)).
 
+## Cleanup from M3
+
+From the M3 end-of-milestone architecture check. Proposed — the CEO approves or drops each one.
+
+| ID | Task | Spec | Status | PR |
+|---|---|---|---|---|
+| T-028 | Stale comments: `app/sw.js` (header and the registration comment) still says `src/main.js` registers the worker — it is `data/app-version.js`; `app/src/data/sample-songs.js` says "in M1" — the sample songs are the only songs until M5. Ride along with the first M4 PR that changes `app/` (needs a new VERSION) | — | proposed | — |
+| T-029 | `tools/check.js`: one shared helper that strips comments from source, instead of the same two regexes copied in 5 rules; tests in `tests/tools` stay green. With the next new check rule | — | proposed | — |
+| T-030 | One shared "Unknown artist" fallback for the song list and the Song view (a small component in `ui/components/`), before M6 adds setlist rows and M7 the play-mode header | — | proposed | — |
+
 ## Ideas for later (not in M4)
 
 - **Tabs** (guitar tablature): monospaced content like "chords over lyrics", so the format tag allows adding it later as its own format or as tab blocks inside a song (ChordPro has `{start_of_tab}` … `{end_of_tab}`). The M4 format must not block it.

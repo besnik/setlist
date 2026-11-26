@@ -48,6 +48,7 @@ main.js  →  ui  →  data  →  domain
 - **domain** — data types (JSDoc), validation, chord detection, setlist operations. Fully unit-testable in Node.
 - **data** — repositories. Validate everything read from storage (golden principle *Validate at the boundary*). Functions are asynchronous (return promises).
   - `song-repository.js` — songs (the sample songs in memory until M5 decides their storage).
+  - `app-version.js` — registers the service worker and reads the version of the stored app (see "Offline and updates").
   - `settings-repository.js` — the device's preferences (today the font size of the song text) in `localStorage`, the app's first storage: enough for a few small values, not for songs. It validates what it reads (falls back to the default) and never throws when storage is not allowed — the value is then kept in memory while the app is open.
 - **ui** — views are functions *state → HTML* built with our own `html` tagged template (`ui/html.js`), which escapes every value by default; only its `render()` writes HTML into the page. One delegated listener per event type (`ui/events.js`) maps `data-action` attributes to actions; key presses not tied to an element (Escape) go through `onKeys` in the same module.
 - **Screens and routing** — see the next section.
@@ -72,7 +73,7 @@ app/src/ui/
 - **Routing** uses the URL hash: `#/song/<id>` (id encoded) is the Song view, anything else the Songs screen. Links, Back, reload and the Android back gesture need no extra code.
 - **A screen** is made by a factory (`createSongsScreen()`) and is `{ load?(route), show(root, data, navigation) }`. `load` returns the data or `null` for something that does not exist (the router then replaces the address with the Songs screen's). `show` renders a view, registers the screen's actions (`delegate`, `onKeys`) and side effects, and returns `hide()`, which undoes them. A screen keeps its own state in memory (e.g. the search text and scroll position of the Songs screen); the router sets `history.scrollRestoration = 'manual'`, so screens set their scroll position themselves.
 - **The router** calls `load`, then `hide()` of the old screen and `show` of the new one, and sets `data-screen` on the root (styles per screen). Data that arrives after a newer address is dropped. `navigation` tells the screen where it came from and lets it go `back()` or `home()`.
-- **Views and components are pure** (state in, HTML out): they import only `ui/html.js`, `ui/routes.js`, other views and components, and `domain/`, and use no browser globals — `npm run check` enforces it. They are unit-tested in Node.
+- **Views and components are pure** (state in, HTML out): they import only `ui/html.js`, `ui/routes.js`, other views and components, and `domain/`, and use no browser globals — `npm run check` enforces it. They can be unit-tested in Node (risky ones are, e.g. the Song view; the others are covered by e2e).
 - **Styles** follow the same split: `styles/components.css` for shared components, one file per screen (`songs-screen.css`, `song-screen.css`).
 - `main.js` only wires: it creates the screens, starts the router and the service worker — `npm run check` enforces it (no state, own functions, listeners, rendering or work with the address).
 
