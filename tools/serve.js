@@ -92,8 +92,9 @@ async function handle(req, res) {
   }
 }
 
-// File system errors that mean the address names no file.
-const NOT_FOUND = new Set(['ENOENT', 'ENOTDIR', 'EISDIR']);
+// Errors that mean the address names no file; ERR_INVALID_ARG_VALUE: a null byte
+// (%00) in the path.
+const NOT_FOUND = new Set(['ENOENT', 'ENOTDIR', 'EISDIR', 'ERR_INVALID_ARG_VALUE']);
 
 function notFound(res) {
   res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }).end('Not found');

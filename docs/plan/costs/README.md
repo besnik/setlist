@@ -12,6 +12,7 @@ One row per feature here; the step-by-step breakdown lives in one file per featu
 | [M2 spec — Install and offline](details/m2-spec.md)* | Spec of install, offline and updates, tasks T-021–T-023 | big (spec PR) | [#30](https://github.com/besnik/setlist/pull/30) | 94,316 | 1:34 | 0 | 2 / 10 | proposed |
 | [M3 spec — Song view](details/m3-spec.md)* | Spec of the song view, tasks T-024–T-027 | big (spec PR) | [#36](https://github.com/besnik/setlist/pull/36) | 95,312 | 1:36 | 1 | 1 / 8 | proposed |
 | [M3 — Song view](details/m3-song-view.md)* | Song view tasks T-024–T-027 | big (task PRs) | [#41](https://github.com/besnik/setlist/pull/41), [#42](https://github.com/besnik/setlist/pull/42) | 246,212 | 1:42 | 0 | 0 / 2 (architecture checks: 0 / 6) | in progress |
+| [Error handling and logging](details/error-handling-logging.md) | Rules, ADR 0007, app log, narrowed catches, check rules (T-031) | small (task PR) | T-031 | 100,357 | 1:29 | 1 | 1 / 4 | in progress |
 
 Only lead runs are measured. The GM's own work cannot be measured from inside the session, so it is **not included** — no estimates. In the detail files, GM steps show `n/a`.
 

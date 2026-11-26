@@ -78,13 +78,14 @@ app/src/ui/
 
 ## Errors and logging
 
-Decision: [ADR 0007](docs/decisions/0007-error-handling-and-logging.md). Rules: golden principle *Errors are handled or seen, never swallowed*.
+Decision: [ADR 0007](docs/decisions/0007-error-handling-and-logging.md). Rules: golden principle 20, *Errors are handled or seen, never swallowed*.
 
 - **Catch only the expected case**, named by `error.name`, type or code: the browser refused the screen lock (`NotAllowedError`), storage is not allowed or full (`SecurityError`, `QuotaExceededError`), a broken escape in an address (`URIError`). Anything else is rethrown or logged.
 - **`ui/log.js`** is the only code in `app/` that writes to the console: `log.error`, `log.warn`, `log.info`, each prefixed with `[setlist]`. *error* — a bug or a failure that breaks the app; *warn* — a feature does not work, the app does; *info* — one line at start-up with the version. No song texts or other user data in the log.
 - **One boundary:** `logUncaughtErrors()` (called first in `main.js`) logs every error and rejected promise nothing else caught, once, as *error*. The user sees no message (that would be a spec change); the log stays on the device — nothing is sent anywhere.
 - `tools/` are command-line scripts: they write to the console directly, and the dev server answers an unexpected error with 500 and logs it instead of hiding it behind 404.
-- `npm run check` enforces it: no `catch` without its error, no empty `catch` block or `.catch()` handler in `app/` and `tools/`, and no console use in `app/` outside `ui/log.js`.
+- The service worker (`sw.js`) logs nothing today; when it needs to, it gets its own small log with the same levels (it cannot import `ui/`) and the check an exception for it.
+- `npm run check` enforces it: no `catch` without its error, no empty `catch` block or `.catch()` handler in `app/` and `tools/`, and no console use in `app/` outside `ui/log.js`. It catches only these plain forms; a handler that ignores its error in another way is for review.
 
 ## Offline and updates
 
