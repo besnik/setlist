@@ -16,7 +16,7 @@ Approved by the CEO in chat (2026-11-26), done before the M4 work starts.
 
 | ID | Task | Spec | Status | PR |
 |---|---|---|---|---|
-| T-031 | Error handling and logging: golden principle, ADR 0007, `ui/log.js` (levels, prefix), uncaught errors logged once, an info line at start-up, every `catch` narrowed to its expected case (app and tools), check rules 11–12 against swallowed errors and console use outside the log; unit and e2e tests | [ADR 0007](../../decisions/0007-error-handling-and-logging.md) | in-progress | [#44](https://github.com/besnik/setlist/pull/44) |
+| T-031 | Error handling and logging: golden principle, ADR 0007, `ui/log.js` (levels, prefix), uncaught errors logged once, an info line at start-up, every `catch` narrowed to its expected case (app and tools), check rules 11–12 against swallowed errors and console use outside the log; unit and e2e tests | [ADR 0007](../../decisions/0007-error-handling-and-logging.md) | done | [#44](https://github.com/besnik/setlist/pull/44) |
 
 ## Questions for the analysis (ADR)
 
@@ -37,13 +37,13 @@ Approved by the CEO in chat (2026-11-26), done before the M4 work starts.
 
 ## Cleanup from M3
 
-From the M3 end-of-milestone architecture check. Proposed — the CEO approves or drops each one.
+From the M3 end-of-milestone architecture check. Approved by the CEO in chat (2026-11-26).
 
 | ID | Task | Spec | Status | PR |
 |---|---|---|---|---|
-| T-028 | Stale comments: `app/sw.js` (header and the registration comment) still says `src/main.js` registers the worker — it is `data/app-version.js`; `app/src/data/sample-songs.js` says "in M1" — the sample songs are the only songs until M5. Ride along with the first M4 PR that changes `app/` (needs a new VERSION) | — | proposed | — |
-| T-029 | `tools/check.js`: one shared helper that strips comments from source, instead of the same two regexes copied in 5 rules; tests in `tests/tools` stay green. With the next new check rule | — | proposed | — |
-| T-030 | One shared "Unknown artist" fallback for the song list and the Song view (a small component in `ui/components/`), before M6 adds setlist rows and M7 the play-mode header | — | proposed | — |
+| T-028 | Stale comments: `app/sw.js` (header and the registration comment) still says `src/main.js` registers the worker — it is `data/app-version.js`; `app/src/data/sample-songs.js` says "in M1" — the sample songs are the only songs until M5. Ride along with the first M4 PR that changes `app/` (needs a new VERSION) | — | approved | — |
+| T-029 | `tools/check.js`: one shared helper that strips comments from source, instead of the same two regexes copied in 5 rules; tests in `tests/tools` stay green. With the next new check rule | — | approved | — |
+| T-030 | One shared "Unknown artist" fallback for the song list and the Song view (a small component in `ui/components/`), before M6 adds setlist rows and M7 the play-mode header | — | approved | — |
 
 ## Ideas for later (not in M4)
 
