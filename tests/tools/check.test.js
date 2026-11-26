@@ -7,7 +7,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   assetProblems, assetReferencesOf, headerProblem, importProblems, importsOf, offlineFilesOf, offlineListProblems,
-  rawHtmlProblems, versionOf, versionProblems,
+  pureViewProblems, rawHtmlProblems, versionOf, versionProblems,
 } from '../../tools/check.js';
 
 const all = () => true;
@@ -106,4 +106,21 @@ test('a change under app/ changes the version', () => {
   assert.deepEqual(versionProblems(['app/sw.js'], '1', null, 'HEAD^'), []); // the worker is new in the base
   assert.match(versionProblems(['app/src/main.js'], '1', '1', 'origin/main')[0], /changed against origin\/main \(app\/src\/main\.js\), but VERSION is still '1'/);
   assert.match(versionProblems(['app/README.md'], '1', '1', 'HEAD^')[0], /against HEAD\^/);
+});
+
+test('views and components are pure', () => {
+  const view = 'app/src/ui/views/song-view.js';
+  assert.deepEqual(pureViewProblems(view, [
+    `import { html } from '../html.js';`,
+    `import { songHash } from '../routes.js';`,
+    `import { keyChip } from '../components/key-chip.js';`,
+    `import { songCountLabel } from '../../domain/songs.js';`,
+    `/** @param {import('../../domain/songs.js').Song} song */`,
+    `// never touch document here`,
+  ].join('\n')), []);
+  assert.match(pureViewProblems(view, `import { getSong } from '../../data/song-repository.js';`)[0], /imports '..\/..\/data\/song-repository.js'.*pure/);
+  assert.match(pureViewProblems(view, `import { render } from '../router.js';`)[0], /imports/);
+  assert.match(pureViewProblems('app/src/ui/components/x.js', `const w = window.innerWidth;`)[0], /uses 'window'/);
+  assert.match(pureViewProblems(view, `document.title = song.title;`)[0], /uses 'document'/);
+  assert.deepEqual(pureViewProblems('app/src/ui/screens/song-screen.js', `window.scrollTo(0, 0);`), []);
 });

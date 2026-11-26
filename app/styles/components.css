@@ -1,115 +1,8 @@
-/* Components of the screens (docs/design/guidelines.md, "Components (M1)"; the
-   stage components in songs.md, "Song view screen (M3)"): page header, search
-   field, song row with key chip, empty state, version line; stage top bar, stage
-   button, song header, song sheet. */
+/* Shared components (docs/design/guidelines.md, "Components"; the stage
+   components in songs.md, "Song view screen (M3)"): parts used by more than one
+   screen. Styles of a single screen live in its own file (songs-screen.css, …). */
 
-/* Page header: the screen heading with the count line below it. */
-.page-header__count {
-  margin: var(--space-1) 0 0;
-  color: var(--color-muted);
-  font-size: var(--text-small-size);
-  font-weight: var(--text-small-weight);
-  line-height: var(--text-small-leading);
-}
-
-/* Search field: native search input, full column width. */
-.search-field {
-  /* Safari styles native search inputs its own way and ignores padding or radius without this. */
-  -webkit-appearance: none;
-  appearance: none;
-  display: block;
-  width: 100%;
-  height: 48px;
-  margin: var(--space-4) 0;
-  padding: 0 var(--space-4);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-card);
-  background: var(--color-surface);
-  color: var(--color-ink);
-  font-size: var(--text-body-size);
-  line-height: var(--text-body-leading);
-}
-
-.search-field::placeholder {
-  color: var(--color-muted);
-  opacity: 1;
-}
-
-.search-field:focus {
-  border-color: var(--color-accent);
-  outline: 2px solid var(--color-accent);
-  outline-offset: 0;
-}
-
-/* Song list: rows separated by a gap; each row is a link to the Song view. */
-.song-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.song-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-card);
-  background: var(--color-surface);
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
-  /* The pressed color below replaces the browser's tap flash on phones. */
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Hover only with a mouse: on a touch screen it would stick after a tap. */
-@media (hover: hover) {
-  .song-row:hover {
-    background: var(--color-line);
-  }
-}
-
-.song-row:active {
-  background: var(--color-line);
-}
-
-.song-row:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-/* min-width: 0 lets the text column shrink, so title and artist end with an ellipsis. */
-.song-row__text {
-  flex: 1;
-  min-width: 0;
-}
-
-.song-row__title,
-.song-row__artist {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  /* The base style's break-word would let a long word count as shrinkable width. */
-  overflow-wrap: normal;
-}
-
-.song-row__title {
-  font-size: var(--text-row-size);
-  font-weight: var(--text-row-weight);
-  line-height: var(--text-row-leading);
-}
-
-.song-row__artist {
-  margin-top: 2px;
-  color: var(--color-muted);
-  font-size: var(--text-small-size);
-  font-weight: var(--text-small-weight);
-  line-height: var(--text-small-leading);
-}
-
+/* Key chip: the song's key, in the song list and the Song view. */
 .key-chip {
   flex-shrink: 0;
   padding: var(--space-1) var(--space-2);
@@ -120,26 +13,6 @@
   font-size: var(--text-chip-size);
   font-weight: var(--text-chip-weight);
   line-height: var(--text-chip-leading);
-}
-
-/* Empty state: replaces the list while a search has no match. */
-.empty-state {
-  margin: 0;
-  padding: var(--space-6) var(--space-4);
-  border: 2px dashed var(--color-line);
-  border-radius: var(--radius-card);
-  color: var(--color-muted);
-  text-align: center;
-}
-
-/* Version line: the app version in small muted text below the song list (install-offline.md). */
-.version-line {
-  margin: var(--space-5) 0 0;
-  color: var(--color-muted);
-  font-size: var(--text-small-size);
-  font-weight: var(--text-small-weight);
-  line-height: var(--text-small-leading);
-  text-align: center;
 }
 
 /* Stage top bar: sticky at the top of a stage screen; opaque, so the song text
@@ -179,36 +52,4 @@
 .stage-button:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
-}
-
-/* Song header: the title wraps (never shortened on stage); artist and key chip below. */
-.song-header {
-  margin-top: var(--space-5);
-}
-
-.song-header__meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
-  margin-top: var(--space-1);
-}
-
-.song-header__artist {
-  color: var(--color-muted);
-  font-size: var(--text-small-size);
-  font-weight: var(--text-small-weight);
-  line-height: var(--text-small-leading);
-}
-
-/* Song sheet: the text as written — spaces kept, so chords stay above their words,
-   and long lines wrap instead of widening the page. */
-.song-sheet {
-  margin-top: var(--space-5);
-  font-family: var(--font-mono);
-  font-size: var(--sheet-size, 16px);
-  font-weight: 400;
-  line-height: 1.5;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
 }

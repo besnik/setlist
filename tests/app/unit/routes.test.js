@@ -3,7 +3,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { routeOf, songHash } from '../../../app/src/ui/router.js';
+import { routeOf, songHash } from '../../../app/src/ui/routes.js';
 
 // Rule (Open and close): every song has its own address, #/song/<song id>.
 test('a song address names the Song view of that song', () => {
