@@ -1,6 +1,6 @@
 # Install and offline
 
-- **Status:** draft
+- **Status:** approved
 
 <!-- M2. Everything else around the screens (address, start, theme, screen sizes) is in app-shell.md. -->
 
