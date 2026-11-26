@@ -35,7 +35,9 @@ What surrounds every screen: where the app lives, how it starts, how it adapts t
 
 A bottom tab bar Songs / Setlists arrives with setlists. Before that the app has a single screen.
 
-### Install and offline *(planned — M2)*
+### Install and offline
+
+See [install-offline.md](install-offline.md) (M2).
 
 ## UX and visual design
 
@@ -71,6 +73,7 @@ phone (320–599 px)                     tablet / desktop (≥ 600 px)
 - Accessibility work beyond good defaults: ARIA labels, screen reader support, high-contrast modes (CEO decision — audience is everyday musicians).
 - User accounts, sync between devices, a backend.
 - Translations of the UI (an idea in the inbox).
+- Install, offline and updates: see [install-offline.md](install-offline.md).
 
 ## Open questions
 

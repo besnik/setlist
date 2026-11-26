@@ -15,3 +15,5 @@ Raw ideas go here — one line each, no filtering. The GM or Product lead turns 
 - Signpost page at the root of the website (links to the app and the guide).
 - Fuzzy search: tolerate typos and approximate matches (e.g. Levenshtein distance), on top of the accent-insensitive search from M1.
 - Own domain for the app before the first public release, e.g. a free subdomain on Netlify or Vercel (`setlist.vercel.app`) or a custom domain — gives Setlist its own origin instead of sharing `besnik.github.io` (see ADR 0005). Decide before the public release: moving later means users move their data with the backup and reinstall the app.
+- Choice of the accent color in the app's Settings (not everyone likes orange). Colors are already CSS custom properties in `app/styles/tokens.css`, so a setting only overrides `--color-accent` and its related tokens; the app icon stays fixed (it cannot change per user).
+- Theme setting in the app's Settings: Light, Dark, Automatic (follows the system; the default). Today the app always follows the system.
