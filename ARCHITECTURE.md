@@ -47,6 +47,8 @@ main.js  →  ui  →  data  →  domain
 - Tests may import anything; `tools/` import nothing from `app/`.
 - **domain** — data types (JSDoc), validation, chord detection, setlist operations. Fully unit-testable in Node.
 - **data** — repositories. Validate everything read from storage (golden principle *Validate at the boundary*). Functions are asynchronous (return promises).
+  - `song-repository.js` — songs (the sample songs in memory until M5 decides their storage).
+  - `settings-repository.js` — the device's preferences (today the font size of the song text) in `localStorage`, the app's first storage: enough for a few small values, not for songs. It validates what it reads (falls back to the default) and never throws when storage is not allowed — the value is then kept in memory while the app is open.
 - **ui** — views are functions *state → HTML* built with our own `html` tagged template (`ui/html.js`), which escapes every value by default; only its `render()` writes HTML into the page. One delegated listener per event type (`ui/events.js`) maps `data-action` attributes to actions; key presses not tied to an element (Escape) go through `onKeys` in the same module.
 - **Screens and routing** — see the next section.
 - A service layer is added only when real cross-cutting logic appears.
