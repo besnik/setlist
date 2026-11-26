@@ -1,6 +1,6 @@
 # M2 spec — Install and offline
 
-- **Description:** Spec of install, offline and updates (section of app-shell.md), provisional icon, tasks T-021–T-023.
+- **Description:** Spec of install, offline and updates (install-offline.md), provisional icon, tasks T-021–T-023.
 - **PR:** [#30](https://github.com/besnik/setlist/pull/30)
 - **Date:** 2026-11-26
 
