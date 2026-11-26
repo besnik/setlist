@@ -11,7 +11,7 @@ One row per feature here; the step-by-step breakdown lives in one file per featu
 | [M1 — Foundation and song list](details/m1-foundation-song-list.md) | Design foundation, project skeleton and tooling, deployment, app shell, safe rendering, song list | big (task PRs) | [#15](https://github.com/besnik/setlist/pull/15), [#16](https://github.com/besnik/setlist/pull/16), [#19](https://github.com/besnik/setlist/pull/19), [#23](https://github.com/besnik/setlist/pull/23), [#25](https://github.com/besnik/setlist/pull/25) | 528,643 | 14:28 | 0 | 3 / 29 (so far) | in progress |
 | [M2 spec — Install and offline](details/m2-spec.md)* | Spec of install, offline and updates, tasks T-021–T-023 | big (spec PR) | [#30](https://github.com/besnik/setlist/pull/30) | 94,316 | 1:34 | 0 | 2 / 10 | proposed |
 | [M3 spec — Song view](details/m3-spec.md)* | Spec of the song view, tasks T-024–T-027 | big (spec PR) | [#36](https://github.com/besnik/setlist/pull/36) | 95,312 | 1:36 | 1 | 1 / 8 | proposed |
-| [M3 — Song view](details/m3-song-view.md)* | Song view tasks T-024–T-027 | big (task PRs) | [#41](https://github.com/besnik/setlist/pull/41) | 83,225 | 0:23 | 0 | — (architecture check: 0 / 3) | in progress |
+| [M3 — Song view](details/m3-song-view.md)* | Song view tasks T-024–T-027 | big (task PRs) | [#41](https://github.com/besnik/setlist/pull/41), T-027 | 161,565 | 1:08 | 0 | — (architecture check: 0 / 3) | in progress |
 
 Only lead runs are measured. The GM's own work cannot be measured from inside the session, so it is **not included** — no estimates. In the detail files, GM steps show `n/a`.
 

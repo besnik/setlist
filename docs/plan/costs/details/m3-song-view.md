@@ -1,7 +1,7 @@
 # M3 — Song view
 
 - **Description:** Implementation of the song view tasks T-024–T-027 (rows for tasks whose PRs used leads).
-- **PRs:** [#41](https://github.com/besnik/setlist/pull/41) (T-026)
+- **PRs:** [#41](https://github.com/besnik/setlist/pull/41) (T-026), T-027 (this PR)
 - **Date:** 2026-11-26
 
 ## Lead runs
@@ -10,7 +10,9 @@
 |---|---|---|---|---|---|---|
 | T-026 implementation and tests | GM | n/a | n/a | n/a | n/a | not measured |
 | T-026 architecture check | engineering-lead | inherited | 83,225 | 0:23 | 2 | 0 blocking, 3 other (2 fixed, 1 guidance for T-027) |
-| **Total** | | | **83,225** | **0:23** | **2** | |
+| T-027 implementation and tests | GM | n/a | n/a | n/a | n/a | not measured |
+| T-027 architecture check | engineering-lead | inherited | 78,340 | 0:45 | 4 | 0 blocking, 3 other (2 fixed, 1 to tech debt) |
+| **Total** | | | **161,565** | **1:08** | **6** | |
 
 ## What drove cost
 
