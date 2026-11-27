@@ -368,4 +368,4 @@ Song format (M4):
 
 ## Open questions
 
-- **Slovak words of *Tichá noc*.** The author of the Slovak translation is not named in the sources found so far. *Recommendation:* a gate in T-037 — use the common old version only when no source names a modern author; if any source names an author who died less than 70 years ago (or the age of the words cannot be shown), use another public-domain Slovak carol instead and ask the CEO in the PR.
+- *(none open)* The Slovak words of *Tichá noc* were decided by the CEO on 2026-11-27: both Slovak songs count as folk songs and are used as found. One of the sources checked names Ladislav Hohoš as the author of the words (the others give no author); this is noted in the T-037 PR.
