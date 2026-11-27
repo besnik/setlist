@@ -62,7 +62,7 @@ Tests and the check command run on every change. An independent review by a lead
 
 Each PR says under *How it was verified* which review it got.
 
-**Model tiers:** leads run on a fixed tier, set in [.claude/models.md](../.claude/models.md) — the only file that names models. When you start a session, pick the model by the work: **strong** for a new feature, spec or milestone end; **standard** for an approved task ("začni T-0NN"), PR comments and harness edits.
+**Model tiers:** leads run on a fixed tier, set in [.claude/models.md](../.claude/models.md) — the only file that names models. When you start a session, pick the model by the work: **strong** for a new feature, spec or milestone end; **standard** for an approved task ("začni T-0NN"), PR comments and harness edits. If a task in a standard session turns out hard (a larger feature, many files, a refactoring), the GM hands the implementation to the Engineering lead on the strong tier — and tells you why and what it costs first.
 
 ## Running the app on your computer
 

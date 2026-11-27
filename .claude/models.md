@@ -17,7 +17,7 @@ Each lead's `model:` line in `.claude/agents/<lead>.md` must match this table.
 
 | Lead | Tier |
 |---|---|
-| engineering-lead | strong |
+| engineering-lead | strong — also takes hard implementation (larger feature, many files, refactoring) when the main session runs on standard |
 | qa-lead | standard |
 | product-lead | standard |
 | design-lead | standard |

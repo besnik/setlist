@@ -87,6 +87,7 @@ The AI budget is limited. The GM does the work itself — it already has the con
 1. **Independent view needed** — whoever wrote something hardly finds its own mistakes. A review is always delegated (when a change needs one — see [Reviews](#reviews)).
 2. **Heavy work that would flood the GM's context** — reading many files, long tool output, running tests (e.g. an implementation across more than ~5 files).
 3. **Parallel work** that saves real time.
+4. **Hard implementation on a standard-tier session** — a larger feature, many files or a refactoring that the GM judges too hard for its own tier: the Engineering lead builds it on the strong tier. The GM says why and gives the expected cost first.
 
 Ask leads for concise work and concise output.
 Before an expensive step (a lead run, screenshots, full QA), the GM tells the CEO the expected cost.
