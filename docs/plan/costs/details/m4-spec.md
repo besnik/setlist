@@ -1,7 +1,7 @@
 # M4 spec — Song format
 
 - **Description:** ADR 0008 (stored formats `plain` and `chordpro`, notation tag, source fields), the song format spec in songs.md (ChordPro subset, source line, two Slovak sample songs), its design, tasks T-033–T-037.
-- **PR:** see the README row
+- **PR:** [#47](https://github.com/besnik/setlist/pull/47)
 - **Date:** 2026-11-27
 
 ## Lead runs
