@@ -13,6 +13,7 @@ One row per feature here; the step-by-step breakdown lives in one file per featu
 | [M3 spec — Song view](details/m3-spec.md)* | Spec of the song view, tasks T-024–T-027 | big (spec PR) | [#36](https://github.com/besnik/setlist/pull/36) | 95,312 | 1:36 | 1 | 1 / 8 | proposed |
 | [M3 — Song view](details/m3-song-view.md)* | Song view tasks T-024–T-027 | big (task PRs) | [#41](https://github.com/besnik/setlist/pull/41), [#42](https://github.com/besnik/setlist/pull/42) | 359,062 | 2:37 | 0 | 0 / 2 (architecture checks: 0 / 6; milestone check: 3 cleanup tasks) | done |
 | [Error handling and logging](details/error-handling-logging.md) | Rules, ADR 0007, app log, narrowed catches, check rules (T-031) | small (task PR) | [#44](https://github.com/besnik/setlist/pull/44) | 100,357 | 1:29 | 1 | 1 / 4 | in progress |
+| [M4 spec — Song format](details/m4-spec.md)* | ADR 0008, song format spec (plain and ChordPro, notation, source line), tasks T-033–T-037 | big (spec PR) | — | 36,033 | 0:46 | 4 | 2 / 6 | proposed |
 
 Lead tokens count every token a lead read, and most of them are cheap cache reads, so they are **not a price** — compare them only with each other. The real price is in the session costs below. In the detail files, GM steps show `n/a`.
 

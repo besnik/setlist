@@ -343,7 +343,7 @@ Song format (M4):
   - `ui/components/chordpro-sheet.js` (new) — renders the blocks of `parseChordPro`. Both sheets are components, because play mode (M7) shows the same sheet.
   - `ui/views/song-view.js` — chooses the sheet by format and adds the source line; nothing else.
   - `domain/song-source.js` (new) — `sourceLine(song)` → `{ text, href }` or `null`, following the table of the *Source line* rules. Security-relevant: parse with `new URL()` inside a narrowed `try` (ADR 0007) and compare `url.protocol` with `https:` / `http:` after parsing — never a string prefix check (it misses `JaVaScRiPt:`, leading spaces and control characters); reject `url.username` / `url.password`; the website is `url.hostname` without a leading `www.` (punycode for non-ASCII hosts is accepted). Unit tests for each table row and for these cases. The link uses `target="_blank" rel="noopener noreferrer"`; the text and `href` go through the escaping `html` template.
-  - CSS: the sheet styles move from `song-screen.css` to `components.css` (shared with M7, done in T-032 with `plain-sheet.js`); the ChordPro sheet styles go there too; the source line stays in `song-screen.css`.
+  - CSS: the sheet styles move from `song-screen.css` to `components.css` (shared with M7, done in T-033 with `plain-sheet.js`); the ChordPro sheet styles go there too; the source line stays in `song-screen.css`.
   - Both readers split lines on `\r\n`, `\r` and `\n`.
   - `data/sample-songs.js` — the new fields, *When the Saints* rewritten in ChordPro, and the two Slovak songs.
   - New files go into the offline file list (`app/sw.js`); every change to `app/` needs a new VERSION.
@@ -360,4 +360,4 @@ Song format (M4):
 
 ## Open questions
 
-- **Slovak words of *Tichá noc*.** The author of the Slovak translation is not named in the sources found so far. *Recommendation:* a gate in T-036 — use the common old version only when no source names a modern author; if any source names an author who died less than 70 years ago (or the age of the words cannot be shown), use another public-domain Slovak carol instead and ask the CEO in the PR.
+- **Slovak words of *Tichá noc*.** The author of the Slovak translation is not named in the sources found so far. *Recommendation:* a gate in T-037 — use the common old version only when no source names a modern author; if any source names an author who died less than 70 years ago (or the age of the words cannot be shown), use another public-domain Slovak carol instead and ask the CEO in the PR.
