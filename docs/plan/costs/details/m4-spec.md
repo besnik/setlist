@@ -14,4 +14,4 @@
 
 ## What drove cost
 
-- The blocking findings were in the source line: its visible text for every combination of name and link, and a link check that must parse the address instead of comparing a prefix.
+- The blocking findings were in the source line: its visible text for every combination of name and link, and a link check that must parse the address instead of comparing a prefix. The CEO then dropped the link altogether (the source is plain text), which removed both.

@@ -39,7 +39,7 @@ The songbook: all the musician's songs with lyrics and chords in one place, quic
   | *A od Prešova* (Slovak folk song, from M4) | Traditional | as found in the sources | `chordpro` | `german` |
   | *Tichá noc* (Slovak words of *Silent Night*, from M4) | Franz X. Gruber, Joseph Mohr | as found in the sources | `plain` | `german` |
 
-- Rule: the two Slovak songs are written from at least two public sources each, checked against each other, and only in a version that is free to use (a folk song, or words whose author died more than 70 years ago or is unknown and old). *A od Prešova* names the website it was checked against as its source (see *Song format*), so the source line has a real example.
+- Rule: the two Slovak songs are written from at least two public sources each, checked against each other, and only in a version that is free to use (a folk song, or words whose author died more than 70 years ago or is unknown and old). *A od Prešova* names the website it was checked against as its source (e.g. `akordy.sk`, see *Song format*), so the source line has a real example.
 - Rule: until *Manage songs* (M5) the sample songs are the only songs.
 
 ### Song view *(M3)*
@@ -99,7 +99,7 @@ How a song is stored and shown. Decision: [ADR 0008](../decisions/0008-song-form
 - Rule: a song has a title, an artist, a key, a text, and these header fields:
   - **Format:** `plain` ("chords over lyrics": a line of chords above each line of lyrics) or `chordpro` (chords in square brackets inside the lyrics, e.g. `[G]Amazing [C]grace`).
   - **Notation:** `international` (`B` is B, `Bb` is B flat) or `german`, the Central European notation (`H` is B, `B` is B flat).
-  - **Source** (optional): the name of the website or book the song came from (e.g. `supermusic.cz`), a link to the original, and the date of import. A song typed in by hand has no source.
+  - **Source** (optional): the name of the website the song came from, as plain text — the domain with its ending, e.g. `akordy.sk` — and the date of import. There is no link to the original. A song typed in by hand has no source.
 - Rule: the text is kept exactly as written; neither the format nor the notation ever changes it.
 - Rule: lines end with a line break; `\r\n` and `\r` (Windows and old Mac line ends) count as one line break, in both formats.
 - Rule: given a song whose format is missing or unknown, then it is shown as `plain` (nothing is lost: `plain` shows every line as written).
@@ -135,18 +135,9 @@ How a song is stored and shown. Decision: [ADR 0008](../decisions/0008-song-form
 
 **Source line**
 
-- Rule: a link is **valid** when it is a full web address with the scheme `https` or `http` (letter case ignored) and without a user name or password in it (`https://user:pw@…` is not valid). Anything else (e.g. `javascript:…`, `data:…`, a text that is not an address) is not valid and is never shown as a link.
-- Rule: given a song with a source, then the end of the Song view shows a quiet line "Source: " followed by a text:
-
-  | Name | Link | Text after "Source: " |
-  |---|---|---|
-  | given | valid | the name, as a link to the original |
-  | given | missing or not valid | the name, as plain text |
-  | missing or only spaces | valid | the link's website without `www.` (e.g. `supermusic.cz`), as a link |
-  | missing or only spaces | missing or not valid | — no source line at all |
-
-- Rule: the link opens the original outside the app (a new tab, or the browser from the installed app).
-- Rule: a long name wraps; it never widens the page.
+- Rule: given a song with a source, then the end of the Song view shows a quiet line "Source: <source>", e.g. "Source: akordy.sk". The source is plain text, shown as written (spaces around it ignored); it is never a link, even when it looks like an address.
+- Rule: given the source is empty or only spaces, then there is no source line.
+- Rule: a long source wraps; it never widens the page.
 - Rule: the date of import is stored but not shown in M4.
 - Rule: given a song without a source, then there is no source line.
 
@@ -288,7 +279,7 @@ The Song view screen stays as in M3 (bar, header, sheet); only the sheet changes
 │                                │
 │ Repeat 2×                      │  comment: body 400, muted, no chord row
 │                                │  24 px
-│ Source: supermusic.cz          │  source line: small, muted, link underlined
+│ Source: akordy.sk              │  source line: small, muted, plain text
 └────────────────────────────────┘
 ```
 
@@ -303,7 +294,7 @@ The Song view screen stays as in M3 (bar, header, sheet); only the sheet changes
   - A line with at least one chord reserves the chord row for all its pieces, so the lyrics of one line stay on one baseline. A line without chords has no chord row.
   - Chorus: `--space-3` (12 px) left padding, 2 px `--color-line` left border. The label (when given) in `small`, `--color-muted`, above the first chorus line.
   - Comment: `--font-body` 400, `--color-muted`, the sheet size.
-- **Source line:** `small` step, `--color-muted`, `--space-5` above it, after the sheet, `overflow-wrap: anywhere`. "Source: " then the name; as a link it keeps `--color-muted`, underlined, with the keyboard focus outline of the guidelines. It scrolls with the sheet; it does not change with the font size.
+- **Source line:** `small` step, `--color-muted`, `--space-5` above it, after the sheet, `overflow-wrap: anywhere`. "Source: " then the source, plain text (not a link, not focusable). It scrolls with the sheet; it does not change with the font size.
 
 **Self-check**
 
@@ -335,20 +326,20 @@ Song view (M3):
 
 Song format (M4):
 
-- **Song fields:** `id`, `title`, `artist`, `key`, `text`, `format` (`'plain' | 'chordpro'`), `notation` (`'international' | 'german'`), and optional `source`, `sourceUrl`, `importedAt` (ISO date `YYYY-MM-DD`). The `Song` type in `domain/songs.js`; the format and notation values are domain constants there. The fallbacks (unknown format → `plain`, unknown notation → `international`) are small domain functions with unit tests, so M5 storage reuses them.
+- **Song fields:** `id`, `title`, `artist`, `key`, `text`, `format` (`'plain' | 'chordpro'`), `notation` (`'international' | 'german'`), and optional `source` (plain text) and `importedAt` (ISO date `YYYY-MM-DD`). The `Song` type in `domain/songs.js`; the format and notation values are domain constants there. The fallbacks (unknown format → `plain`, unknown notation → `international`) are small domain functions with unit tests, so M5 storage reuses them.
 - **Where the code goes:**
   - `domain/chords.js` — stays: `isChordLine` is the reader of the `plain` format (no longer provisional; update its comments).
   - `domain/chordpro.js` (new) — `parseChordPro(text)`: pure, text in, a list of blocks out (lines of pieces `{ chord, text }`, chorus blocks with an optional label, comments, empty lines; hidden directives and `#` lines dropped). Unit tests with every rule above. Knows nothing of HTML.
   - `ui/components/plain-sheet.js` (new) — the M3 sheet lines, moved out of `song-view.js`.
   - `ui/components/chordpro-sheet.js` (new) — renders the blocks of `parseChordPro`. Both sheets are components, because play mode (M7) shows the same sheet.
   - `ui/views/song-view.js` — chooses the sheet by format and adds the source line; nothing else.
-  - `domain/song-source.js` (new) — `sourceLine(song)` → `{ text, href }` or `null`, following the table of the *Source line* rules. Security-relevant: parse with `new URL()` inside a narrowed `try` (ADR 0007) and compare `url.protocol` with `https:` / `http:` after parsing — never a string prefix check (it misses `JaVaScRiPt:`, leading spaces and control characters); reject `url.username` / `url.password`; the website is `url.hostname` without a leading `www.` (punycode for non-ASCII hosts is accepted). Unit tests for each table row and for these cases. The link uses `target="_blank" rel="noopener noreferrer"`; the text and `href` go through the escaping `html` template.
+  - The source line is plain text in `song-view.js` through the escaping `html` template — no link, no `href`, so no address check is needed.
   - CSS: the sheet styles move from `song-screen.css` to `components.css` (shared with M7, done in T-033 with `plain-sheet.js`); the ChordPro sheet styles go there too; the source line stays in `song-screen.css`.
   - Both readers split lines on `\r\n`, `\r` and `\n`.
   - `data/sample-songs.js` — the new fields, *When the Saints* rewritten in ChordPro, and the two Slovak songs.
   - New files go into the offline file list (`app/sw.js`); every change to `app/` needs a new VERSION.
 - **No ADR beyond 0008, no new dependency, no new font file** (Slovak letters are in the Latin Extended subset of the fonts).
-- **Tests:** unit tests for `parseChordPro`, the fallbacks and the source link; e2e: a `chordpro` song shows its chords above the right syllables (the chord's left edge over its syllable's left edge) at 320 px and 32 px, also after a line wraps; no horizontal scroll; chorus and comment shown; the source line link; a `plain` song unchanged; the song count now "6 songs".
+- **Tests:** unit tests for `parseChordPro` and the fallbacks; e2e: a `chordpro` song shows its chords above the right syllables (the chord's left edge over its syllable's left edge) at 320 px and 32 px, also after a line wraps; no horizontal scroll; chorus and comment shown; the source line as plain text (no link; markup in it shown as text), none for an empty source; a `plain` song unchanged; the song count now "6 songs".
 
 ## Out of scope
 

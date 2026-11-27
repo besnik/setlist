@@ -34,7 +34,7 @@ For the chord notation:
 - A song keeps its text **as written**, together with header fields stored next to the text (not as directives inside it):
   - `format`: `plain` ("chords over lyrics") or `chordpro` (chords in square brackets). The MVP has exactly these two.
   - `notation`: `international` (`B` = B, `Bb` = B flat) or `german` (`H` = B, `B` = B flat).
-  - Optional source fields: `source` (the name of the website or book), `sourceUrl` (a link to the original) and `importedAt` (the date of import).
+  - Optional source fields: `source` (the website's name as plain text, e.g. `akordy.sk`) and `importedAt` (the date of import). The source is never a link: no address is stored or shown, so a malformed or harmful link cannot get in (CEO, 2026-11-27).
 - Each format has its own renderer in the Song view: `plain` in the monospaced font with chord-line detection (from M3), `chordpro` in the body font with every chord above its syllable.
 - The notation does not change what is shown in the MVP (chords are shown as written); it is stored so that a display setting and transposition after the MVP know what `B` means.
 - Detecting the format of a pasted text, import and export belong to a later milestone (import / export), not M4. In M4 the songs are prepared by hand.
@@ -45,4 +45,4 @@ For the chord notation:
 - Two renderers instead of one; shared parts (the chord pattern, the sheet styling, the font size) are reused.
 - `plain` songs still lose chord alignment when a line wraps on a narrow phone; users who need wrapping use `chordpro`. A converter from `plain` to `chordpro` may come with import / export.
 - Export to ChordPro later writes the header fields as directives (`{title: …}`, `{artist: …}`, `{key: …}`).
-- The song model grows by `format`, `notation` and three optional source fields (spec [songs.md](../product-specs/songs.md#song-format-m4)).
+- The song model grows by `format`, `notation` and two optional source fields (spec [songs.md](../product-specs/songs.md#song-format-m4)).
