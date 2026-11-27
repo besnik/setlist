@@ -13,8 +13,8 @@
 | T-034 implementation and tests | GM | n/a | n/a | n/a | n/a | not measured |
 | T-034 light QA | qa-lead | standard | 24,105 | 0:23 | 5 | 1 blocking (directive names like object properties), 0 other |
 | T-035 implementation and tests | GM | n/a | n/a | n/a | n/a | not measured |
-| T-035 light QA | qa-lead | standard | not reported | n/a | 0 | 0 blocking, 3 other (none changed the code); usage was not reported back |
-| **Total** | | | **51,570** (T-035 QA not included) | **0:48** | **7** | |
+| T-035 light QA | qa-lead | standard | 21,374 | 0:15 | 3 | 0 blocking, 3 other (none changed the code) |
+| **Total** | | | **72,944** | **1:03** | **10** | |
 
 ## What drove cost
 
