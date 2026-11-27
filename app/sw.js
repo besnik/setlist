@@ -1,6 +1,6 @@
 // Service worker of the app (product spec install-offline.md, "Offline" and
 // "Updates"). A standalone classic script outside the layers: it imports nothing
-// and nothing imports it; src/main.js registers it.
+// and nothing imports it; src/data/app-version.js registers it.
 //
 // - install: downloads every file of the app into a cache named after VERSION. If
 //   any file fails, the install fails, so a partial update never becomes active
@@ -14,7 +14,7 @@
 // Change on every release: the browser installs a new worker only when this file
 // changes, and the cache name keeps versions apart. Format: date of the change,
 // YYYY.MM.DD (.2, .3 for more releases on one day).
-const VERSION = '2026.11.26.6';
+const VERSION = '2026.11.27';
 const CACHE = `setlist-${VERSION}`;
 
 // Every published file of the app except this worker and documentation (README,
@@ -36,6 +36,7 @@ const FILES = [
   'src/ui/routes.js',
   'src/ui/router.js',
   'src/ui/components/key-chip.js',
+  'src/ui/components/plain-sheet.js',
   'src/ui/components/stage-button.js',
   'src/ui/screens/song-screen.js',
   'src/ui/screens/songs-screen.js',
@@ -96,7 +97,7 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
-  url.search = ''; // e.g. './?sw' (see src/main.js) is the start page too
+  url.search = ''; // e.g. './?sw' (see src/data/app-version.js) is the start page too
   const key = START_PAGES.has(url.href) ? 'index.html' : request;
   event.respondWith(
     (async () => {

@@ -1,14 +1,12 @@
 // The Song view (product spec songs.md, "Song view screen (M3)"): a stage screen
 // with a sticky top bar (close button; A− and A+ for the font size) above the song
-// header and the song sheet. The sheet's font size is the user's choice.
-// The sheet shows the text as written, in the mono font; lines keep their spaces
-// and wrap instead of widening the page. Chord lines are marked for highlighting.
-// A pure view: state in, HTML out.
+// header and the song sheet. The sheet is chosen by the song's format ("Song format
+// (M4)"); its font size is the user's choice. A pure view: state in, HTML out.
 
 import { html } from '../html.js';
-import { isChordLine } from '../../domain/chords.js';
 import { canGrowFontSize, canShrinkFontSize } from '../../domain/font-size.js';
 import { keyChip } from '../components/key-chip.js';
+import { plainSheet } from '../components/plain-sheet.js';
 import { CLOSE_ICON, stageButton } from '../components/stage-button.js';
 
 /**
@@ -28,7 +26,7 @@ export function songView(song, fontSize) {
         ${keyChip(song.key)}
       </div>
     </header>
-    <div class="song-sheet" style="--sheet-size: ${fontSize}px">${sheetLines(song.text)}</div>
+    ${songSheet(song, fontSize)}
   `;
 }
 
@@ -43,11 +41,13 @@ function fontSizeButtons(fontSize) {
   ];
 }
 
-// The lines of the sheet, joined by line breaks; each chord line in its own span.
-/** @param {string} text */
-function sheetLines(text) {
-  return text.split('\n').map((line, index) => {
-    const separator = index === 0 ? '' : '\n';
-    return isChordLine(line) ? html`${separator}<span class="chord-line">${line}</span>` : html`${separator}${line}`;
-  });
+/**
+ * The sheet for the song's format. Only the plain sheet exists so far, so every
+ * format shows as plain, as an unknown one does; the ChordPro sheet (T-035) adds
+ * its case here, chosen by songFormat() of domain/songs.js.
+ * @param {import('../../domain/songs.js').Song} song
+ * @param {number} fontSize
+ */
+function songSheet(song, fontSize) {
+  return plainSheet(song.text, fontSize);
 }
