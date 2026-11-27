@@ -1,6 +1,6 @@
 # M4 — Song format
 
-- **Status:** not started — analysis, ADR, spec and tasks are written when M3 is done
+- **Status:** in-progress — spec, ADR 0008 and tasks proposed (spec PR)
 
 ## Goal
 
@@ -8,7 +8,7 @@ Decide how songs are stored and entered, and replace the provisional rendering f
 
 ## Try it
 
-A song displays well on a narrow phone too (chords stay above the right syllables when lines wrap), and both input styles work.
+A song displays well on a narrow phone too (chords stay above the right syllables when lines wrap), and the sample songs in both formats (`plain` and `chordpro`) show correctly — among them two Slovak songs, *A od Prešova* and *Tichá noc*. No input in M4: the songs are prepared by hand (CEO, 2026-11-27).
 
 ## Cross-cutting
 
@@ -18,7 +18,29 @@ Approved by the CEO in chat (2026-11-26), done before the M4 work starts.
 |---|---|---|---|---|
 | T-031 | Error handling and logging: golden principle, ADR 0007, `ui/log.js` (levels, prefix), uncaught errors logged once, an info line at start-up, every `catch` narrowed to its expected case (app and tools), check rules 11–12 against swallowed errors and console use outside the log; unit and e2e tests | [ADR 0007](../../decisions/0007-error-handling-and-logging.md) | done | [#44](https://github.com/besnik/setlist/pull/44) |
 
-## Questions for the analysis (ADR)
+## Tasks
+
+Spec: [songs.md — Song format](../../product-specs/songs.md#song-format-m4). Decision: [ADR 0008](../../decisions/0008-song-format.md). Order: top to bottom.
+
+| ID | Task | Spec | Status | PR |
+|---|---|---|---|---|
+| T-033 | Song header fields: `format`, `notation`, optional `source`, `importedAt` in the `Song` type and the sample songs; fallbacks (unknown format → `plain`, unknown notation → `international`) as domain functions with unit tests; the M3 sheet moved to `ui/components/plain-sheet.js` and chosen by format in `song-view.js`; the sheet CSS moved from `song-screen.css` to `components.css`; lines split on `\r\n`, `\r`, `\n`; `isChordLine` comments no longer provisional; files in `domain/songs.js`, `data/sample-songs.js`, offline list in `app/sw.js`, new VERSION. No visible change. T-028 rides along | [Song format](../../product-specs/songs.md#song-format-m4) | proposed | — |
+| T-034 | ChordPro reader `domain/chordpro.js`: `parseChordPro(text)` → blocks (lines of chord + text pieces, verses numbered automatically or with their own mark, chorus with the mark `R:`, `{chorus}` references, comments, empty lines; other directives and `#` lines dropped); unit tests for every rule of the `chordpro` format (also `\r\n`, nesting, empty `{c:}`) | [Song format](../../product-specs/songs.md#song-format-m4) | proposed | — |
+| T-035 | ChordPro sheet `ui/components/chordpro-sheet.js`, its CSS in `components.css` (mark margin with `--mark-chars` and the responsive `--mark-gap`), `song-view.js` uses it for `chordpro`; the first `chordpro` sample song, *A od Prešova* (`german`, with its source; written from at least two public sources, checked to be a free folk song) in `data/sample-songs.js`; offline list and VERSION; e2e: chords above their syllables at 320 px and 32 px also after wrapping, no horizontal scroll, section marks, comment and font size; the chorus mark by a unit test of the component; tests updated to five songs | [Song format](../../product-specs/songs.md#song-format-m4), [UX](../../product-specs/songs.md#song-sheet-by-format-and-source-line-m4) | proposed | — |
+| T-036 | Source line at the end of the Song view: plain text "Source: <source>" (never a link), none for an empty source; in `ui/views/song-view.js`, its CSS in `song-screen.css`; new VERSION; e2e (plain text, markup shown as text, empty source) | [Song format](../../product-specs/songs.md#song-format-m4) | proposed | — |
+| T-037 | Two Slovak songs in `data/sample-songs.js`, each written from at least two public sources: *Tichá noc* with Slovak words (`plain`, `german`, letter-name chords only; **gate:** free to use (spec *Open questions*), else another public-domain Slovak carol and a question to the CEO in the PR) and *Tancuj, tancuj, vykrúcaj* (`chordpro`, `german`, verses with `{sov}`, its refrain as the chorus, later repeats as `{chorus}`); e2e: verse numbers, `R:` and the reference shown, no horizontal scroll at 32 px on 320 px; unit and e2e tests updated to seven songs; new VERSION | [Sample songs](../../product-specs/songs.md#sample-songs) | proposed | — |
+
+## Answers from the analysis (CEO, 2026-11-27)
+
+- **Format:** several stored formats, the text kept as written, `format` in the song header: `plain` and `chordpro` in the MVP (question 1).
+- **Notation:** not rewritten — the song header holds `notation` (`international` / `german`); chords are shown as written in M4; a notation display setting after the MVP (question 2).
+- **Header and source:** header fields stored next to the text (not as directives); optional `source` and `importedAt`; the source is plain text, the website's name (e.g. `akordy.sk`), never a link — no URL is stored, for safety (CEO, 2026-11-27); shown quietly at the end of the Song view (question 3).
+- **ChordPro subset:** chords, verses (`sov` / `eov`, numbered `1.`, `2.` automatically) and the chorus (`soc` / `eoc`, mark `R:`), `{chorus}` as a short "R:" reference, comments (`c`); other directives kept but not shown. Sections are marked by a small grey mark in a left margin (variant A of a visual preview, CEO 2026-11-27); the margin is as wide as the longest mark plus a gap that is small on phones and roomier from 600 px (CSS custom properties `--mark-chars`, `--mark-gap`).
+- **Input:** none in M4 — the songs are prepared by hand. Detecting the format of a pasted text, import and export belong to a later milestone.
+- **No prototype:** the ChordPro layout (chord above its syllable) is a well-known pattern.
+- **Sample songs:** copyrighted songs (e.g. *Nepoznám*, *Wonderwall*) are not added — the repository and the app are public. Added instead: *A od Prešova* (folk song, `chordpro`), *Tichá noc* with Slovak words (`plain`) and, for a ChordPro chorus, the Slovak folk song *Tancuj, tancuj, vykrúcaj* (`chordpro`). The four English songs stay as they are (`plain`); the demo collection grows over time.
+
+## Questions for the analysis (ADR) — answered above
 
 1. **Internal format.** Plain text "chords over lyrics", ChordPro (`[G]Amazing [C]grace`), an own structured format, or a combination (store one format, accept several on input). Criteria: open and human-readable, future import and export, transposition, wrapping on narrow screens.
    - Initial lean (GM): store ChordPro as the canonical text, also accept "chords over lyrics" on input with automatic conversion, one song model in memory. The CEO also considered supporting both formats side by side.
