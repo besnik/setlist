@@ -38,7 +38,7 @@ The songbook: all the musician's songs with lyrics and chords in one place, quic
   | *When the Saints Go Marching In* | Traditional | C | `plain` | `international` |
   | *A od Prešova* (Slovak folk song, from M4) | Traditional | as found in the sources | `chordpro` | `german` |
   | *Tichá noc* (Slovak words of *Silent Night*, from M4) | Franz X. Gruber, Joseph Mohr | as found in the sources | `plain` | `german` |
-  | *Tancuj, tancuj, vykrúcaj* (Slovak folk song, from M4) | Traditional | as found in the sources | `chordpro`, with its refrain as the chorus | `german` |
+  | *Tancuj, tancuj, vykrúcaj* (Slovak folk song, from M4) | Traditional | as found in the sources | `chordpro`, numbered verses and its refrain as the chorus | `german` |
 
 - Rule: the four English songs stay as they are (`plain`); the sample songs are a collection that grows over time.
 - Rule: the three Slovak songs are written from at least two public sources each, checked against each other, and only in a version that is free to use (a folk song, or words whose author died more than 70 years ago or is unknown and old). *A od Prešova* names the website it was checked against as its source (e.g. `akordy.sk`, see *Song format*), so the source line has a real example.
@@ -81,7 +81,7 @@ A stage screen: one song full screen, read while playing. The controls follow th
 **Font size**
 
 - Rule: the Song view has two buttons, A− and A+. Each tap makes the song text 2 px smaller or bigger, from 12 px to 32 px; the default is 16 px.
-- Rule: the font size changes the song text (lyrics, chords, chorus labels and comments) only; the title, the artist and the buttons keep their size.
+- Rule: the font size changes the song text (lyrics, chords, section marks and comments) only; the title, the artist and the buttons keep their size.
 - Rule: at 12 px A− is disabled, at 32 px A+ is disabled (shown faded, a tap does nothing).
 - Rule: the chosen size is the same for all songs and is remembered on the device across closing the song, restarts of the app and updates.
 - Rule: given the stored size cannot be read or is not a valid size, then 16 px is used. Given the browser does not allow storing it (e.g. private mode), then the buttons still work for as long as the app stays open.
@@ -127,13 +127,17 @@ How a song is stored and shown. Decision: [ADR 0008](../decisions/0008-song-form
 - Rule: a long line wraps between words. When it wraps, each chord stays above its syllable, and a word with chords inside it is not split. The page never scrolls horizontally: only a word (with its chords) wider than the whole line may wrap between its pieces, and a single piece wider than the line may break inside its text (both rare).
 - Rule: an empty line keeps its height (a gap between verses).
 - Rule: a directive is a line of the form `{name}` or `{name: value}` (spaces around it are ignored; the name ignores letter case):
-  - `{start_of_chorus}` or `{soc}` starts the chorus, `{end_of_chorus}` or `{eoc}` ends it. The lines between are shown as the chorus: marked with a line on their left and indented. A value, e.g. `{soc: Refrén}`, is shown as the chorus label above it; without a value there is no label.
+  - `{start_of_verse}` or `{sov}` starts a verse, `{end_of_verse}` or `{eov}` ends it. `{start_of_chorus}` or `{soc}` starts the chorus, `{end_of_chorus}` or `{eoc}` ends it. Verses and the chorus are **sections**.
+  - A section is marked only by a short **mark** at the start of its first line, before the lyrics: verses are numbered automatically `1.`, `2.`, `3.` … in the order they appear; the chorus mark is `R:`. The lines are not indented and have no other decoration.
+  - A value replaces the mark, shown as written: `{sov: 3a}` shows `3a`, `{soc: Ref.}` shows `Ref.`. A verse with its own mark does not count for the numbering.
+  - `{chorus}` on its own line means "sing the chorus here": it shows only the chorus mark `R:` on a line of its own (or its value, `{chorus: Ref.}`), not the chorus text again.
+  - Lines outside any section (e.g. an intro) have no mark.
   - `{comment: …}` or `{c: …}` shows its value as a comment line (e.g. `Repeat 2×`, `Capo 2`), muted, without a chord row.
   - Any other directive (e.g. `{title: …}`, `{key: …}`, `{start_of_tab}`) is kept in the text but not shown.
-- Rule: given a chorus without its end, then it ends with the song. Given `{eoc}` without a start, then it is not shown.
+- Rule: sections do not nest. A section ends at its end directive, at the start of the next section, or with the song. A start directive inside a section of the same kind is not shown and does not start a new one; an end directive without its start is not shown.
 - Rule: a line that starts with `#` is a ChordPro comment for the writer and is not shown.
 - Rule: a line that looks like a directive but is not closed with `}` is shown as lyrics.
-- Rule: a directive line, a hidden directive and a `#` line take no space (they do not leave an empty line). A `{soc}` inside a chorus is not shown and does not start a second chorus. A `{c:}` with an empty value is not shown.
+- Rule: a directive line, a hidden directive and a `#` line take no space (they do not leave an empty line). A `{c:}` with an empty value is not shown.
 
 **Source line**
 
@@ -275,9 +279,17 @@ The Song view screen stays as in M3 (bar, header, sheet); only the sheet changes
 │   D                            │  (illustration, not a real song)
 │ the song                       │  wrapped between words; D stays on its syllable
 │                                │  empty line: one lyric line high
-│ ┃ Refrén                       │  chorus label: small, muted
-│ ┃ G        D                   │  chorus: 2 px line on the left,
-│ ┃ Tichá noc, svätá noc         │  text indented 12 px
+│     G         C       G        │
+│ 1.  Words of the first verse   │  verse mark: mono 700, muted, before
+│ D            G                 │  the lyrics; next lines not indented
+│ and its second line            │
+│                                │
+│     C         G                │
+│ R:  Words of the chorus        │  chorus mark "R:"
+│ D           G                  │
+│ second chorus line             │
+│                                │
+│ R:                             │  {chorus}: the mark only
 │                                │
 │ Repeat 2×                      │  comment: body 400, muted, no chord row
 │                                │  24 px
@@ -294,7 +306,7 @@ The Song view screen stays as in M3 (bar, header, sheet); only the sheet changes
   - A piece is at least as wide as its chord plus a gap of 0.5 em, so chords never touch (`Ama C zing` with a wide chord: the syllable starts under the chord, the rest of the word moves right).
   - Pieces of one word stay together on one row; the space between words is where a line may wrap. Only a word wider than its line wraps between its pieces.
   - A line with at least one chord reserves the chord row for all its pieces, so the lyrics of one line stay on one baseline. A line without chords has no chord row.
-  - Chorus: `--space-3` (12 px) left padding, 2 px `--color-line` left border. The label (when given) in `small`, `--color-muted`, above the first chorus line.
+  - Section mark (`1.`, `R:`): `--font-mono` 700, `--color-muted`, the sheet size, on the lyric row of the first line (a piece without a chord) with a 0.5 em gap after it. No indent, no border, no background — the mark is the only cue, to keep the width for the lyrics on small phones (CEO, 2026-11-27). Muted, not the chord color, so it is never mistaken for a chord.
   - Comment: `--font-body` 400, `--color-muted`, the sheet size.
 - **Source line:** `small` step, `--color-muted`, `--space-5` above it, after the sheet, `overflow-wrap: anywhere`. "Source: " then the source, plain text (not a link, not focusable). It scrolls with the sheet; it does not change with the font size.
 
@@ -303,11 +315,11 @@ The Song view screen stays as in M3 (bar, header, sheet); only the sheet changes
 | Rule | Check |
 |---|---|
 | Chord above its syllable when wrapping | Pieces of a word wrap as one unit; a chord and its syllable are one piece, so they never part. |
-| No horizontal scroll | Rows wrap between words. Inside a chorus the line is 274 px (288 − 12 padding − 2 border). A word of 16 letters at 32 px in the body font (about 0.55 em per letter) is about 280 px, and a word with several chords can be wider (each piece ≥ chord + 0.5 em) — so a word wider than its line wraps between its pieces, and one piece wider than the line breaks inside its text (`overflow-wrap: anywhere`). Tested e2e at 32 px on a 320 px phone with the longest line of *A od Prešova*, and with the chorus of *Tancuj, tancuj, vykrúcaj* (274 px line). |
+| No horizontal scroll | Rows wrap between words; sections are not indented, so every line has the full 288 px. A word of 16 letters at 32 px in the body font (about 0.55 em per letter) is about 280 px, and a word with several chords can be wider (each piece ≥ chord + 0.5 em) — so a word wider than its line wraps between its pieces, and one piece wider than the line breaks inside its text (`overflow-wrap: anywhere`). Tested e2e at 32 px on a 320 px phone with the longest line of *A od Prešova*, and with the chorus of *Tancuj, tancuj, vykrúcaj*. |
 | Chords never overlap | A piece is at least chord width + 0.5 em. |
 | Readable on a 320 px phone at 16 px | Body font about 0.5 em per letter: about 36 characters per line (mono: 30), so the ChordPro sheet wraps less than `plain`. |
 | Chords readable in both themes | Same `--color-chord` on `--color-bg` as M3, bold. |
-| Chorus and comment recognizable in both themes | The chorus line uses `--color-line`; comments and the label use `--color-muted` (about 4.5 : 1 light, about 7.3 : 1 dark, as the artist line). |
+| Section marks and comments recognizable in both themes | Marks are bold mono in `--color-muted`, comments `--color-muted` (about 4.5 : 1 light, about 7.3 : 1 dark, as the artist line). |
 | Portrait and landscape, phone to desktop | Nothing depends on the width except where lines wrap; the 720 px column wraps less. |
 
 ## Notes for Design / Engineering
@@ -331,7 +343,7 @@ Song format (M4):
 - **Song fields:** `id`, `title`, `artist`, `key`, `text`, `format` (`'plain' | 'chordpro'`), `notation` (`'international' | 'german'`), and optional `source` (plain text) and `importedAt` (ISO date `YYYY-MM-DD`). The `Song` type in `domain/songs.js`; the format and notation values are domain constants there. The fallbacks (unknown format → `plain`, unknown notation → `international`) are small domain functions with unit tests, so M5 storage reuses them.
 - **Where the code goes:**
   - `domain/chords.js` — stays: `isChordLine` is the reader of the `plain` format (no longer provisional; update its comments).
-  - `domain/chordpro.js` (new) — `parseChordPro(text)`: pure, text in, a list of blocks out (lines of pieces `{ chord, text }`, chorus blocks with an optional label, comments, empty lines; hidden directives and `#` lines dropped). Unit tests with every rule above. Knows nothing of HTML.
+  - `domain/chordpro.js` (new) — `parseChordPro(text)`: pure, text in, a list of blocks out (lines of pieces `{ chord, text }`, section blocks — verse with its number or mark, chorus with its mark — chorus references, comments, empty lines; hidden directives and `#` lines dropped). Unit tests with every rule above. Knows nothing of HTML.
   - `ui/components/plain-sheet.js` (new) — the M3 sheet lines, moved out of `song-view.js`.
   - `ui/components/chordpro-sheet.js` (new) — renders the blocks of `parseChordPro`. Both sheets are components, because play mode (M7) shows the same sheet.
   - `ui/views/song-view.js` — chooses the sheet by format and adds the source line; nothing else.
@@ -341,7 +353,7 @@ Song format (M4):
   - `data/sample-songs.js` — the new fields on the four English songs (unchanged text, `plain`), *A od Prešova* (with T-035, the first `chordpro` song), *Tichá noc* and *Tancuj, tancuj, vykrúcaj* (T-037).
   - New files go into the offline file list (`app/sw.js`); every change to `app/` needs a new VERSION.
 - **No ADR beyond 0008, no new dependency, no new font file** (Slovak letters are in the Latin Extended subset of the fonts).
-- **Tests:** unit tests for `parseChordPro` and the fallbacks; e2e: a `chordpro` song shows its chords above the right syllables (the chord's left edge over its syllable's left edge) at 320 px and 32 px, also after a line wraps; no horizontal scroll; chorus (*Tancuj, tancuj, vykrúcaj*) and comment shown; the source line as plain text (no link; markup in it shown as text), none for an empty source; a `plain` song unchanged; the song count now "7 songs".
+- **Tests:** unit tests for `parseChordPro` and the fallbacks; e2e: a `chordpro` song shows its chords above the right syllables (the chord's left edge over its syllable's left edge) at 320 px and 32 px, also after a line wraps; no horizontal scroll; verse numbers, the `R:` mark and a `{chorus}` reference (*Tancuj, tancuj, vykrúcaj*) and a comment shown; the source line as plain text (no link; markup in it shown as text), none for an empty source; a `plain` song unchanged; the song count now "7 songs".
 
 ## Out of scope
 
@@ -349,7 +361,7 @@ Song format (M4):
 - Categories or tags of songs (an idea in the inbox).
 - Filters, tags, sorting options, favorites.
 - In the Song view: previous / next song (play mode, M7), editing (M5), transposition (after the MVP), a display of the current font size.
-- Song format (M4): detecting the format of a pasted text, import and export, converting between formats (a later milestone); a notation setting that shows `H` / `B` the user's way (after the MVP); other ChordPro features — verse and bridge sections, tabs, grids, chord diagrams, `{title}` and other header directives as song fields, several songs in one text; formats other than `plain` and `chordpro` (e.g. tabs).
+- Song format (M4): detecting the format of a pasted text, import and export, converting between formats (a later milestone); a notation setting that shows `H` / `B` the user's way (after the MVP); other ChordPro features — bridge and other sections, tabs, grids, chord diagrams, `{title}` and other header directives as song fields, several songs in one text; formats other than `plain` and `chordpro` (e.g. tabs).
 
 ## Open questions
 
