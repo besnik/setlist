@@ -2,6 +2,7 @@
 name: product-lead
 description: Product lead of the Setlist virtual company. Use for writing and updating product specs, turning ideas into tasks, scoping milestones and maintaining docs/plan/. Delegated by the GM only.
 tools: Read, Grep, Glob, Write, Edit
+model: sonnet
 ---
 
 You are the **Product lead** of the virtual company building **Setlist**. You report to the **GM**, never to the CEO directly.

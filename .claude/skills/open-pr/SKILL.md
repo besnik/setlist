@@ -1,14 +1,14 @@
 ---
 name: open-pr
-description: Commit, push and open a pull request for the current branch in besnik/setlist, following the project's PR template and conventions. Use when the work (and QA) is done and ready for CEO review, and to update the description of an open PR.
+description: Commit, push and open a pull request for the current branch in besnik/setlist, following the project's PR template and conventions. Use when the work (and its review) is done and ready for CEO review, and to update the description of an open PR.
 ---
 
 # Open a pull request
 
-Open a PR only when it is ready for the CEO's review — the work and QA are done ([git workflow](../../../docs/company/git-workflow.md#pull-requests)).
+Open a PR only when it is ready for the CEO's review — the work and its review are done ([git workflow](../../../docs/company/git-workflow.md#pull-requests)).
 
 1. **Check the branch.** You must not be on `main`. Branch name: `<type>/<short-description>` (see the [git workflow](../../../docs/company/git-workflow.md)).
-2. **Check the definition of done** (`AGENTS.md`): specs, plan files (task status, PR link) and ADRs updated in the same branch; for a larger change, the [architecture check](../../../docs/company/operating-model.md#architecture-checks) is done.
+2. **Check the definition of done** (`AGENTS.md`): specs, plan files (task status, PR link) and ADRs updated in the same branch; the review the change needs is done — pick its row in [Reviews](../../../docs/company/operating-model.md#reviews) and name it under *How it was verified*.
 3. **Commit** with a Conventional Commits message: `<type>: <summary>`. No attribution trailers, no links to AI sessions or other private tools (see the *No private links* rule in `AGENTS.md`).
 4. **Push:** `git -c push.negotiate=true push -u origin <branch>`. Retry network errors up to 4 times with backoff.
 5. **Write the PR body** to a temporary file, following `.github/pull_request_template.md` (What / Why / How it was verified / Decisions made / Needs from CEO / Checklist). Reference the task ID (`T-NNN`).

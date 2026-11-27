@@ -45,4 +45,4 @@ proposed ──► approved ──► in-progress ──► done
 
 - IDs `M0`, `M1`, … — file name `MN-short-name.md`.
 - Every task belongs to exactly one milestone.
-- A milestone becomes `done` only after its [architecture review](../company/operating-model.md#architecture-checks) of the whole codebase; approved cleanup tasks from it go into the next milestone.
+- A milestone becomes `done` only after its [architecture review](../company/operating-model.md#reviews) of the whole codebase; approved cleanup tasks from it go into the next milestone.
