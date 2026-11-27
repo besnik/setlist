@@ -43,19 +43,20 @@ test('an empty or blank query returns all songs', () => {
   assert.deepEqual(searchSongs(songs, '   '), songs);
 });
 
-// Rule (Song list): the heading shows "4 songs", singular "1 song".
+// Rule (Song list): the heading shows "5 songs", singular "1 song".
 test('the count label is singular for one song', () => {
   assert.equal(songCountLabel(0), '0 songs');
   assert.equal(songCountLabel(1), '1 song');
-  assert.equal(songCountLabel(4), '4 songs');
+  assert.equal(songCountLabel(5), '5 songs');
 });
 
-// Rule (Sample songs): four public-domain songs with chords, artist "Traditional".
-test('the repository returns the four sample songs', async () => {
+// Rule (Sample songs): the public-domain songs with chords, artist "Traditional".
+test('the repository returns the five sample songs', async () => {
   const songs = await listSongs();
   assert.deepEqual(
     songs.map((s) => [s.title, s.key, s.artist]).sort(),
     [
+      ['A od Prešova', 'G', 'Traditional'],
       ['Amazing Grace', 'G', 'Traditional'],
       ['Greensleeves', 'Em', 'Traditional'],
       ['House of the Rising Sun', 'Am', 'Traditional'],

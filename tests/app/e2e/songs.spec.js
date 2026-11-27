@@ -11,8 +11,9 @@ test('the first start lists the sample songs', async ({ page }) => {
   await page.goto('./');
 
   await expect(page.getByRole('heading', { name: 'Songs' })).toBeVisible();
-  await expect(page.getByText('4 songs')).toBeVisible();
+  await expect(page.getByText('5 songs')).toBeVisible();
   expect(await rowTitles(page)).toEqual([
+    'A od Prešova',
     'Amazing Grace',
     'Greensleeves',
     'House of the Rising Sun',
@@ -31,14 +32,14 @@ test('search filters the list as you type', async ({ page }) => {
   await search(page).pressSequentially('am');
   expect(await rowTitles(page)).toEqual(['Amazing Grace', 'House of the Rising Sun']);
   await expect(search(page)).toBeFocused();
-  await expect(page.getByText('4 songs')).toBeVisible();
+  await expect(page.getByText('5 songs')).toBeVisible();
 
   await search(page).fill('xyz');
   await expect(page.getByText('No songs found.')).toBeVisible();
   await expect(page.locator('.song-row')).toHaveCount(0);
 
   await search(page).fill('');
-  await expect(page.locator('.song-row')).toHaveCount(4);
+  await expect(page.locator('.song-row')).toHaveCount(5);
 });
 
 // Rule (Song list): a long title ends with an ellipsis on one line; the page never scrolls horizontally.
