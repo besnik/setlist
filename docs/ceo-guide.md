@@ -50,14 +50,19 @@ Built-in Claude Code commands you can also ask for: `/code-review` (find bugs in
 
 Planned skills (when there is code): `implement-task`, `fix-bug`, `cleanup` — see `docs/plan/inbox.md`.
 
-## Architecture checks
+## Reviews and model tiers
 
-Besides tests and QA, the code's structure is checked, so spaghetti code is caught while it is cheap to fix ([details](company/operating-model.md#architecture-checks)):
+Tests and the check command run on every change. An independent review by a lead runs only where it pays off ([details](company/operating-model.md#reviews)):
 
-- **End of a larger task** (new screen, module or mechanism): the Engineering lead looks at the structure before the PR. Cheap fixes go into the same PR; bigger ones come to you as a proposal and land in [tech-debt.md](plan/tech-debt.md).
-- **End of a milestone:** a review of the whole codebase; you get a list of proposed cleanup tasks to approve.
-- **Planning:** the technical impact of a feature names where the new code goes.
-- You can ask for one any time: "Pozri sa na architektúru …".
+- **Spec PR:** light QA of the spec.
+- **Small task:** no lead; the GM answers the structure questions in the PR. If it touches a risky area (security, stored data, offline, dev server, CI, deployment): light QA.
+- **Larger task** (new screen, layer or mechanism, or more than ~5 code files): one QA run that also checks the structure.
+- **End of a milestone:** the Engineering lead reviews the whole codebase; you get a list of proposed cleanup tasks to approve.
+- **Full QA** only when you ask: "Urob plnú QA". You can ask for a structure review any time: "Pozri sa na architektúru …".
+
+Each PR says under *How it was verified* which review it got.
+
+**Model tiers:** leads run on a fixed tier, set in [.claude/models.md](../.claude/models.md) — the only file that names models. When you start a session, pick the model by the work: **strong** for a new feature, spec or milestone end; **standard** for an approved task ("začni T-0NN"), PR comments and harness edits. If a task in a standard session turns out hard (a larger feature, many files, a refactoring), the GM hands the implementation to the Engineering lead on the strong tier — and tells you why and what it costs first.
 
 ## Running the app on your computer
 
@@ -112,7 +117,7 @@ Every report from the GM ends with what needs your **decision** and what needs y
 
 ## Reviewing a pull request on mobile
 
-In the GitHub app, add comments to lines with **Start a review**, send them with **Submit review**, and approve by merging (**Squash and merge**). The GM works on your comments only if the session watches the PR — so first write in chat:
+In the GitHub app, add comments to lines with **Start a review**, send them with **Submit review**, and approve by merging (**Squash and merge**). The GM watches a PR only when you ask (each wake-up costs a little) — so to have your comments worked on, first write in chat:
 
 ```
 Sleduj PR #<číslo> a zapracuj moje komentáre.
@@ -140,7 +145,7 @@ Agents can push branches but cannot delete branches or force-push. A leftover br
 
 - Small topics, one at a time — one topic is one branch and one PR.
 - Tell the GM when something annoys you — it becomes a rule so you never have to say it twice.
-- Mind the budget: big analyses and code reviews cost the most tokens. The GM warns you before expensive steps; costs per feature are in `docs/plan/costs/`, and every ~3–5 features the GM proposes a cost review.
-- Full QA (many screen sizes, edge cases) runs only when you ask: "Urob plnú QA". PRs that change only harness documents (rules, workflow, skills) get no QA.
-- Start a new session for each new task or topic — a long session makes every message more expensive. The GM's report says whether to continue in the same session or start a new one, and gives you an opener to paste.
+- Mind the budget: most of the cost is the main session itself — every message re-reads the whole conversation. The GM warns you before expensive steps; costs are in `docs/plan/costs/`, and every ~3–5 features the GM proposes a cost review.
+- Start a new session for each new task or topic, and for a side question or discussion — a long session makes every message more expensive. The GM's report says whether to continue in the same session or start a new one, and gives you an opener to paste.
+- Weaker models follow links less, so rules every session needs are written short in `AGENTS.md`, and what a lead needs is in its own file. If an agent on the standard tier misses a rule, tell the GM — it moves the rule where the agent surely sees it.
 - After a new model release, ask the GM to review the harness for rules it no longer needs ("Uprav harness: …").

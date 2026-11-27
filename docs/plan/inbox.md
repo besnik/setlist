@@ -4,7 +4,7 @@ Raw ideas go here — one line each, no filtering. The GM or Product lead turns 
 
 - Skill `implement-task` — approved task → branch → build → the check command and tests → QA review → PR (with the first code).
 - Skill `fix-bug` — reproduce → failing test → fix → passing test → update spec if needed (with the first code).
-- Skill `cleanup` — a step-by-step procedure for the milestone-end [architecture review](../company/operating-model.md#architecture-checks): find deviations from golden principles, spaghetti code and tech debt, open small cleanup PRs. Write it after the first milestone-end review shows what it needs.
+- Skill `cleanup` — a step-by-step procedure for the milestone-end [architecture review](../company/operating-model.md#reviews): find deviations from golden principles, spaghetti code and tech debt, open small cleanup PRs. Write it after the first milestone-end review shows what it needs.
 - Quality grades per area — later.
 - Bluetooth page-turner pedals in play mode (they send PageUp / PageDown or arrow keys); test with a real pedal.
 - Slovak UI translation (texts are kept in one place from M1, but no translation system yet).

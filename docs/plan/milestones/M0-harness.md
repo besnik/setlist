@@ -23,6 +23,7 @@ Before building the product, set up the system for agentic development: rules, r
 | T-011 | No secrets in the repository: rule in AGENTS.md and golden principles, extended SECURITY.md with leak procedure, `.gitignore` for secret files | — | done | [#13](https://github.com/besnik/setlist/pull/13) |
 | T-018 | Git guard hook (branch names, commit format, no edits or commits outside a topic branch, no push to `main`); rules: branch before the first edit, commit even small changes | — | done | [#24](https://github.com/besnik/setlist/pull/24) |
 | T-019 | Skill `preview-pr`: run a pull request on the CEO's computer for a try in the browser and on the phone, then clean up | — | done | [#26](https://github.com/besnik/setlist/pull/26) |
+| T-032 | Cost review: reviews by kind of change (one table, GM triggers), model tiers in `.claude/models.md`, fewer tools for leads, session costs in `docs/plan/costs/`, short sessions, no PR watching unless asked | — | done | [#46](https://github.com/besnik/setlist/pull/46) |
 
 ## Out of scope
 

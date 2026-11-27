@@ -25,6 +25,12 @@ The harness stays **technology-neutral** (golden principles): no specific langua
 
 Prefer one home plus short references over copying the rule.
 
+**What must reach an agent goes where it surely arrives.** A model does not always follow links — weaker models less often. The main session always gets `AGENTS.md`; a lead always gets only its own file in `.claude/agents/` and the GM's brief. So:
+
+- a rule the GM needs in every session — a short form in `AGENTS.md`, details behind a link;
+- a rule a lead needs for its job — in its own file (a deliberate copy is fine; say where the home is and change both together) or in the GM's brief;
+- details and rarely used procedures — behind a link.
+
 ## 2. Keep documents consistent
 
 Search for the topic in all harness files and update every place that repeats or contradicts it:
@@ -45,5 +51,6 @@ If the change alters the operating model in a lasting way, record it with the `n
 
 - Relative markdown links still work.
 - `AGENTS.md` is still short.
+- `AGENTS.md` and lead files still carry what the agent must surely get (step 1).
 - Rules are referenced by name, not by number (numbers change when rules are added or removed).
 - Commit as `docs: …`, add to the open harness PR if there is one, otherwise open a new PR (`open-pr` skill).
