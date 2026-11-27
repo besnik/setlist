@@ -62,7 +62,7 @@ Tests and the check command run on every change. An independent review by a lead
 
 Each PR says under *How it was verified* which review it got.
 
-**Model tiers:** leads run on a fixed tier, set in [.claude/models.md](../.claude/models.md) — the only file that names models. When you start a session, pick the model by the work: **strong** for a new feature, spec or milestone end; **standard** for an approved task ("začni T-0NN"), PR comments and harness edits. If a task in a standard session turns out hard (a larger feature, many files, a refactoring), the GM hands the implementation to the Engineering lead on the strong tier — and tells you why and what it costs first.
+**Model tiers:** leads run on a fixed tier, set in [.claude/models.md](../.claude/models.md) — the only file that names models. When you start a session, pick the model by the work: **strong** for a new feature, spec or milestone end, and for a task marked `hard`; **standard** for a task marked `standard` ("začni T-0NN"), PR comments and harness edits. Each task gets its mark when the spec is written — `hard` for a new component or module, a change of a shared contract, a refactoring, security-sensitive code or an open design choice — and the GM's next-step recommendation follows it. If a task in a standard session turns out hard anyway (a larger feature, many files, a refactoring), the GM hands the implementation to the Engineering lead on the strong tier — and tells you why and what it costs first.
 
 ## Running the app on your computer
 
@@ -146,6 +146,6 @@ Agents can push branches but cannot delete branches or force-push. A leftover br
 - Small topics, one at a time — one topic is one branch and one PR.
 - Tell the GM when something annoys you — it becomes a rule so you never have to say it twice.
 - Mind the budget: most of the cost is the main session itself — every message re-reads the whole conversation. The GM warns you before expensive steps; costs are in `docs/plan/costs/`, and every ~3–5 features the GM proposes a cost review.
-- Start a new session for each new task or topic, and for a side question or discussion — a long session makes every message more expensive. The GM's report says what the next task is (in one sentence), which model tier and model to pick for it, whether to continue in the same session or start a new one, and gives you an opener to paste.
+- One session = one unit of work (a task PR, a spec PR, a milestone close or one discussion) — a long session makes every message more expensive. When the PR is open, the GM ends with the report; a side question goes into the inbox for its own session, and if you start a second topic, the GM first proposes a new session (you can still say "pokračuj tu"). The GM's report says what the next task is (in one sentence), which model tier and model to pick for it, whether to continue in the same session or start a new one, and gives you an opener to paste.
 - Weaker models follow links less, so rules every session needs are written short in `AGENTS.md`, and what a lead needs is in its own file. If an agent on the standard tier misses a rule, tell the GM — it moves the rule where the agent surely sees it.
 - After a new model release, ask the GM to review the harness for rules it no longer needs ("Uprav harness: …").

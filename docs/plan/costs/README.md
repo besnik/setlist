@@ -45,5 +45,5 @@ What a whole session cost (the main session and its leads together), at list pri
   - CEO stops = how many times the work waited for the CEO.
   - QA findings are taken from the QA lead's report.
 - **What drove cost:** one or two sentences in the feature file, so they can be turned into harness improvements.
-- **At a cost review:** add the sessions since the last review to *Session costs*, then propose harness changes.
+- **At a cost review:** add the sessions since the last review to *Session costs* — for a task session, put its difficulty mark (`hard` / `standard`) into *Note* — then check whether the marks were right ([task difficulty](../../company/operating-model.md#task-difficulty)) and propose harness changes.
 - Never write numbers that were not measured.

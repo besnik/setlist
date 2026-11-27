@@ -106,6 +106,8 @@ Record the result in the spec's "Notes for Design / Engineering" section.
 
 Add rows `T-NNN` with status `proposed` to the milestone's task table, each linked to a spec section. A task that adds code names the files or modules from the technical impact. Small, independently mergeable tasks.
 
+Mark each task in the *Difficulty* column `hard` or `standard`, with a few words why — by the list in [task difficulty](../../../docs/company/operating-model.md#task-difficulty) (new component or module, shared contract, refactoring, security-sensitive code, open design choice → `hard`; when in doubt, `hard`). The mark picks the model for the session that builds the task.
+
 🛑 **The CEO approves** — in small mode, spec, design and task in one chat message; in big mode, by merging the spec PR. The GM then records the approval: spec status `approved`, task status `approved`.
 
 ## Output

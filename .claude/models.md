@@ -27,5 +27,7 @@ Each lead's `model:` line in `.claude/agents/<lead>.md` must match this table.
 
 The CEO picks the model when starting a session. Recommended:
 
-- **strong** — a new feature or milestone (`new-feature`), a spec, an open technical question, a milestone end.
-- **standard** — "start T-0NN" for an approved task, review comments on a PR, harness edits, small topics.
+- **strong** — a new feature or milestone (`new-feature`), a spec, an open technical question, a milestone end, and "start T-0NN" for a task marked `hard`.
+- **standard** — "start T-0NN" for a task marked `standard`, review comments on a PR, harness edits, small topics.
+
+The mark is set when the task is written ([task difficulty](../docs/company/operating-model.md#task-difficulty)); the GM recommends the model strictly by it.
