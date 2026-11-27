@@ -1,6 +1,7 @@
-// The sample songs (product spec songs.md, "Sample songs"): four public-domain songs
-// with chords, shown on the first start. In M1 they are the only songs.
-// The text uses the provisional "chords over lyrics" form (see domain/songs.js).
+// The sample songs (product spec songs.md, "Sample songs"): public-domain songs with
+// chords, shown on the first start. Until Manage songs (M5) they are the only songs.
+// Each has the song header of "Song format (M4)"; a `source` only when the song
+// was checked against a website.
 
 /** @type {import('../domain/songs.js').Song[]} */
 export const SAMPLE_SONGS = [
@@ -9,6 +10,8 @@ export const SAMPLE_SONGS = [
     title: 'Amazing Grace',
     artist: 'Traditional',
     key: 'G',
+    format: 'plain',
+    notation: 'international',
     text: [
       'G              G7        C       G',
       'Amazing grace, how sweet the sound',
@@ -25,6 +28,8 @@ export const SAMPLE_SONGS = [
     title: 'House of the Rising Sun',
     artist: 'Traditional',
     key: 'Am',
+    format: 'plain',
+    notation: 'international',
     text: [
       '   Am      C        D          F',
       'There is a house in New Orleans',
@@ -41,6 +46,8 @@ export const SAMPLE_SONGS = [
     title: 'Greensleeves',
     artist: 'Traditional',
     key: 'Em',
+    format: 'plain',
+    notation: 'international',
     text: [
       '   Em          D',
       'Alas, my love, you do me wrong',
@@ -57,6 +64,8 @@ export const SAMPLE_SONGS = [
     title: 'When the Saints Go Marching In',
     artist: 'Traditional',
     key: 'C',
+    format: 'plain',
+    notation: 'international',
     text: [
       'C',
       'Oh, when the saints go marching in',

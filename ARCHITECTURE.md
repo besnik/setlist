@@ -67,7 +67,7 @@ app/src/ui/
   router.js           follows the address and shows one screen at a time
   screens/            one module per screen: state, actions, side effects
   views/              pure: state → HTML, one per screen
-  components/         pure: small templates shared by views (key chip, stage button)
+  components/         pure: small templates shared by views (key chip, stage button, song sheet)
 ```
 
 - **Routing** uses the URL hash: `#/song/<id>` (id encoded) is the Song view, anything else the Songs screen. Links, Back, reload and the Android back gesture need no extra code.

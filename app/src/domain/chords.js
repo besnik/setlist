@@ -1,6 +1,6 @@
-// Chord lines (product spec songs.md, "Song view (M3)", Chord lines): tells a line
-// of chords from a line of lyrics in the provisional "chords over lyrics" text.
-// Provisional: the song format (M4) replaces it — keep it small, build nothing on it.
+// Chord lines (product spec songs.md, "Song view (M3)", Chord lines, and "Song
+// format (M4)", `plain` format): tells a line of chords from a line of lyrics in a
+// `plain` ("chords over lyrics") song — the reader of that format.
 // Pure logic, no browser APIs.
 
 // A chord: root (H = B in Central Europe), optional accidental, any sequence of
