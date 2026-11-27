@@ -47,3 +47,17 @@ test('the font size buttons are disabled at the limits', () => {
   assert.deepEqual(buttons(32), { sheet: '--sheet-size: 32px', smaller: false, larger: true });
   assert.match(String(songView(song, 16)), />A\u2212<\/button>/);
 });
+
+// Rules (Source line): "Source: <source>" as plain text, never a link; spaces around
+// it ignored; none for a missing, empty or blank source.
+test('the source line is plain text at the end, only for a non-empty source', () => {
+  const line = (source) => /<p class="song-source">([^]*?)<\/p>/.exec(String(songView({ ...song, source }, 16)))?.[1];
+  assert.equal(line('akordy.sk'), 'Source: akordy.sk');
+  assert.equal(line('  akordy.sk \n'), 'Source: akordy.sk');
+  assert.equal(line('<a href="https://x.sk">x</a>'), 'Source: &lt;a href=&quot;https://x.sk&quot;&gt;x&lt;/a&gt;');
+  assert.doesNotMatch(String(songView({ ...song, source: 'https://akordy.sk' }, 16)), /<a /);
+  assert.equal(line(''), undefined);
+  assert.equal(line('   '), undefined);
+  assert.equal(line(undefined), undefined);
+  assert.match(String(songView({ ...song, source: 'akordy.sk' }, 16)), /<\/div>\s*<p class="song-source">/);
+});
