@@ -15,9 +15,11 @@ What we are doing now and next. *What the app does* lives in [product specs](../
 
 A task is one row in a milestone's task table:
 
-| ID | Task | Spec | Status | PR |
-|---|---|---|---|---|
-| T-042 | Reorder songs in a setlist | `setlists.md#reorder` *(example)* | approved | — |
+| ID | Task | Difficulty | Spec | Status | PR |
+|---|---|---|---|---|---|
+| T-042 | Reorder songs in a setlist | standard — extends the setlist view | `setlists.md#reorder` *(example)* | approved | — |
+
+- **Difficulty** is `hard` or `standard` with a few words why ([task difficulty](../company/operating-model.md#task-difficulty)); it picks the model for the session that builds the task. Tables written before this column was added have none.
 
 - IDs are global and sequential: `T-001`, `T-002`, … Use them in branch names, commits and PRs.
 - Acceptance criteria come from the linked spec section (plus anything written in the task row or plan).

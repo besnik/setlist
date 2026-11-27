@@ -92,15 +92,34 @@ The AI budget is limited. The GM does the work itself — it already has the con
 Ask leads for concise work and concise output.
 Before an expensive step (a lead run, screenshots, full QA), the GM tells the CEO the expected cost.
 
-Keep sessions short: a long session makes every message more expensive, so a question or discussion outside the current task goes into a new, short session. The GM watches an open PR (CI, comments) only when the CEO asks for it — every wake-up re-reads the whole session.
+**One session = one unit of work:** one task PR, one spec PR, one milestone close, or one discussion. Every message re-reads the whole session, so a long session makes each step more expensive — sessions with two or three topics cost two to four times more than single-topic ones (cost review 2026-11-27). The GM ends the session with the report and the next-step recommendation when:
+
+- the unit's PR is opened (and its review done),
+- a new question or topic comes up that is not needed to finish the current unit — the GM writes it as one line into the [inbox](../plan/inbox.md) (or the spec's *Open questions*), finishes the unit and recommends a separate session for it,
+- the CEO starts a second topic — the GM first proposes a new session; the CEO may still say to go on.
+
+The state lives in the repository (PRs, task status, inbox), so a new session loses nothing. The GM watches an open PR (CI, comments) only when the CEO asks for it — every wake-up re-reads the whole session.
 
 Leads and the main session run on a **model tier** (strong or standard); which lead uses which tier, and which tier suits which kind of work, is in [.claude/models.md](../../.claude/models.md).
+
+### Task difficulty
+
+When writing tasks (`new-feature`, step *Break it into tasks*), the GM marks each task `hard` or `standard` with a few words why. The mark picks the model for the session that builds the task, so the decision is made once, by the strong model writing the spec. A task is **`hard`** when at least one applies:
+
+- it introduces a **new component or module** (a new boundary or public interface, its first integration into the app) — it must be designed well from the start, because later tasks build on it,
+- it changes a **shared contract**: data format, storage schema, routing, the rendering pipeline, or an ADR-backed decision,
+- it is a **refactoring** across several components,
+- it touches **security-sensitive** code: rendering of user input, offline and updates, storage of user data,
+- the spec leaves a **design choice** open for the implementer.
+
+Everything else is **`standard`**: extending an existing component, UI changes within the design system, tests, fixes, docs. When in doubt, `hard` — a wrong design costs more than a strong session. A task without a mark (tables from before this rule) is judged by the same list when it starts.
 
 What each feature cost is recorded in [docs/plan/costs/](../plan/costs/). Every ~3–5 features the GM proposes a **cost review** with the CEO to tune the harness. It covers:
 
 - the cost per session and per feature (how to read it: the costs README),
 - what drove the cost and which rule would lower it,
-- whether the model tiers are still the right choice (new models, prices).
+- whether the model tiers are still the right choice (new models, prices),
+- whether the [task difficulty](#task-difficulty) marks were right — e.g. a `standard` task that needed extra QA rounds or fixes means the list needs sharpening.
 
 ## Reviews
 
