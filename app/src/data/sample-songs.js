@@ -84,10 +84,8 @@ export const SAMPLE_SONGS = [
     key: 'G',
     format: 'chordpro',
     notation: 'german',
-    source: 'akordy.smulik.sk',
-    importedAt: '2026-11-27',
-    // A Slovak folk song from eastern Slovakia (words in the Šariš dialect), checked
-    // against akordy.smulik.sk (words and chords) and videorohal.com (words).
+    // A Slovak folk song from eastern Slovakia (words in the Šariš dialect), written
+    // from two public sources checked against each other; no source shown (CEO).
     text: [
       '{comment: /: :/ = 2×}',
       '{start_of_verse}',

@@ -41,7 +41,7 @@ The songbook: all the musician's songs with lyrics and chords in one place, quic
   | *Tancuj, tancuj, vykrúcaj* (Slovak folk song, from M4) | Traditional | as found in the sources | `chordpro`, numbered verses and its refrain as the chorus | `german` |
 
 - Rule: the four English songs stay as they are (`plain`); the sample songs are a collection that grows over time.
-- Rule: the three Slovak songs are written from at least two public sources each, checked against each other, and only in a version that is free to use (a folk song, or words whose author died more than 70 years ago or is unknown and old). *A od Prešova* names the website it was checked against as its source (e.g. `akordy.sk`, see *Song format*), so the source line has a real example.
+- Rule: the three Slovak songs are written from at least two public sources each, checked against each other, and only in a version that is free to use (a folk song, or words whose author died more than 70 years ago or is unknown and old). The sample songs have no source (CEO, 2026-11-27, for *A od Prešova*), so the source line is tested with test songs.
 - Rule: until *Manage songs* (M5) the sample songs are the only songs.
 
 ### Song view *(M3)*
