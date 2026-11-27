@@ -71,7 +71,7 @@ for (const [name, close] of [
     await expect(songsHeading(page)).toBeVisible();
     expect(await hash(page)).toBe('');
     await expect(search(page)).toHaveValue('Traditional');
-    await expect(page.locator('.song-row')).toHaveCount(5);
+    await expect(page.locator('.song-row')).toHaveCount(6);
     expect(await page.evaluate(() => window.scrollY)).toBe(scrolled);
   });
 }

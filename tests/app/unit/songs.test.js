@@ -51,7 +51,7 @@ test('the count label is singular for one song', () => {
 });
 
 // Rule (Sample songs): the public-domain songs with chords, artist "Traditional".
-test('the repository returns the five sample songs', async () => {
+test('the repository returns the seven sample songs', async () => {
   const songs = await listSongs();
   assert.deepEqual(
     songs.map((s) => [s.title, s.key, s.artist]).sort(),
@@ -60,6 +60,8 @@ test('the repository returns the five sample songs', async () => {
       ['Amazing Grace', 'G', 'Traditional'],
       ['Greensleeves', 'Em', 'Traditional'],
       ['House of the Rising Sun', 'Am', 'Traditional'],
+      ['Tancuj, tancuj, vykrúcaj', 'D', 'Traditional'],
+      ['Tichá noc', 'C', 'Franz X. Gruber, Joseph Mohr'],
       ['When the Saints Go Marching In', 'C', 'Traditional'],
     ],
   );
