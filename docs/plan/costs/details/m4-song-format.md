@@ -1,7 +1,7 @@
 # M4 — Song format
 
 - **Description:** Implementation of the song format tasks T-033–T-037 (rows for tasks whose PRs used leads).
-- **PRs:** [#48](https://github.com/besnik/setlist/pull/48) (T-033), [#51](https://github.com/besnik/setlist/pull/51) (T-034), [#PR](https://github.com/besnik/setlist/pull/PR) (T-035)
+- **PRs:** [#48](https://github.com/besnik/setlist/pull/48) (T-033), [#51](https://github.com/besnik/setlist/pull/51) (T-034), [#52](https://github.com/besnik/setlist/pull/52) (T-035)
 - **Date:** 2026-11-27
 
 ## Lead runs
