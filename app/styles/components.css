@@ -88,3 +88,85 @@
   color: var(--color-chord);
   font-weight: 700;
 }
+
+/* ChordPro sheet (ui/components/chordpro-sheet.js): the box of .song-sheet in the
+   body font. A line wraps between words (real spaces); a word is an inline-block of
+   pieces, so it stays whole and sits on the lyric baseline: words of one row are
+   level whether they have a chord or not, and a row without chords has no chord row.
+   A word wider than the line wraps between its pieces, and one piece wider than the
+   line breaks inside its text, so the page never scrolls sideways. */
+.chordpro-sheet {
+  /* Gap between a mark and the lyrics: small on phones, roomier from 600 px (as --gutter). */
+  --mark-gap: 0.35em;
+  /* A mark character is a mono character (0.6 em) of the 0.8 em mark. */
+  --mark-width: calc(var(--mark-chars, 2) * 0.48em + var(--mark-gap));
+  font-family: var(--font-body);
+  white-space: normal;
+}
+
+@media (min-width: 600px) {
+  .chordpro-sheet {
+    --mark-gap: 1em;
+  }
+}
+
+/* With sections every line starts right of the margin. */
+.chordpro-sheet--marked {
+  padding-left: var(--mark-width);
+}
+
+.chordpro-word,
+.chordpro-piece {
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: baseline;
+}
+
+.chordpro-chord,
+.chordpro-text {
+  display: block;
+  white-space: pre;
+}
+
+/* Chord: as the plain sheet's chords; the 0.5 em gap keeps two chords from touching. */
+.chordpro-chord {
+  padding-right: 0.5em;
+  color: var(--color-chord);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.chordpro-text {
+  white-space: pre-wrap;
+}
+
+/* A chord at the end of a word has no text below it, but the lyric row stays. */
+.chordpro-text:empty::before {
+  content: "\200b";
+}
+
+.chordpro-comment {
+  color: var(--color-muted);
+}
+
+/* An empty line (a gap between verses) and a chorus reference: one lyric line high. */
+.chordpro-empty {
+  min-height: 1.5em;
+}
+
+/* Section mark (1., R:): in the margin, level with the lyrics of the first line;
+   small, bold mono and muted, so it is never taken for a chord. */
+.chordpro-mark {
+  display: inline-block;
+  width: var(--mark-width);
+  margin-left: calc(-1 * var(--mark-width));
+  vertical-align: baseline;
+}
+
+.chordpro-mark__text {
+  color: var(--color-muted);
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  font-weight: 700;
+}

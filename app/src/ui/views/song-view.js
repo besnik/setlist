@@ -5,6 +5,8 @@
 
 import { html } from '../html.js';
 import { canGrowFontSize, canShrinkFontSize } from '../../domain/font-size.js';
+import { songFormat } from '../../domain/songs.js';
+import { chordproSheet } from '../components/chordpro-sheet.js';
 import { keyChip } from '../components/key-chip.js';
 import { plainSheet } from '../components/plain-sheet.js';
 import { CLOSE_ICON, stageButton } from '../components/stage-button.js';
@@ -42,12 +44,10 @@ function fontSizeButtons(fontSize) {
 }
 
 /**
- * The sheet for the song's format. Only the plain sheet exists so far, so every
- * format shows as plain, as an unknown one does; the ChordPro sheet (T-035) adds
- * its case here, chosen by songFormat() of domain/songs.js.
+ * The sheet for the song's format; an unknown format shows as plain (songFormat).
  * @param {import('../../domain/songs.js').Song} song
  * @param {number} fontSize
  */
 function songSheet(song, fontSize) {
-  return plainSheet(song.text, fontSize);
+  return songFormat(song.format) === 'chordpro' ? chordproSheet(song.text, fontSize) : plainSheet(song.text, fontSize);
 }
