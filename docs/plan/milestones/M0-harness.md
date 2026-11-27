@@ -24,7 +24,7 @@ Before building the product, set up the system for agentic development: rules, r
 | T-018 | Git guard hook (branch names, commit format, no edits or commits outside a topic branch, no push to `main`); rules: branch before the first edit, commit even small changes | — | done | [#24](https://github.com/besnik/setlist/pull/24) |
 | T-019 | Skill `preview-pr`: run a pull request on the CEO's computer for a try in the browser and on the phone, then clean up | — | done | [#26](https://github.com/besnik/setlist/pull/26) |
 | T-032 | Cost review: reviews by kind of change (one table, GM triggers), model tiers in `.claude/models.md`, fewer tools for leads, session costs in `docs/plan/costs/`, short sessions, no PR watching unless asked | — | done | [#46](https://github.com/besnik/setlist/pull/46) |
-| T-038 | Session boundaries and task difficulty: one session = one unit of work (side questions to the inbox), tasks marked `hard` / `standard` when written, model picked by the mark, check of the marks at cost reviews; M4 tasks marked | — | done | [#PR](https://github.com/besnik/setlist/pulls) |
+| T-038 | Session boundaries and task difficulty: one session = one unit of work (side questions to the inbox), tasks marked `hard` / `standard` when written, model picked by the mark, check of the marks at cost reviews; M4 tasks marked | — | done | [#50](https://github.com/besnik/setlist/pull/50) |
 
 ## Out of scope
 
