@@ -30,11 +30,13 @@ import { splitLines } from './songs.js';
 
 const CHORUS_MARK = 'R:';
 
-// The start and end directives of the sections, long and short names.
-/** @type {Record<string, 'verse' | 'chorus'>} */
-const SECTION_STARTS = { start_of_verse: 'verse', sov: 'verse', start_of_chorus: 'chorus', soc: 'chorus' };
-/** @type {Record<string, 'verse' | 'chorus'>} */
-const SECTION_ENDS = { end_of_verse: 'verse', eov: 'verse', end_of_chorus: 'chorus', eoc: 'chorus' };
+// The start and end directives of the sections, long and short names. Maps, not
+// plain objects, so a directive named like an object property ({constructor})
+// is not found in them and stays hidden.
+/** @type {Map<string, 'verse' | 'chorus'>} */
+const SECTION_STARTS = new Map([['start_of_verse', 'verse'], ['sov', 'verse'], ['start_of_chorus', 'chorus'], ['soc', 'chorus']]);
+/** @type {Map<string, 'verse' | 'chorus'>} */
+const SECTION_ENDS = new Map([['end_of_verse', 'verse'], ['eov', 'verse'], ['end_of_chorus', 'chorus'], ['eoc', 'chorus']]);
 
 // A directive line, once trimmed: '{name}' or '{name: value}'. Names are the ChordPro
 // ones (letters, digits, '_', '-'); a braced line of another form stays a lyric line,
@@ -70,15 +72,15 @@ export function parseChordPro(text) {
       continue;
     }
     const { name, value } = directive;
-    const startKind = SECTION_STARTS[name];
+    const startKind = SECTION_STARTS.get(name);
     if (startKind) {
       if (section?.kind === startKind) continue;
       // A value replaces the mark; such a verse does not count for the numbering.
       const mark = value || (startKind === 'chorus' ? CHORUS_MARK : `${++verseNumber}.`);
       section = { type: 'section', kind: startKind, mark, lines: [] };
       blocks.push(section);
-    } else if (SECTION_ENDS[name]) {
-      if (section?.kind === SECTION_ENDS[name]) section = null;
+    } else if (SECTION_ENDS.has(name)) {
+      if (section?.kind === SECTION_ENDS.get(name)) section = null;
     } else if (name === 'chorus') {
       add({ type: 'chorus-ref', mark: value || CHORUS_MARK });
     } else if ((name === 'comment' || name === 'c') && value) {
