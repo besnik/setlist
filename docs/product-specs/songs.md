@@ -38,10 +38,10 @@ The songbook: all the musician's songs with lyrics and chords in one place, quic
   | *When the Saints Go Marching In* | Traditional | C | `plain` | `international` |
   | *A od Prešova* (Slovak folk song, from M4) | Traditional | as found in the sources | `chordpro` | `german` |
   | *Tichá noc* (Slovak words of *Silent Night*, from M4) | Franz X. Gruber, Joseph Mohr | as found in the sources | `plain` | `german` |
-  | *Pásli ovce Valaši* (Czech folk carol, from M4) | Traditional | as found in the sources | `chordpro`, with its refrain as the chorus | `german` |
+  | *Tancuj, tancuj, vykrúcaj* (Slovak folk song, from M4) | Traditional | as found in the sources | `chordpro`, with its refrain as the chorus | `german` |
 
 - Rule: the four English songs stay as they are (`plain`); the sample songs are a collection that grows over time.
-- Rule: the three Czech and Slovak songs are written from at least two public sources each, checked against each other, and only in a version that is free to use (a folk song, or words whose author died more than 70 years ago or is unknown and old). *A od Prešova* names the website it was checked against as its source (e.g. `akordy.sk`, see *Song format*), so the source line has a real example.
+- Rule: the three Slovak songs are written from at least two public sources each, checked against each other, and only in a version that is free to use (a folk song, or words whose author died more than 70 years ago or is unknown and old). *A od Prešova* names the website it was checked against as its source (e.g. `akordy.sk`, see *Song format*), so the source line has a real example.
 - Rule: until *Manage songs* (M5) the sample songs are the only songs.
 
 ### Song view *(M3)*
@@ -303,7 +303,7 @@ The Song view screen stays as in M3 (bar, header, sheet); only the sheet changes
 | Rule | Check |
 |---|---|
 | Chord above its syllable when wrapping | Pieces of a word wrap as one unit; a chord and its syllable are one piece, so they never part. |
-| No horizontal scroll | Rows wrap between words. Inside a chorus the line is 274 px (288 − 12 padding − 2 border). A word of 16 letters at 32 px in the body font (about 0.55 em per letter) is about 280 px, and a word with several chords can be wider (each piece ≥ chord + 0.5 em) — so a word wider than its line wraps between its pieces, and one piece wider than the line breaks inside its text (`overflow-wrap: anywhere`). Tested e2e at 32 px on a 320 px phone with the longest line of *A od Prešova*, and with the chorus of *Pásli ovce Valaši* (274 px line). |
+| No horizontal scroll | Rows wrap between words. Inside a chorus the line is 274 px (288 − 12 padding − 2 border). A word of 16 letters at 32 px in the body font (about 0.55 em per letter) is about 280 px, and a word with several chords can be wider (each piece ≥ chord + 0.5 em) — so a word wider than its line wraps between its pieces, and one piece wider than the line breaks inside its text (`overflow-wrap: anywhere`). Tested e2e at 32 px on a 320 px phone with the longest line of *A od Prešova*, and with the chorus of *Tancuj, tancuj, vykrúcaj* (274 px line). |
 | Chords never overlap | A piece is at least chord width + 0.5 em. |
 | Readable on a 320 px phone at 16 px | Body font about 0.5 em per letter: about 36 characters per line (mono: 30), so the ChordPro sheet wraps less than `plain`. |
 | Chords readable in both themes | Same `--color-chord` on `--color-bg` as M3, bold. |
@@ -338,10 +338,10 @@ Song format (M4):
   - The source line is plain text in `song-view.js` through the escaping `html` template — no link, no `href`, so no address check is needed.
   - CSS: the sheet styles move from `song-screen.css` to `components.css` (shared with M7, done in T-033 with `plain-sheet.js`); the ChordPro sheet styles go there too; the source line stays in `song-screen.css`.
   - Both readers split lines on `\r\n`, `\r` and `\n`.
-  - `data/sample-songs.js` — the new fields on the four English songs (unchanged text, `plain`), *A od Prešova* (with T-035, the first `chordpro` song), *Tichá noc* and *Pásli ovce Valaši* (T-037).
+  - `data/sample-songs.js` — the new fields on the four English songs (unchanged text, `plain`), *A od Prešova* (with T-035, the first `chordpro` song), *Tichá noc* and *Tancuj, tancuj, vykrúcaj* (T-037).
   - New files go into the offline file list (`app/sw.js`); every change to `app/` needs a new VERSION.
 - **No ADR beyond 0008, no new dependency, no new font file** (Slovak letters are in the Latin Extended subset of the fonts).
-- **Tests:** unit tests for `parseChordPro` and the fallbacks; e2e: a `chordpro` song shows its chords above the right syllables (the chord's left edge over its syllable's left edge) at 320 px and 32 px, also after a line wraps; no horizontal scroll; chorus (*Pásli ovce Valaši*) and comment shown; the source line as plain text (no link; markup in it shown as text), none for an empty source; a `plain` song unchanged; the song count now "7 songs".
+- **Tests:** unit tests for `parseChordPro` and the fallbacks; e2e: a `chordpro` song shows its chords above the right syllables (the chord's left edge over its syllable's left edge) at 320 px and 32 px, also after a line wraps; no horizontal scroll; chorus (*Tancuj, tancuj, vykrúcaj*) and comment shown; the source line as plain text (no link; markup in it shown as text), none for an empty source; a `plain` song unchanged; the song count now "7 songs".
 
 ## Out of scope
 
