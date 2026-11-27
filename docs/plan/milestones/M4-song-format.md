@@ -1,6 +1,6 @@
 # M4 — Song format
 
-- **Status:** in-progress — spec, ADR 0008 and tasks approved ([#47](https://github.com/besnik/setlist/pull/47), CEO 2026-11-27); T-033 in progress
+- **Status:** in-progress — spec, ADR 0008 and tasks approved ([#47](https://github.com/besnik/setlist/pull/47), CEO 2026-11-27); T-033 done
 
 ## Goal
 
@@ -24,7 +24,7 @@ Spec: [songs.md — Song format](../../product-specs/songs.md#song-format-m4). D
 
 | ID | Task | Spec | Status | PR |
 |---|---|---|---|---|
-| T-033 | Song header fields: `format`, `notation`, optional `source`, `importedAt` in the `Song` type and the sample songs; fallbacks (unknown format → `plain`, unknown notation → `international`) as domain functions with unit tests; the M3 sheet moved to `ui/components/plain-sheet.js` and chosen by format in `song-view.js`; the sheet CSS moved from `song-screen.css` to `components.css`; lines split on `\r\n`, `\r`, `\n`; `isChordLine` comments no longer provisional; files in `domain/songs.js`, `data/sample-songs.js`, offline list in `app/sw.js`, new VERSION. No visible change. T-028 rides along | [Song format](../../product-specs/songs.md#song-format-m4) | in-progress | — |
+| T-033 | Song header fields: `format`, `notation`, optional `source`, `importedAt` in the `Song` type and the sample songs; fallbacks (unknown format → `plain`, unknown notation → `international`) as domain functions with unit tests; the M3 sheet moved to `ui/components/plain-sheet.js` and chosen by format in `song-view.js`; the sheet CSS moved from `song-screen.css` to `components.css`; lines split on `\r\n`, `\r`, `\n`; `isChordLine` comments no longer provisional; files in `domain/songs.js`, `data/sample-songs.js`, offline list in `app/sw.js`, new VERSION. No visible change. T-028 rides along | [Song format](../../product-specs/songs.md#song-format-m4) | done | [#48](https://github.com/besnik/setlist/pull/48) |
 | T-034 | ChordPro reader `domain/chordpro.js`: `parseChordPro(text)` → blocks (lines of chord + text pieces, verses numbered automatically or with their own mark, chorus with the mark `R:`, `{chorus}` references, comments, empty lines; other directives and `#` lines dropped); unit tests for every rule of the `chordpro` format (also `\r\n`, nesting, empty `{c:}`) | [Song format](../../product-specs/songs.md#song-format-m4) | approved | — |
 | T-035 | ChordPro sheet `ui/components/chordpro-sheet.js`, its CSS in `components.css` (mark margin with `--mark-chars` and the responsive `--mark-gap`), `song-view.js` uses it for `chordpro`; the first `chordpro` sample song, *A od Prešova* (`german`, with its source; written from at least two public sources, checked to be a free folk song) in `data/sample-songs.js`; offline list and VERSION; e2e: chords above their syllables at 320 px and 32 px also after wrapping, no horizontal scroll, section marks, comment and font size; the chorus mark by a unit test of the component; tests updated to five songs | [Song format](../../product-specs/songs.md#song-format-m4), [UX](../../product-specs/songs.md#song-sheet-by-format-and-source-line-m4) | approved | — |
 | T-036 | Source line at the end of the Song view: plain text "Source: <source>" (never a link), none for an empty source; in `ui/views/song-view.js`, its CSS in `song-screen.css`; new VERSION; e2e (plain text, markup shown as text, empty source) | [Song format](../../product-specs/songs.md#song-format-m4) | approved | — |
@@ -63,7 +63,7 @@ From the M3 end-of-milestone architecture check. Approved by the CEO in chat (20
 
 | ID | Task | Spec | Status | PR |
 |---|---|---|---|---|
-| T-028 | Stale comments: `app/sw.js` (header and the registration comment) still says `src/main.js` registers the worker — it is `data/app-version.js`; `app/src/data/sample-songs.js` says "in M1" — the sample songs are the only songs until M5. Ride along with the first M4 PR that changes `app/` (needs a new VERSION) | — | in-progress | — |
+| T-028 | Stale comments: `app/sw.js` (header and the registration comment) still says `src/main.js` registers the worker — it is `data/app-version.js`; `app/src/data/sample-songs.js` says "in M1" — the sample songs are the only songs until M5. Ride along with the first M4 PR that changes `app/` (needs a new VERSION) | — | done | [#48](https://github.com/besnik/setlist/pull/48) |
 | T-029 | `tools/check.js`: one shared helper that strips comments from source, instead of the same two regexes copied in 5 rules; tests in `tests/tools` stay green. With the next new check rule | — | approved | — |
 | T-030 | One shared "Unknown artist" fallback for the song list and the Song view (a small component in `ui/components/`), before M6 adds setlist rows and M7 the play-mode header | — | approved | — |
 
