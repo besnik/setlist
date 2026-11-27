@@ -14,7 +14,7 @@
 // Change on every release: the browser installs a new worker only when this file
 // changes, and the cache name keeps versions apart. Format: date of the change,
 // YYYY.MM.DD (.2, .3 for more releases on one day).
-const VERSION = '2026.11.27';
+const VERSION = '2026.11.27.2';
 const CACHE = `setlist-${VERSION}`;
 
 // Every published file of the app except this worker and documentation (README,
@@ -27,6 +27,7 @@ const FILES = [
   'src/data/sample-songs.js',
   'src/data/settings-repository.js',
   'src/data/song-repository.js',
+  'src/domain/chordpro.js',
   'src/domain/chords.js',
   'src/domain/font-size.js',
   'src/domain/songs.js',
