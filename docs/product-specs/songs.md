@@ -101,6 +101,7 @@ How a song is stored and shown. Decision: [ADR 0008](../decisions/0008-song-form
   - **Notation:** `international` (`B` is B, `Bb` is B flat) or `german`, the Central European notation (`H` is B, `B` is B flat).
   - **Source** (optional): the name of the website or book the song came from (e.g. `supermusic.cz`), a link to the original, and the date of import. A song typed in by hand has no source.
 - Rule: the text is kept exactly as written; neither the format nor the notation ever changes it.
+- Rule: lines end with a line break; `\r\n` and `\r` (Windows and old Mac line ends) count as one line break, in both formats.
 - Rule: given a song whose format is missing or unknown, then it is shown as `plain` (nothing is lost: `plain` shows every line as written).
 - Rule: given a song whose notation is missing or unknown, then it counts as `international`.
 - Rule: the key is written in the song's notation (`H` in a `german` song); search finds it as written.
@@ -110,6 +111,7 @@ How a song is stored and shown. Decision: [ADR 0008](../decisions/0008-song-form
 
 - Rule: shown in the monospaced font with the chord lines detected as in the Song view (*Chord lines*).
 - Rule: a long line wraps; a wrapped chord line may no longer align with its lyrics (accepted; such a song can be written in `chordpro`).
+- Rule: chord-line detection knows the letter names `A`–`H` with `#` or `b` (so `H`, `B`, `F#`, `Bb` in both notations), not the German spelled names such as `Es`, `As`, `Fis`, `Cis` (rare in guitar songbooks; a line with them is shown as lyrics). The sample songs use only letter names.
 
 **`chordpro` format** — a subset of the open [ChordPro](https://www.chordpro.org) format.
 
@@ -120,7 +122,7 @@ How a song is stored and shown. Decision: [ADR 0008](../decisions/0008-song-form
 - Rule: given a chord is wider than the syllable below it, then a small gap follows the chord, so two chords never touch or overlap; the syllable stays where it is and the rest of the word moves right.
 - Rule: a line with chords only, such as `[G] [C] [D]`, shows the chords in one row with a gap between them.
 - Rule: a line without chords has no chord row (it takes the height of one lyric line).
-- Rule: a long line wraps between words. When it wraps, each chord stays above its syllable, and a word with chords inside it is never split. The page never scrolls horizontally; a single word wider than the screen may break inside (rare).
+- Rule: a long line wraps between words. When it wraps, each chord stays above its syllable, and a word with chords inside it is not split. The page never scrolls horizontally: only a word (with its chords) wider than the whole line may wrap between its pieces, and a single piece wider than the line may break inside its text (both rare).
 - Rule: an empty line keeps its height (a gap between verses).
 - Rule: a directive is a line of the form `{name}` or `{name: value}` (spaces around it are ignored; the name ignores letter case):
   - `{start_of_chorus}` or `{soc}` starts the chorus, `{end_of_chorus}` or `{eoc}` ends it. The lines between are shown as the chorus: marked with a line on their left and indented. A value, e.g. `{soc: Refrén}`, is shown as the chorus label above it; without a value there is no label.
@@ -129,12 +131,22 @@ How a song is stored and shown. Decision: [ADR 0008](../decisions/0008-song-form
 - Rule: given a chorus without its end, then it ends with the song. Given `{eoc}` without a start, then it is not shown.
 - Rule: a line that starts with `#` is a ChordPro comment for the writer and is not shown.
 - Rule: a line that looks like a directive but is not closed with `}` is shown as lyrics.
+- Rule: a directive line, a hidden directive and a `#` line take no space (they do not leave an empty line). A `{soc}` inside a chorus is not shown and does not start a second chorus. A `{c:}` with an empty value is not shown.
 
 **Source line**
 
-- Rule: given a song with a source, then the end of the Song view shows a quiet line "Source: <name>". Given it has a link, the name is the link; it opens the original outside the app (a new tab, or the browser from the installed app).
-- Rule: given a source with a link and no name, then the name is the link's website (e.g. `supermusic.cz`).
-- Rule: only `https://` and `http://` links are shown as links; any other link is not shown (the name is shown as plain text).
+- Rule: a link is **valid** when it is a full web address with the scheme `https` or `http` (letter case ignored) and without a user name or password in it (`https://user:pw@…` is not valid). Anything else (e.g. `javascript:…`, `data:…`, a text that is not an address) is not valid and is never shown as a link.
+- Rule: given a song with a source, then the end of the Song view shows a quiet line "Source: " followed by a text:
+
+  | Name | Link | Text after "Source: " |
+  |---|---|---|
+  | given | valid | the name, as a link to the original |
+  | given | missing or not valid | the name, as plain text |
+  | missing or only spaces | valid | the link's website without `www.` (e.g. `supermusic.cz`), as a link |
+  | missing or only spaces | missing or not valid | — no source line at all |
+
+- Rule: the link opens the original outside the app (a new tab, or the browser from the installed app).
+- Rule: a long name wraps; it never widens the page.
 - Rule: the date of import is stored but not shown in M4.
 - Rule: given a song without a source, then there is no source line.
 
@@ -287,18 +299,18 @@ The Song view screen stays as in M3 (bar, header, sheet); only the sheet changes
   - Chords: `--font-mono` 700, `--color-chord`, the sheet size, line height 1.2. Using the mono font of the `plain` chords keeps chords looking the same in both formats and needs no new font file.
   - Lyrics: `--font-body` 400, `--color-ink`, the sheet size, line height 1.5.
   - A piece is at least as wide as its chord plus a gap of 0.5 em, so chords never touch (`Ama C zing` with a wide chord: the syllable starts under the chord, the rest of the word moves right).
-  - Pieces of one word stay together on one row (no wrap inside a word); the space between words is where a line may wrap.
+  - Pieces of one word stay together on one row; the space between words is where a line may wrap. Only a word wider than its line wraps between its pieces.
   - A line with at least one chord reserves the chord row for all its pieces, so the lyrics of one line stay on one baseline. A line without chords has no chord row.
   - Chorus: `--space-3` (12 px) left padding, 2 px `--color-line` left border. The label (when given) in `small`, `--color-muted`, above the first chorus line.
   - Comment: `--font-body` 400, `--color-muted`, the sheet size.
-- **Source line:** `small` step, `--color-muted`, `--space-5` above it, after the sheet. "Source: " then the name; as a link it keeps `--color-muted`, underlined, with the keyboard focus outline of the guidelines. It scrolls with the sheet; it does not change with the font size.
+- **Source line:** `small` step, `--color-muted`, `--space-5` above it, after the sheet, `overflow-wrap: anywhere`. "Source: " then the name; as a link it keeps `--color-muted`, underlined, with the keyboard focus outline of the guidelines. It scrolls with the sheet; it does not change with the font size.
 
 **Self-check**
 
 | Rule | Check |
 |---|---|
 | Chord above its syllable when wrapping | Pieces of a word wrap as one unit; a chord and its syllable are one piece, so they never part. |
-| No horizontal scroll | Rows wrap between words; one word is at most about 16 characters in the sample songs: at 32 px in the body font (about 0.55 em per letter) about 280 px ≤ 288 px. A longer word may break inside (`overflow-wrap: anywhere`). |
+| No horizontal scroll | Rows wrap between words. Inside a chorus the line is 274 px (288 − 12 padding − 2 border). A word of 16 letters at 32 px in the body font (about 0.55 em per letter) is about 280 px, and a word with several chords can be wider (each piece ≥ chord + 0.5 em) — so a word wider than its line wraps between its pieces, and one piece wider than the line breaks inside its text (`overflow-wrap: anywhere`). Worst case tested e2e: a chorus line with a long chord-heavy word at 32 px on a 320 px phone. |
 | Chords never overlap | A piece is at least chord width + 0.5 em. |
 | Readable on a 320 px phone at 16 px | Body font about 0.5 em per letter: about 36 characters per line (mono: 30), so the ChordPro sheet wraps less than `plain`. |
 | Chords readable in both themes | Same `--color-chord` on `--color-bg` as M3, bold. |
@@ -330,8 +342,9 @@ Song format (M4):
   - `ui/components/plain-sheet.js` (new) — the M3 sheet lines, moved out of `song-view.js`.
   - `ui/components/chordpro-sheet.js` (new) — renders the blocks of `parseChordPro`. Both sheets are components, because play mode (M7) shows the same sheet.
   - `ui/views/song-view.js` — chooses the sheet by format and adds the source line; nothing else.
-  - `domain/` gets a small pure function for the source line's link (`https:`/`http:` only, the website name from the link), unit-tested — the link check is security-relevant (no `javascript:` links). The link uses `target="_blank" rel="noopener noreferrer"`.
-  - CSS: the sheet styles move from `song-screen.css` to `components.css` (shared with M7); the source line stays in `song-screen.css`.
+  - `domain/song-source.js` (new) — `sourceLine(song)` → `{ text, href }` or `null`, following the table of the *Source line* rules. Security-relevant: parse with `new URL()` inside a narrowed `try` (ADR 0007) and compare `url.protocol` with `https:` / `http:` after parsing — never a string prefix check (it misses `JaVaScRiPt:`, leading spaces and control characters); reject `url.username` / `url.password`; the website is `url.hostname` without a leading `www.` (punycode for non-ASCII hosts is accepted). Unit tests for each table row and for these cases. The link uses `target="_blank" rel="noopener noreferrer"`; the text and `href` go through the escaping `html` template.
+  - CSS: the sheet styles move from `song-screen.css` to `components.css` (shared with M7, done in T-032 with `plain-sheet.js`); the ChordPro sheet styles go there too; the source line stays in `song-screen.css`.
+  - Both readers split lines on `\r\n`, `\r` and `\n`.
   - `data/sample-songs.js` — the new fields, *When the Saints* rewritten in ChordPro, and the two Slovak songs.
   - New files go into the offline file list (`app/sw.js`); every change to `app/` needs a new VERSION.
 - **No ADR beyond 0008, no new dependency, no new font file** (Slovak letters are in the Latin Extended subset of the fonts).
@@ -347,4 +360,4 @@ Song format (M4):
 
 ## Open questions
 
-- **Slovak words of *Tichá noc*.** The author of the Slovak translation is not named in the sources found so far. *Recommendation:* use the common old version when no modern author is named in at least two sources; if a source names an author who died less than 70 years ago, use another public-domain carol instead and say so in the PR.
+- **Slovak words of *Tichá noc*.** The author of the Slovak translation is not named in the sources found so far. *Recommendation:* a gate in T-036 — use the common old version only when no source names a modern author; if any source names an author who died less than 70 years ago (or the age of the words cannot be shown), use another public-domain Slovak carol instead and ask the CEO in the PR.
