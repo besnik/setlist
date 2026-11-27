@@ -29,6 +29,7 @@ export function songView(song, fontSize) {
       </div>
     </header>
     ${songSheet(song, fontSize)}
+    ${sourceLine(song.source)}
   `;
 }
 
@@ -41,6 +42,16 @@ function fontSizeButtons(fontSize) {
     stageButton({ name: 'Smaller text', action: 'smaller-text', content: 'A\u2212', disabled: !canShrinkFontSize(fontSize) }),
     stageButton({ name: 'Larger text', action: 'larger-text', content: 'A+', disabled: !canGrowFontSize(fontSize) }),
   ];
+}
+
+/**
+ * The quiet source line at the end ("Source: akordy.sk"): plain text, never a link;
+ * nothing for a missing or empty source.
+ * @param {string | undefined} source
+ */
+function sourceLine(source) {
+  const text = typeof source === 'string' ? source.trim() : '';
+  return text ? html`<p class="song-source">Source: ${text}</p>` : '';
 }
 
 /**

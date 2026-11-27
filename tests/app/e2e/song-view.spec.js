@@ -129,3 +129,10 @@ test('chord lines are bold in the chord color, lyric lines are not', async ({ pa
   expect(sheet.weight).toBe('400');
   expect(sheet.color).not.toBe(chordColor);
 });
+
+// Rule (Source line): the sample songs have no source, so no source line is shown.
+test('a song without a source has no source line', async ({ page }) => {
+  await page.goto('./#/song/sample-greensleeves');
+  await expect(page.getByRole('heading', { name: 'Greensleeves' })).toBeVisible();
+  await expect(page.locator('.song-source')).toHaveCount(0);
+});
