@@ -86,12 +86,16 @@ Repeatable workflows live in [.claude/skills/](.claude/skills/):
 
 ## Report to the CEO (end of every task, in Slovak)
 
-Always cover these three things, but choose short Slovak headings that fit the context and skip a part that is empty:
+Always cover these four things, but choose short Slovak headings that fit the context and skip a part that is empty:
 
 1. **What changed** — with a link to the PR (e.g. *Čo som vytvoril*, *Čo som opravil*).
 2. **What the GM or leads decided on their own** (e.g. *Čo som rozhodol sám*).
 3. **What is needed from the CEO** — keep **decisions** (open questions, each with a recommendation; e.g. *Na rozhodnutie*) separate from **actions** (things only the CEO can do, such as merging or changing settings; e.g. *Čo treba urobiť*).
-4. **Next step and where to do it** — when proposing the next step, recommend a **new session** (for a new task or topic: a long session makes every message more expensive, and the repository holds the state) or **this session** (only for review comments on its own open PR or a short follow-up). Give a ready-to-paste opener, e.g. *„Pokračuj v M1: začni T-015.“*
+4. **Next step and where to do it** — when proposing the next step:
+   - Say **what it is** in one short Slovak sentence (the task ID plus what it delivers, in plain words — the CEO should not need to look it up), e.g. *T-034 — čítačka formátu ChordPro: z textu piesne urobí bloky (slohy, refrén, akordy) + unit testy.*
+   - Recommend the **model** for that session: the tier and its alias from [.claude/models.md](.claude/models.md), chosen by its *Main session (GM)* list, e.g. *štandardný (`sonnet`)* or *silný (`opus`)*, with a few words why if it is not obvious.
+   - Recommend a **new session** (for a new task or topic: a long session makes every message more expensive, and the repository holds the state) or **this session** (only for review comments on its own open PR or a short follow-up).
+   - Give a ready-to-paste opener, e.g. *„Pokračuj v M1: začni T-015.“*
 
 ## Environment notes
 
