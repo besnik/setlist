@@ -16,11 +16,13 @@
 | T-035 light QA | qa-lead | standard | 21,374 | 0:15 | 3 | 0 blocking, 3 other (none changed the code) |
 | T-036 implementation and tests | GM | n/a | n/a | n/a | n/a | not measured |
 | T-036 light QA | qa-lead | standard | 23,687 | 0:16 | 2 | 0 blocking, 1 other (long source wrap has no test; accepted as CSS-only) |
-| **Total** | | | **96,631** | **1:19** | **12** | |
+| T-037 source search (web-fetch, two runs) | web-fetch | standard | 31,454 | 0:33 | 5 | texts of the two Slovak songs; one run was blocked by a site, the other found no text |
+| **Total** | | | **128,085** | **1:52** | **17** | |
 
 ## What drove cost
 
 - T-033: light QA because the change touches the offline file list and the song data shape (risky areas); a short brief with the changed files kept the run small.
 - T-034: light QA because the new file goes into the offline file list; it found one real parser bug, so the run paid off.
+- T-037: no QA (sample data, not a risky area); the cost is the search for public sources, where fetching by an agent mostly failed and plain `curl` through the proxy worked.
 - T-035: light QA because the change renders song text (escaping) and adds a file to the offline list; a diff-only brief kept it cheap.
 - T-036: light QA because the source line renders stored text (escaping); a short brief with the spec rules kept it cheap.
