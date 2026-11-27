@@ -210,3 +210,7 @@ test('a full song', () => {
     { type: 'comment', text: 'Repeat: 2× {slowly}' },
   ]);
 });
+
+test('a directive named like an object property is hidden, not a section', () => {
+  assert.deepEqual(parseChordPro('{constructor}\n{toString}\n{eov}'), []);
+});
