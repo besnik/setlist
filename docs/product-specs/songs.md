@@ -1,6 +1,6 @@
 # Songs
 
-- **Status:** approved (Song view: draft)
+- **Status:** approved (Song format: draft)
 
 <!-- Based on the CEO's prototype — see docs/design/prototype-reference.md. -->
 
@@ -28,8 +28,19 @@ The songbook: all the musician's songs with lyrics and chords in one place, quic
 
 ### Sample songs
 
-- Rule: the app contains four public-domain sample songs with chords: *Amazing Grace* (G), *House of the Rising Sun* (Am), *Greensleeves* (Em), *When the Saints Go Marching In* (C), artist "Traditional".
-- Rule: in M1 the sample songs are the only songs; adding own songs comes with *Manage songs* (M5).
+- Rule: the app contains six public-domain sample songs with chords:
+
+  | Song | Artist | Key | Format | Notation |
+  |---|---|---|---|---|
+  | *Amazing Grace* | Traditional | G | `plain` | `international` |
+  | *House of the Rising Sun* | Traditional | Am | `plain` | `international` |
+  | *Greensleeves* | Traditional | Em | `plain` | `international` |
+  | *When the Saints Go Marching In* | Traditional | C | `chordpro` (from M4) | `international` |
+  | *A od Prešova* (Slovak folk song, from M4) | Traditional | as found in the sources | `chordpro` | `german` |
+  | *Tichá noc* (Slovak words of *Silent Night*, from M4) | Franz X. Gruber, Joseph Mohr | as found in the sources | `plain` | `german` |
+
+- Rule: the two Slovak songs are written from at least two public sources each, checked against each other, and only in a version that is free to use (a folk song, or words whose author died more than 70 years ago or is unknown and old). *A od Prešova* names the website it was checked against as its source (see *Song format*), so the source line has a real example.
+- Rule: until *Manage songs* (M5) the sample songs are the only songs.
 
 ### Song view *(M3)*
 
@@ -48,27 +59,27 @@ A stage screen: one song full screen, read while playing. The controls follow th
 
 - Rule: the Song view shows the title, the artist ("Unknown artist" when empty), the key as a key chip (left out when the song has no key) and the song text.
 - Rule: the song text keeps its lines and spaces as written, so a chord stays above the word it belongs to.
-- Rule: a long line wraps onto the next line; the page never scrolls horizontally. A wrapped chord line may no longer align with its lyrics — accepted until the song format (M4).
+- Rule: a long line wraps onto the next line; the page never scrolls horizontally. How chords behave when a line wraps depends on the song's format (see *Song format*).
 - Rule: a long title wraps; it is never shortened on the stage screen.
 - Rule: the close button and the font size buttons stay visible at the top of the screen while the song text scrolls.
 
-**Chord lines** (provisional — M4 decides the song format; this detection may live on as the reader of plain-text input)
+**Chord lines** (the `plain` format, see *Song format*)
 
 - Rule: chord lines are shown bold in the chord color; all other lines are shown as lyrics.
 - Rule: a line is a chord line when it contains at least one chord and every word on it is a chord or a bar mark. Words are separated by one or more spaces or tabs; spaces at the start and end of the line are ignored. An empty line, or a line of only spaces, is not a chord line.
 - Rule: a chord is, in this order: a root `A`–`H` (`H` is the Central European name of B; `B` is also accepted); optionally `#` or `b`; any sequence (also none) of the qualities and extensions below, e.g. `m7`, `mi7`, `m7b5`, `7sus4`, `maj7`; optionally a slash and a bass note, which is a root with an optional `#` or `b` (`/G#`, `/Bb`, `/H`). Examples that are chords: `C`, `Am`, `Ami`, `Hmi`, `F#m`, `Bb`, `G7`, `Cmaj7`, `Dsus4`, `Asus2`, `Gadd9`, `Bdim`, `Caug`, `C+`, `Em7b5`, `E7/G#`, `D/F#`, `C/H`.
   - Qualities and extensions: `m`, `mi`, `min`, `maj`, `dim`, `aug`, `sus`, `add`, `+`, the numbers `2`, `4`, `5`, `6`, `7`, `9`, `11`, `13`, and `#` or `b` directly before a number (`7b9`, `7#5`).
-  - Not chords in M3 (rare; the song format in M4 decides): `CM7` (capital `M` for major) and `C6/9` (a slash followed by a number). A line containing them is shown as a lyric line.
+  - Not chords (rare, accepted in M4): `CM7` (capital `M` for major) and `C6/9` (a slash followed by a number). A line containing them is shown as a lyric line.
 - Rule: bar marks are `|`, `||`, the repeat signs `|:` and `:|`, `%` (repeat the previous bar), `/`, `-`, a repeat count (`x2`, `2x`, `x3`, …) and `N.C.` (no chord). A line with bar marks only is not a chord line.
 - Rule: a chord in parentheses, such as `(G)` or `(E7/G#)`, counts as a chord (an optional or passing chord); it is shown as written, with the parentheses. Parentheses around a word that is not a chord, such as `(chorus)`, make the line a lyric line.
 - Rule: a lyric line whose words happen to look like chords only partly is a lyric line: `A man walks in` and `Am I wrong` contain words that are not chords.
 - Rule: letter case matters. The root is an upper-case letter and the quality is written as listed (`Am`, `Ami`, `Cmaj7`), so lyric words such as `a`, `v`, `am`, `be` or `add` are never chords.
-- Rule (accepted false positive): a lyric line made only of words that are chords, such as a line `A` or `Hm` or `E A`, is shown as a chord line. This is rare and harmless; M4 decides whether it stays.
+- Rule (accepted false positive): a lyric line made only of words that are chords, such as a line `A` or `Hm` or `E A`, is shown as a chord line. This is rare and harmless (kept in M4); a song where it matters can be written in `chordpro`.
 
 **Font size**
 
 - Rule: the Song view has two buttons, A− and A+. Each tap makes the song text 2 px smaller or bigger, from 12 px to 32 px; the default is 16 px.
-- Rule: the font size changes the song text (lyrics and chord lines) only; the title, the artist and the buttons keep their size.
+- Rule: the font size changes the song text (lyrics, chords, chorus labels and comments) only; the title, the artist and the buttons keep their size.
 - Rule: at 12 px A− is disabled, at 32 px A+ is disabled (shown faded, a tap does nothing).
 - Rule: the chosen size is the same for all songs and is remembered on the device across closing the song, restarts of the app and updates.
 - Rule: given the stored size cannot be read or is not a valid size, then 16 px is used. Given the browser does not allow storing it (e.g. private mode), then the buttons still work for as long as the app stays open.
@@ -79,7 +90,54 @@ A stage screen: one song full screen, read while playing. The controls follow th
 - Rule: when the Song view is closed, the screen turns off again after the device's usual time.
 - Rule: given the user switched to another app and comes back to the Song view, then the screen stays on again.
 - Rule: given the browser does not support it, then the Song view works as usual and shows no message.
-### Song format *(planned — M4)*
+### Song format *(M4)*
+
+How a song is stored and shown. Decision: [ADR 0008](../decisions/0008-song-format.md). In M4 the songs are the sample songs, prepared by hand; entering songs comes with M5, detecting the format of a pasted text and import / export with a later milestone.
+
+**Song header**
+
+- Rule: a song has a title, an artist, a key, a text, and these header fields:
+  - **Format:** `plain` ("chords over lyrics": a line of chords above each line of lyrics) or `chordpro` (chords in square brackets inside the lyrics, e.g. `[G]Amazing [C]grace`).
+  - **Notation:** `international` (`B` is B, `Bb` is B flat) or `german`, the Central European notation (`H` is B, `B` is B flat).
+  - **Source** (optional): the name of the website or book the song came from (e.g. `supermusic.cz`), a link to the original, and the date of import. A song typed in by hand has no source.
+- Rule: the text is kept exactly as written; neither the format nor the notation ever changes it.
+- Rule: given a song whose format is missing or unknown, then it is shown as `plain` (nothing is lost: `plain` shows every line as written).
+- Rule: given a song whose notation is missing or unknown, then it counts as `international`.
+- Rule: the key is written in the song's notation (`H` in a `german` song); search finds it as written.
+- Rule: in M4 the notation does not change what is shown: chords are shown as written. It is stored so that a notation setting and transposition (after the MVP) know what `B` means.
+
+**`plain` format**
+
+- Rule: shown in the monospaced font with the chord lines detected as in the Song view (*Chord lines*).
+- Rule: a long line wraps; a wrapped chord line may no longer align with its lyrics (accepted; such a song can be written in `chordpro`).
+
+**`chordpro` format** — a subset of the open [ChordPro](https://www.chordpro.org) format.
+
+- Rule: text in square brackets is a chord, e.g. `[G]`, `[F#m7]`, `[H7]`, `[(D)]`, `[N.C.]`. It is shown as written, above the text that follows it, in the chord color. Its content is not checked against the chord pattern.
+- Rule: given `[` without a closing `]` on the same line, then the rest of the line is shown as lyrics, brackets included. An empty `[]` is not shown.
+- Rule: the lyrics are shown in the body font; the brackets and the chords are not part of the lyric line.
+- Rule: a chord inside a word stays above its syllable: `Ama[C]zing` shows `C` above `zing`.
+- Rule: given a chord is wider than the syllable below it, then a small gap follows the chord, so two chords never touch or overlap; the syllable stays where it is and the rest of the word moves right.
+- Rule: a line with chords only, such as `[G] [C] [D]`, shows the chords in one row with a gap between them.
+- Rule: a line without chords has no chord row (it takes the height of one lyric line).
+- Rule: a long line wraps between words. When it wraps, each chord stays above its syllable, and a word with chords inside it is never split. The page never scrolls horizontally; a single word wider than the screen may break inside (rare).
+- Rule: an empty line keeps its height (a gap between verses).
+- Rule: a directive is a line of the form `{name}` or `{name: value}` (spaces around it are ignored; the name ignores letter case):
+  - `{start_of_chorus}` or `{soc}` starts the chorus, `{end_of_chorus}` or `{eoc}` ends it. The lines between are shown as the chorus: marked with a line on their left and indented. A value, e.g. `{soc: Refrén}`, is shown as the chorus label above it; without a value there is no label.
+  - `{comment: …}` or `{c: …}` shows its value as a comment line (e.g. `Repeat 2×`, `Capo 2`), muted, without a chord row.
+  - Any other directive (e.g. `{title: …}`, `{key: …}`, `{start_of_tab}`) is kept in the text but not shown.
+- Rule: given a chorus without its end, then it ends with the song. Given `{eoc}` without a start, then it is not shown.
+- Rule: a line that starts with `#` is a ChordPro comment for the writer and is not shown.
+- Rule: a line that looks like a directive but is not closed with `}` is shown as lyrics.
+
+**Source line**
+
+- Rule: given a song with a source, then the end of the Song view shows a quiet line "Source: <name>". Given it has a link, the name is the link; it opens the original outside the app (a new tab, or the browser from the installed app).
+- Rule: given a source with a link and no name, then the name is the link's website (e.g. `supermusic.cz`).
+- Rule: only `https://` and `http://` links are shown as links; any other link is not shown (the name is shown as plain text).
+- Rule: the date of import is stored but not shown in M4.
+- Rule: given a song without a source, then there is no source line.
+
 ### Manage songs *(planned — M5)*
 
 ## UX and visual design
@@ -200,9 +258,56 @@ A stage screen ([guidelines](../design/guidelines.md#principles)): content first
 | Chord lines readable in both themes | `--color-chord` on `--color-bg`: about 4.7 : 1 light, about 9.7 : 1 dark, bold. |
 | Disabled buttons recognizable | Opacity 0.4 of ink on surface stays visible in both themes; they are only at 12 and 32 px. |
 
+### Song sheet by format and source line (M4)
+
+The Song view screen stays as in M3 (bar, header, sheet); only the sheet changes with the song's format, and the source line is added at the end.
+
+`chordpro` sheet, phone 320 px wide (288 px column), 16 px:
+
+```
+│ C              F       C       │  chord row: mono 700, chord color
+│ Oh, when the saints go         │  lyric row: body 400, ink
+│                    G           │
+│ marching in                    │  wrapped between words; G stays on "march"
+│                                │  empty line: one lyric line high
+│ ┃ Refrén                       │  chorus label: small, muted
+│ ┃ G        D                   │  chorus: 2 px line on the left,
+│ ┃ Tichá noc, svätá noc         │  text indented 12 px
+│                                │
+│ Repeat 2×                      │  comment: body 400, muted, no chord row
+│                                │  24 px
+│ Source: supermusic.cz          │  source line: small, muted, link underlined
+└────────────────────────────────┘
+```
+
+- **Sheet:** the same box as in M3 (`--sheet-size`, 12–32 px, no card, `--space-5` below the header).
+- **`plain` sheet:** exactly the M3 sheet (mono, `pre-wrap`, chord lines 700 in `--color-chord`).
+- **`chordpro` sheet:**
+  - Each line is a row of **pieces**. A piece is a chord (above) and the text that follows it (below), stacked; text before the first chord is a piece without a chord.
+  - Chords: `--font-mono` 700, `--color-chord`, the sheet size, line height 1.2. Using the mono font of the `plain` chords keeps chords looking the same in both formats and needs no new font file.
+  - Lyrics: `--font-body` 400, `--color-ink`, the sheet size, line height 1.5.
+  - A piece is at least as wide as its chord plus a gap of 0.5 em, so chords never touch (`Ama C zing` with a wide chord: the syllable starts under the chord, the rest of the word moves right).
+  - Pieces of one word stay together on one row (no wrap inside a word); the space between words is where a line may wrap.
+  - A line with at least one chord reserves the chord row for all its pieces, so the lyrics of one line stay on one baseline. A line without chords has no chord row.
+  - Chorus: `--space-3` (12 px) left padding, 2 px `--color-line` left border. The label (when given) in `small`, `--color-muted`, above the first chorus line.
+  - Comment: `--font-body` 400, `--color-muted`, the sheet size.
+- **Source line:** `small` step, `--color-muted`, `--space-5` above it, after the sheet. "Source: " then the name; as a link it keeps `--color-muted`, underlined, with the keyboard focus outline of the guidelines. It scrolls with the sheet; it does not change with the font size.
+
+**Self-check**
+
+| Rule | Check |
+|---|---|
+| Chord above its syllable when wrapping | Pieces of a word wrap as one unit; a chord and its syllable are one piece, so they never part. |
+| No horizontal scroll | Rows wrap between words; one word is at most about 16 characters in the sample songs: at 32 px in the body font (about 0.55 em per letter) about 280 px ≤ 288 px. A longer word may break inside (`overflow-wrap: anywhere`). |
+| Chords never overlap | A piece is at least chord width + 0.5 em. |
+| Readable on a 320 px phone at 16 px | Body font about 0.5 em per letter: about 36 characters per line (mono: 30), so the ChordPro sheet wraps less than `plain`. |
+| Chords readable in both themes | Same `--color-chord` on `--color-bg` as M3, bold. |
+| Chorus and comment recognizable in both themes | The chorus line uses `--color-line`; comments and the label use `--color-muted` (about 4.5 : 1 light, about 7.3 : 1 dark, as the artist line). |
+| Portrait and landscape, phone to desktop | Nothing depends on the width except where lines wrap; the 720 px column wraps less. |
+
 ## Notes for Design / Engineering
 
-- Song fields for M1: `id`, `title`, `artist`, `key`, `text`. The `text` keeps the prototype's provisional "chords over lyrics" form until the song format is decided in M4 — do not build on it.
+- Song fields for M1: `id`, `title`, `artist`, `key`, `text` (M4 adds the format fields, below).
 - The song list reads songs through an asynchronous repository in `data/` ([ARCHITECTURE.md](../../ARCHITECTURE.md)); in M1 it returns the sample songs.
 - Sorting and accent-insensitive matching are domain logic with unit tests. Use a fixed collation (not the device language), so the order is the same on every device.
 
@@ -210,19 +315,36 @@ Song view (M3):
 
 - **Routing:** the first router (`ui/`, URL hash, ARCHITECTURE.md): `#/song/<id>` shows the Song view, anything else the Songs screen. Rows are links (`<a href="#/song/<id>">`), so Back, reload and the Android back gesture work without extra code. Song ids in addresses are encoded (`encodeURIComponent`), so ids created in M5 stay safe. The × goes `history.back()` when the Song view was opened from the Songs screen in this app, otherwise it replaces the address with the Songs screen. Escape does exactly what × does (a `keydown` handler through `ui/events.js`). The Songs screen state (search text, scroll position) is kept in memory while the app is open; set `history.scrollRestoration = 'manual'` and scroll the Song view to the top on open, so the browser's own scroll restore does not fight the remembered position.
 - **Repository:** `getSong(id)` in `data/song-repository.js` (asynchronous, returns a copy or `null`).
-- **Chord lines:** `isChordLine(line)` in `domain/` (pure, unit tests with every example of the rules above, also the counter-examples). Provisional: M4 replaces it with the song format, so keep it small and do not build other features on it.
+- **Chord lines:** `isChordLine(line)` in `domain/` (pure, unit tests with every example of the rules above, also the counter-examples). From M4 it is the reader of the `plain` format.
 - **Font size:** a small settings repository in `data/` reads and writes the size in `localStorage` (first storage of the app). It validates what it reads (even number 12–32, else 16) and never throws when storage is unavailable. One setting does not decide the storage of songs (M5, its own decision); `localStorage` is enough for a preference. The size is a CSS custom property `--sheet-size` on the sheet; the limits and the step are domain constants.
 - **Screen stays on:** needs a secure context (`https` or `localhost`) — on a phone it works only on the deployed site, not through the dev server's LAN address. Screen Wake Lock API (`navigator.wakeLock.request('screen')`), only while the Song view is shown; released when it closes; requested again on `visibilitychange` when the page becomes visible (the browser releases it when the page is hidden). Feature-detect, ignore errors. Browser API code sits in `ui/` (the view's side effect), not in `domain/`. Supported in Chrome/Edge and in Safari on iPhone from iOS 16.4 (in a home-screen app from iOS 18.4).
 - **Fonts:** the sheet's lyric lines need JetBrains Mono 400 — a fifth WOFF2 file in `app/assets/fonts/` (same subset as the others), in the offline file list.
 - **Tests:** e2e for opening (tap, address, unknown id), closing (×, Back, Escape, direct address) with the search text and scroll kept, no horizontal scroll at 320 px with the longest sample line at 32 px, chord lines styled, font size limits and memory across a reload. The screen lock is tested e2e with a fake `navigator.wakeLock` (requested while shown, released on close, one lock after coming back, no error when unsupported or refused); that the screen really stays on, the CEO checks on a phone.
+
+Song format (M4):
+
+- **Song fields:** `id`, `title`, `artist`, `key`, `text`, `format` (`'plain' | 'chordpro'`), `notation` (`'international' | 'german'`), and optional `source`, `sourceUrl`, `importedAt` (ISO date `YYYY-MM-DD`). The `Song` type in `domain/songs.js`; the format and notation values are domain constants there. The fallbacks (unknown format → `plain`, unknown notation → `international`) are small domain functions with unit tests, so M5 storage reuses them.
+- **Where the code goes:**
+  - `domain/chords.js` — stays: `isChordLine` is the reader of the `plain` format (no longer provisional; update its comments).
+  - `domain/chordpro.js` (new) — `parseChordPro(text)`: pure, text in, a list of blocks out (lines of pieces `{ chord, text }`, chorus blocks with an optional label, comments, empty lines; hidden directives and `#` lines dropped). Unit tests with every rule above. Knows nothing of HTML.
+  - `ui/components/plain-sheet.js` (new) — the M3 sheet lines, moved out of `song-view.js`.
+  - `ui/components/chordpro-sheet.js` (new) — renders the blocks of `parseChordPro`. Both sheets are components, because play mode (M7) shows the same sheet.
+  - `ui/views/song-view.js` — chooses the sheet by format and adds the source line; nothing else.
+  - `domain/` gets a small pure function for the source line's link (`https:`/`http:` only, the website name from the link), unit-tested — the link check is security-relevant (no `javascript:` links). The link uses `target="_blank" rel="noopener noreferrer"`.
+  - CSS: the sheet styles move from `song-screen.css` to `components.css` (shared with M7); the source line stays in `song-screen.css`.
+  - `data/sample-songs.js` — the new fields, *When the Saints* rewritten in ChordPro, and the two Slovak songs.
+  - New files go into the offline file list (`app/sw.js`); every change to `app/` needs a new VERSION.
+- **No ADR beyond 0008, no new dependency, no new font file** (Slovak letters are in the Latin Extended subset of the fonts).
+- **Tests:** unit tests for `parseChordPro`, the fallbacks and the source link; e2e: a `chordpro` song shows its chords above the right syllables (the chord's left edge over its syllable's left edge) at 320 px and 32 px, also after a line wraps; no horizontal scroll; chorus and comment shown; the source line link; a `plain` song unchanged; the song count now "6 songs".
 
 ## Out of scope
 
 - Adding, editing or deleting songs (M5).
 - Categories or tags of songs (an idea in the inbox).
 - Filters, tags, sorting options, favorites.
-- In the Song view: previous / next song (play mode, M7), editing (M5), transposition (after the MVP), section labels and inline chords such as `[G]` (song format, M4), a display of the current font size.
+- In the Song view: previous / next song (play mode, M7), editing (M5), transposition (after the MVP), a display of the current font size.
+- Song format (M4): detecting the format of a pasted text, import and export, converting between formats (a later milestone); a notation setting that shows `H` / `B` the user's way (after the MVP); other ChordPro features — verse and bridge sections, tabs, grids, chord diagrams, `{title}` and other header directives as song fields, several songs in one text; formats other than `plain` and `chordpro` (e.g. tabs).
 
 ## Open questions
 
-None.
+- **Slovak words of *Tichá noc*.** The author of the Slovak translation is not named in the sources found so far. *Recommendation:* use the common old version when no modern author is named in at least two sources; if a source names an author who died less than 70 years ago, use another public-domain carol instead and say so in the PR.
