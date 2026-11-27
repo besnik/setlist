@@ -130,7 +130,7 @@ Tests and the project's check command run on every change. A **review** is the i
 
 ### Structure questions
 
-Tests and QA check *what* the app does; these questions look at *how* the code is built, so spaghetti code and needless complexity are caught while they are cheap to fix (golden principle *Keep the structure clean as you go*). Machine-checkable parts of the structure are enforced by the project's check command (see [ARCHITECTURE.md](../../ARCHITECTURE.md)).
+Tests and QA check *what* the app does; these questions look at *how* the code is built, so spaghetti code and needless complexity are caught while they are cheap to fix (golden principle *Keep the structure clean as you go*). Machine-checkable parts of the structure are enforced by the project's check command (see [ARCHITECTURE.md](../../ARCHITECTURE.md)). The questions are copied into `qa-lead.md` and `engineering-lead.md`, so the leads always have them — change all three together.
 
 1. Does the change fit the structure in `ARCHITECTURE.md`? If the structure itself should change, propose it.
 2. Did a file, function or module take on a second job (e.g. start-up code that also holds screen state)?

@@ -25,5 +25,14 @@ Start by reading `AGENTS.md`, `ARCHITECTURE.md` and `docs/golden-principles.md`.
 - Comment the code so the CEO can read it without context (golden principle *Code explains itself; comments explain why*).
 - Verify with the project's tests, not throwaway scripts. Read only summaries and failures; take screenshots only when the look changed (at most 2–3).
 
+## Structure questions
+
+Copied here on purpose so you always have them; the home is [Reviews](../../docs/company/operating-model.md#structure-questions) — change both together.
+
+1. Does the change fit the structure in `ARCHITECTURE.md`? If the structure itself should change, propose it.
+2. Did a file, function or module take on a second job (e.g. start-up code that also holds screen state)?
+3. Which files would grow with the next 2–3 planned tasks? Will they stay readable?
+4. Is anything duplicated, or more complex than today's requirements need?
+
 ## Output to the GM
 Summary of changes, how it was verified, decisions you made, open questions for the CEO (with options and a recommendation).
