@@ -45,7 +45,7 @@ main.js  →  ui  →  data  →  domain
 
 - Imports only point to the right; a layer may import any layer to its right (e.g. `ui` may use `domain` directly). `domain` imports nothing outside `domain`.
 - Tests may import anything; `tools/` import nothing from `app/`.
-- **domain** — data types (JSDoc), validation, chord detection, setlist operations. Fully unit-testable in Node.
+- **domain** — data types (JSDoc), validation, the readers of the song formats (`chords.js` for `plain`, `chordpro.js` for `chordpro`: text in, blocks out, no HTML), setlist operations. Fully unit-testable in Node.
 - **data** — repositories. Validate everything read from storage (golden principle *Validate at the boundary*). Functions are asynchronous (return promises).
   - `song-repository.js` — songs (the sample songs in memory until M5 decides their storage).
   - `app-version.js` — registers the service worker and reads the version of the stored app (see "Offline and updates").
