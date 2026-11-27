@@ -1,6 +1,6 @@
 # M4 — Song format
 
-- **Status:** in-progress — spec, ADR 0008 and tasks approved ([#47](https://github.com/besnik/setlist/pull/47), CEO 2026-11-27); T-033, T-034, T-035, T-036, T-037 done
+- **Status:** done — spec, ADR 0008 and tasks approved ([#47](https://github.com/besnik/setlist/pull/47), CEO 2026-11-27); T-033–T-037 done
 
 ## Goal
 
@@ -64,8 +64,12 @@ From the M3 end-of-milestone architecture check. Approved by the CEO in chat (20
 | ID | Task | Spec | Status | PR |
 |---|---|---|---|---|
 | T-028 | Stale comments: `app/sw.js` (header and the registration comment) still says `src/main.js` registers the worker — it is `data/app-version.js`; `app/src/data/sample-songs.js` says "in M1" — the sample songs are the only songs until M5. Ride along with the first M4 PR that changes `app/` (needs a new VERSION) | — | done | [#48](https://github.com/besnik/setlist/pull/48) |
-| T-029 | `tools/check.js`: one shared helper that strips comments from source, instead of the same two regexes copied in 5 rules; tests in `tests/tools` stay green. With the next new check rule | — | approved | — |
+| T-029 | `tools/check.js`: one shared helper that strips comments from source, instead of the same two regexes copied in 7 places (6 JS rules, 1 CSS rule); tests in `tests/tools` stay green. With the next new check rule | — | approved | — |
 | T-030 | One shared "Unknown artist" fallback for the song list and the Song view (a small component in `ui/components/`), before M6 adds setlist rows and M7 the play-mode header | — | approved | — |
+
+## End-of-milestone architecture check
+
+Done by the Engineering lead on 2026-11-27: the codebase is healthy, nothing blocks M5; `ARCHITECTURE.md` matches the code. No new cleanup tasks: T-029 (description updated: the regexes are now copied in 7 places) and T-030 stay valid and stay approved for later milestones. One note for the M5 storage task went to [tech-debt.md](../tech-debt.md) (validate songs once when read from storage). The M5 storage task also rewrites the `song-repository.js` bullet in `ARCHITECTURE.md`.
 
 ## Ideas for later (not in M4)
 
