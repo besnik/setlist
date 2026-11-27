@@ -123,15 +123,15 @@ How a song is stored and shown. Decision: [ADR 0008](../decisions/0008-song-form
 - Rule: a chord inside a word stays above its syllable: `Ama[C]zing` shows `C` above `zing`.
 - Rule: given a chord is wider than the syllable below it, then a small gap follows the chord, so two chords never touch or overlap; the syllable stays where it is and the rest of the word moves right.
 - Rule: a line with chords only, such as `[G] [C] [D]`, shows the chords in one row with a gap between them.
-- Rule: a line without chords has no chord row (it takes the height of one lyric line).
+- Rule: a line without chords has no chord row (it takes the height of one lyric line). The same holds for each wrapped row of a line: a row with no chord above any of its words has no chord row.
 - Rule: a long line wraps between words. When it wraps, each chord stays above its syllable, and a word with chords inside it is not split. The page never scrolls horizontally: only a word (with its chords) wider than the whole line may wrap between its pieces, and a single piece wider than the line may break inside its text (both rare).
 - Rule: an empty line keeps its height (a gap between verses).
 - Rule: a directive is a line of the form `{name}` or `{name: value}` (spaces around it are ignored; the name ignores letter case):
   - `{start_of_verse}` or `{sov}` starts a verse, `{end_of_verse}` or `{eov}` ends it. `{start_of_chorus}` or `{soc}` starts the chorus, `{end_of_chorus}` or `{eoc}` ends it. Verses and the chorus are **sections**.
-  - A section is marked only by a short **mark** at the start of its first line, before the lyrics: verses are numbered automatically `1.`, `2.`, `3.` … in the order they appear; the chorus mark is `R:`. The lines are not indented and have no other decoration.
+  - A section is marked by a short **mark** in a narrow margin on the left, level with the lyrics of its first line: verses are numbered automatically `1.`, `2.`, `3.` … in the order they appear; the chorus mark is `R:`. In a song with sections all lines start at the same place to the right of this margin, so the marks stand out like in a printed songbook (CEO, 2026-11-27, variant A of the preview). No other decoration (no border, no background).
   - A value replaces the mark, shown as written: `{sov: 3a}` shows `3a`, `{soc: Ref.}` shows `Ref.`. A verse with its own mark does not count for the numbering.
   - `{chorus}` on its own line means "sing the chorus here": it shows only the chorus mark `R:` on a line of its own (or its value, `{chorus: Ref.}`), not the chorus text again.
-  - Lines outside any section (e.g. an intro) have no mark.
+  - Lines outside any section (e.g. an intro) have no mark; they also start to the right of the margin. A song without sections has no margin.
   - `{comment: …}` or `{c: …}` shows its value as a comment line (e.g. `Repeat 2×`, `Capo 2`), muted, without a chord row.
   - Any other directive (e.g. `{title: …}`, `{key: …}`, `{start_of_tab}`) is kept in the text but not shown.
 - Rule: sections do not nest. A section ends at its end directive, at the start of the next section, or with the song. A start directive inside a section of the same kind is not shown and does not start a new one; an end directive without its start is not shown.
@@ -279,17 +279,17 @@ The Song view screen stays as in M3 (bar, header, sheet); only the sheet changes
 │   D                            │  (illustration, not a real song)
 │ the song                       │  wrapped between words; D stays on its syllable
 │                                │  empty line: one lyric line high
-│     G         C       G        │
-│ 1.  Words of the first verse   │  verse mark: mono 700, muted, before
-│ D            G                 │  the lyrics; next lines not indented
-│ and its second line            │
+│    G         C       G         │
+│1.  Words of the first verse    │  mark: mono 700, 0.8 em, muted,
+│    D            G              │  in the margin; all lines start
+│    and its second line         │  right of the margin
 │                                │
-│     C         G                │
-│ R:  Words of the chorus        │  chorus mark "R:"
-│ D           G                  │
-│ second chorus line             │
+│    C         G                 │
+│R:  Words of the chorus         │  chorus mark "R:"
+│    D           G               │
+│    second chorus line          │
 │                                │
-│ R:                             │  {chorus}: the mark only
+│R:                              │  {chorus}: the mark only
 │                                │
 │ Repeat 2×                      │  comment: body 400, muted, no chord row
 │                                │  24 px
@@ -305,8 +305,10 @@ The Song view screen stays as in M3 (bar, header, sheet); only the sheet changes
   - Lyrics: `--font-body` 400, `--color-ink`, the sheet size, line height 1.5.
   - A piece is at least as wide as its chord plus a gap of 0.5 em, so chords never touch (`Ama C zing` with a wide chord: the syllable starts under the chord, the rest of the word moves right).
   - Pieces of one word stay together on one row; the space between words is where a line may wrap. Only a word wider than its line wraps between its pieces.
-  - A line with at least one chord reserves the chord row for all its pieces, so the lyrics of one line stay on one baseline. A line without chords has no chord row.
-  - Section mark (`1.`, `R:`): `--font-mono` 700, `--color-muted`, the sheet size, on the lyric row of the first line (a piece without a chord) with a 0.5 em gap after it. No indent, no border, no background — the mark is the only cue, to keep the width for the lyrics on small phones (CEO, 2026-11-27). Muted, not the chord color, so it is never mistaken for a chord.
+  - Words sit on a common lyric baseline (aligned at the bottom), so the lyrics of one row stay level whether a word has a chord or not; a row has a chord row only when one of its words has a chord.
+  - Section mark (`1.`, `R:`): `--font-mono` 700 at 0.8 of the sheet size, `--color-muted` — smaller and grey so it does not draw attention (CEO); not the chord color, so it is never mistaken for a chord. Level with the lyric row of the section's first line.
+  - Margin: a left column as wide as the **longest mark in the song** plus a gap, set by two CSS custom properties on the sheet: `--mark-chars` (the length of the longest mark, at least 2, set by the view) and `--mark-gap`. Width = `--mark-chars` × 0.48 em (a mono character of the 0.8 em mark) + `--mark-gap`.
+  - `--mark-gap` is responsive, with the same 600 px breakpoint as the page gutter (`tokens.css`): **0.35 em on phones** (save width), **1 em from 600 px** (tablet, desktop: roomier). For `1.` / `R:` at 16 px that is about 21 px on a phone and 31 px on a tablet; at 32 px about 42 px on a phone.
   - Comment: `--font-body` 400, `--color-muted`, the sheet size.
 - **Source line:** `small` step, `--color-muted`, `--space-5` above it, after the sheet, `overflow-wrap: anywhere`. "Source: " then the source, plain text (not a link, not focusable). It scrolls with the sheet; it does not change with the font size.
 
@@ -315,9 +317,10 @@ The Song view screen stays as in M3 (bar, header, sheet); only the sheet changes
 | Rule | Check |
 |---|---|
 | Chord above its syllable when wrapping | Pieces of a word wrap as one unit; a chord and its syllable are one piece, so they never part. |
-| No horizontal scroll | Rows wrap between words; sections are not indented, so every line has the full 288 px. A word of 16 letters at 32 px in the body font (about 0.55 em per letter) is about 280 px, and a word with several chords can be wider (each piece ≥ chord + 0.5 em) — so a word wider than its line wraps between its pieces, and one piece wider than the line breaks inside its text (`overflow-wrap: anywhere`). Tested e2e at 32 px on a 320 px phone with the longest line of *A od Prešova*, and with the chorus of *Tancuj, tancuj, vykrúcaj*. |
+| No horizontal scroll | Rows wrap between words. In a song with sections the text column is 288 px minus the margin: at 32 px on a 320 px phone 288 − 42 = 246 px. A word of 16 letters at 32 px in the body font (about 0.55 em per letter) is about 280 px (wider than 246 px), and a word with several chords can be wider (each piece ≥ chord + 0.5 em) — so a word wider than its line wraps between its pieces, and one piece wider than the line breaks inside its text (`overflow-wrap: anywhere`). Tested e2e at 32 px on a 320 px phone with the longest line of *A od Prešova*, and with the chorus of *Tancuj, tancuj, vykrúcaj*. |
 | Chords never overlap | A piece is at least chord width + 0.5 em. |
-| Readable on a 320 px phone at 16 px | Body font about 0.5 em per letter: about 36 characters per line (mono: 30), so the ChordPro sheet wraps less than `plain`. |
+| Readable on a 320 px phone at 16 px | Body font about 0.5 em per letter: about 36 characters per line without sections, about 33 with the 21 px margin (mono `plain`: 30), so the ChordPro sheet wraps less than `plain`. |
+| Margin fits long marks | The margin grows with the longest mark (`3a`, `Ref.`), so a mark never overlaps the lyrics; checked by a unit test of the view (`--mark-chars`) and e2e. |
 | Chords readable in both themes | Same `--color-chord` on `--color-bg` as M3, bold. |
 | Section marks and comments recognizable in both themes | Marks are bold mono in `--color-muted`, comments `--color-muted` (about 4.5 : 1 light, about 7.3 : 1 dark, as the artist line). |
 | Portrait and landscape, phone to desktop | Nothing depends on the width except where lines wrap; the 720 px column wraps less. |
