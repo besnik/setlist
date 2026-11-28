@@ -165,12 +165,12 @@ The musician's own songbook: type in or paste a song, save it, edit it, delete i
 **Add**
 
 - Rule: the Songs screen has an Add button (+). Tapping it opens the empty song form, address `#/new`, with the format `plain` and the notation `international`.
-- Rule: given a title is filled in, when the user taps Save, then the song is saved and the Song view of the new song opens. Back from that Song view goes to the Songs screen (the form is not left in the history).
+- Rule: given a title is filled in, when the user taps Save, then the song is saved and the Song view of the new song opens in place of the form. The form is not left in the history: Back, × and Escape in that Song view go to the Songs screen, as if the song had been opened from the list.
 - Rule: when the user taps Cancel, the form closes without saving and the previous screen shows (see *Unsaved changes*).
 
 **Song form** (one screen for add and edit)
 
-- Rule: the form has these fields, in this order:
+- Rule: the form has these fields, in this order (a "character" in a maximum is one UTF-16 code unit, the length a browser counts — an emoji counts as 2):
 
   | Field | Kind | Required | Maximum | Notes |
   |---|---|---|---|---|
@@ -182,7 +182,7 @@ The musician's own songbook: type in or paste a song, save it, edit it, delete i
   | Text | many lines | no | 50 000 characters | lyrics with chords; a song may have no text yet |
   | Source | one line | no | 100 characters | plain text, e.g. `akordy.sk`; empty means no source |
 
-- Rule: the text is saved exactly as typed or pasted: every space, tab, empty line and character stays. Nothing in it is removed or replaced.
+- Rule: the text is saved exactly as typed or pasted: every space, tab, empty line (also at the start and the end) and character stays. Nothing in it is removed or replaced. The one exception is made by the browser in every text field: line breaks are saved as `\n` (a pasted `\r\n` becomes `\n`).
 - Rule: when the song is saved, the one-line fields (title, artist, key, source) are cleaned: spaces at the start and the end are removed, a tab or a line break inside becomes one space, and invisible control characters are removed (the ASCII control characters, the zero-width space and the byte order mark, and the marks that change the text direction). Letters, accents, emoji and all visible characters stay.
 - Rule: given the title is empty or only spaces, when the user taps Save, then nothing is saved, the message "Enter a title." shows below the title field and the field gets the focus.
 - Rule: given a field is longer than its maximum (after cleaning), when the user taps Save, then nothing is saved and the field shows "Too long: 230 characters, at most 200." (with the field's numbers) below it; the first such field gets the focus. Typing and pasting are never cut off, so no text is lost silently.
@@ -211,8 +211,8 @@ The musician's own songbook: type in or paste a song, save it, edit it, delete i
 **Edit**
 
 - Rule: the Song view has an Edit button. Tapping it opens the song form filled with the song, address `#/song/<song id>/edit`.
-- Rule: given changes, when the user taps Save, then the changes are saved, the time of the last edit is updated, and the Song view of the song shows the changes. Back from that Song view goes where Back went before the form was opened.
-- Rule: given no changes, when the user taps Save, then the Song view shows again and the time of the last edit does not change.
+- Rule: given changes, when the user taps Save, then the changes are saved, the time of the last edit is updated, and the Song view of the song shows the changes. The form is not left in the history: given Songs screen → Song view → Edit → Save, then ×, Escape or Back in the Song view go to the Songs screen (not to the song again).
+- Rule: given no changes, when the user taps Save, then the Song view shows again and the time of the last edit does not change. The comparison is made after cleaning (a space added at the end of the title alone is no change).
 - Rule: given an edit address of a song that does not exist (e.g. deleted), then the Songs screen shows and the address becomes the Songs screen address, as for an unknown song.
 - Rule: the bottom of the edit form shows a muted line with the short id and the dates, e.g. `ID 3f2a91 · added 28 Nov 2026 · edited 2 Dec 2026`:
   - The short id is the first six characters of the id; an id that was not made at random (the sample songs) is shown whole, e.g. `ID sample-amazing-grace`.
@@ -230,7 +230,8 @@ The musician's own songbook: type in or paste a song, save it, edit it, delete i
 
 - Rule: the form has unsaved changes when any field differs from what the form showed when it opened (for the add form: empty fields, `plain`, `international`). Typing and then removing the same text leaves no changes.
 - Rule: given unsaved changes, when the user taps Cancel, presses Escape (with no question or help open), taps Back or uses the Android back gesture, then the app asks: title "Discard changes?", buttons Keep editing and Discard. Keep editing closes the question and the form stays exactly as it was (the address stays the form's). Discard leaves the form without saving, to where the user was going.
-- Rule: given no unsaved changes, leaving the form asks nothing.
+- Rule: given no unsaved changes, leaving the form asks nothing; Escape (with no question or help open) then does what Cancel does.
+- Rule: given a help or a question is open, when the user taps Back or uses the Android back gesture, then it closes and the screen then acts on Back as above (for a form with unsaved changes: the Discard question). Given the Discard question is open, Back counts as Keep editing.
 - Rule: given unsaved changes, when the user reloads the page or closes the tab or window, then the browser's own question ("Leave site?") is shown, where the browser offers one (Safari on iPhone does not — accepted).
 
 **Save fails**
@@ -253,7 +254,7 @@ The musician's own songbook: type in or paste a song, save it, edit it, delete i
 
 **Good to know**
 
-- Rule: the songs live only on this device and in this browser until backup arrives with import and export (M8) — keep your main songbook elsewhere too. On iPhone, Safari and the app on the home screen keep separate songs ([install-offline.md](install-offline.md#good-to-know-affects-m5-and-m8)). The README says so; the app shows nothing about it in M5.
+- Rule: the songs live only on this device and in this browser until backup arrives with import and export (M8) — keep your main songbook elsewhere too. On iPhone, Safari and the app on the home screen keep separate songs, and Safari may delete the data of a website not added to the home screen after about seven days without use ([install-offline.md](install-offline.md#good-to-know-affects-m5-and-m8)). The README says so; the app shows nothing about it in M5.
 
 ## UX and visual design
 
@@ -531,7 +532,7 @@ Phone, 320 px wide (288 px column). Edit form shown; the add form has the headin
 - **Delete question and Discard question:** the dialog component. Delete: title "Delete “Amazing Grace”?" (the title wraps, never shortened), text "This cannot be undone.", buttons Cancel (pill) and Delete (danger pill). Discard: title "Discard changes?", buttons Keep editing (pill) and Discard (danger pill). The safe choice comes first and gets the focus when the question opens.
 - **Help:** the dialog component with the help title, the text (`body`) and the examples (`--font-mono` 14 px on `--color-bg`, `--radius-chip`, padding `--space-2` `--space-3`, `white-space: pre`, scrolls sideways inside if needed), and one Close button (pill).
 - **The app was updated:** the notice bar at the top of the window, above every screen.
-- **Landscape phone** (640 × 360): the same layout; with the keyboard open little of the form shows, but the sticky bar keeps Save and Cancel visible.
+- **Landscape phone** (640 × 360): the same layout; with the keyboard open little of the form shows. The sticky bar should keep Save and Cancel visible while the keyboard is open — best effort: iPhone Safari moves the visible area with the keyboard, so the CEO checks it on a phone. A dialog is at most 85 % of the screen height in both variants; its content scrolls inside.
 - **Tablet / desktop:** the same layout in the 720 px column; the dialogs are centered cards (see the guidelines).
 
 **Self-check**
@@ -544,9 +545,10 @@ Phone, 320 px wide (288 px column). Edit form shown; the add form has the headin
 | No sideways scroll of the page | Fields are full column width (the key 120 px); the text area scrolls inside itself; titles in dialogs and the id line wrap. |
 | No zoom on iPhone when a field gets focus | All fields 16 px or larger. |
 | Text is never lost | Typing and pasting are not cut off (no `maxlength`); a failed save keeps the form. |
+| Save and Add readable | Filled accent buttons use `--color-accent-fill` (light `#c2410c`: white text 5.2 : 1; dark `#ff7a4d`: dark text 7.4 : 1), not the lighter accent (3.8 : 1 with white). |
 | Danger color readable | `--color-danger` on `--color-surface`: about 5.2 : 1 light, about 6.2 : 1 dark; on `--color-bg` about 4.7 : 1 light, 6.8 : 1 dark. On-color text on the danger and accent pills: see the guidelines. |
 | Delete far from Save | Save is in the bar at the top, Delete at the very end of the form, below the id line, with 32 px above it. |
-| Portrait and landscape, phone to desktop | Nothing depends on the width except the dialog (bottom sheet below 600 px, centered card from 600 px). |
+| Portrait and landscape, phone to desktop | Nothing depends on the width except the dialog (bottom sheet below 600 px, centered card from 600 px); both are at most 85 % of the screen height with inner scrolling, so the help fits a 640 × 360 phone. |
 
 ## Notes for Design / Engineering
 
@@ -592,22 +594,24 @@ Manage songs (M5):
     - The data layer cannot import `ui/log.js`, so the warning about a damaged record is logged by the caller: e.g. the repository also returns how many records it skipped, and the screen logs that number (no content). The task picks the smallest form and records it in ARCHITECTURE.md.
   - `data/sample-songs.js` — unchanged data; its header comment says they seed the first start.
   - `ui/routes.js` — routes `{ screen: 'new-song' }` for `#/new` and `{ screen: 'edit-song', id }` for `#/song/<id>/edit`; `newSongHash`, `editSongHash(id)`. Unit tests.
-  - `ui/router.js` — a **leave guard**: the shown screen may tell the router it has unsaved changes and answer whether to leave (asynchronously, after its question). On a `hashchange` the router asks the guard first; while it asks, the address is put back to the form's (so Keep editing leaves the history as it was), and Discard repeats the navigation. `beforeunload` while the guard says unsaved. A shared contract → its own task, tests for Back, Escape, Cancel, Keep editing, Discard, and a new address typed by hand.
-  - `ui/screens/song-form-screen.js` (new) — one screen for add and edit (`load` returns the song or the empty draft; `null` for an unknown id): reads the fields, unsaved-changes state, Save (errors from `songFieldErrors`, then the repository), Delete, the failure message, the questions.
+  - `ui/router.js` — two additions:
+    - **History state** (with T-042): the router writes `{ index, from }` into `history.state` of every entry it shows (`index` counts entries of this app run; `from` is the screen before it), so `navigation.from` is right again after Back and Forward. A new `navigation.replace(hash)` replaces the current entry and keeps its `from`. Add: Save → `replace(songHash(id))` (the Song view's `from` stays `songs`, so × goes back). Edit: Save → `back()` when the form was opened from this song's Song view, else `replace(songHash(id))`. E2e: Songs → Song → Edit → Save → × / Back / Escape → Songs; Songs → + → Save → × / Back → Songs.
+    - **Leave guard** (T-045): the shown screen may answer whether it can be left (asynchronously, after its question). On a `hashchange` away from a guarded screen, the router computes the move from `history.state.index` (an entry without state is a typed address: one step forward), restores the form's entry with `history.go(-delta)` while ignoring the `hashchange` that causes, shows the question, and on Discard repeats the move (`history.go(delta)`, or the typed address) with the guard off. `beforeunload` while the screen says unsaved. Tests: Cancel, Escape, Back, the Android back gesture (`page.goBack()`), a typed address, Keep editing and Discard, with and without changes.
+  - `ui/screens/song-form-screen.js` (new) — one screen for add and edit (`load` returns the song or the empty draft; `null` for an unknown id): reads the fields, unsaved-changes state, Save (errors from `songFieldErrors`, then the repository), Delete, the failure message, the questions. The text area's value is set and compared as the browser normalises it (`\n` line breaks); the view writes the text so that a leading empty line survives the HTML parser (a newline right after `<textarea>`, or the value set by property) — tested with a text that starts and ends with empty lines.
   - `ui/views/song-form-view.js` (new) — pure: form state → HTML (fields with values, messages, radio choices, help buttons with their content, id line, Delete). The id line (short id and `Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })`) is a small function here, unit-tested with fixed dates.
   - `ui/components/help-button.js` (new) — the "?" button and its dialog; takes `{ id, title, content }` from outside (`content` is an `html` template); no options for the future.
   - `ui/components/dialog.js` (new) — the dialog markup (title, content, buttons) used by the help, delete and discard questions.
-  - `ui/dialogs.js` (new) — the side effects of dialogs: open with `showModal()`, close, close on a tap outside, return the focus, resolve a question with the chosen button. Native `<dialog>` (Escape closes it by itself; the screen's Escape key is not handled while a dialog is open).
+  - `ui/dialogs.js` (new) — the side effects of dialogs: open with `showModal()`, close, close on a tap outside (the click target is the `<dialog>` for its padding too, so compare the click position with the dialog's rectangle), return the focus, resolve a question with the chosen button, close on Back (Chrome does it by itself, Safari does not: the router tells the open dialog first). Native `<dialog>` (Escape closes it by itself; the screen's Escape key is not handled while a dialog is open).
   - `ui/update-notice.js` (new) — shows the notice bar "The app was updated." with Reload; `main.js` wires `onOutdated` from `data/database.js` to it (wiring only).
   - `ui/views/songs-view.js` — Add button in the header, the "No songs yet" empty state. `ui/views/song-view.js` — Edit button (`EDIT_ICON` in `ui/components/stage-button.js`), and it drops its own repairs of bad data (`songFormat`, the `source` type check): it trusts the `Song` type (tech debt entry removed).
   - `ui/screens/song-screen.js` — the Edit action; nothing else.
-  - Styles: `styles/song-form-screen.css` (new, the form screen); `styles/components.css` — pill button, round add button, text field, radio choice, help button, dialog, notice bar, failure message; `styles/tokens.css` — `--color-danger`, `--color-on-accent`, `--radius-dialog`. `index.html` loads the new stylesheet.
-  - `index.html` — the Content Security Policy as a `<meta http-equiv>` (GitHub Pages cannot set headers): `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'`. `'unsafe-inline'` for styles only, because the sheets set `--sheet-size` and `--mark-chars` in a `style` attribute (numbers made by our code); scripts stay strict, which is what stops an attack. `frame-ancestors` cannot be set in a meta tag (accepted). Check that the service worker, the manifest, the fonts and the e2e test helpers (`addInitScript`) still work.
+  - Styles: `styles/song-form-screen.css` (new, the form screen); `styles/components.css` — pill button, round add button, text field, radio choice, help button, dialog, notice bar, failure message; `styles/tokens.css` — `--color-danger`, `--color-on-accent`, `--color-accent-fill`, `--radius-dialog`. `index.html` loads the new stylesheet.
+  - `index.html` — the Content Security Policy as a `<meta http-equiv>` (GitHub Pages cannot set headers): `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'`. `'unsafe-inline'` for styles only, because the sheets set `--sheet-size` and `--mark-chars` in a `style` attribute (numbers made by our code); scripts stay strict, which is what stops an attack. `frame-ancestors` cannot be set in a meta tag (accepted). Check that the service worker, the manifest, the fonts and the e2e test helpers (`addInitScript`) still work, that the meta tag comes before the module script, and that the offline e2e server serves the same `index.html`.
   - Every new file goes into the offline list (`app/sw.js`); every change to `app/` needs a new VERSION.
 - **Fits the architecture:** yes — storage only in `data/`, rules of the fields in `domain/`, one new screen with its pure view, shared dialogs as components plus one side-effect module. The router gains one mechanism (leave guard) that M6 (setlist form) reuses. No new dependency; ADR 0009 for the storage. ARCHITECTURE.md: storage, routes, leave guard, dialogs, CSP, updated with the tasks.
 - **No input "sanitizer":** escaping on output (`ui/html.js`) is the defense; `cleanLine` is a clean-up of one-line fields, not a security filter.
 - **Tests:**
-  - Unit: `song-fields.js` (cleaning, every limit at max and max + 1, required title, allowed values, `validateSong` with every wrong type), routes, the id line, the form view (values escaped, messages, radio states).
+  - Unit: `song-fields.js` (cleaning, every limit at max and max + 1 (also with an emoji), required title, allowed values, `validateSong` with every wrong type), routes, the id line, the form view (values escaped, messages, radio states).
   - E2e (Chromium and WebKit): add → reload → still there; edit → reload; delete → reload; the sample songs only on the first start (delete one, reload: it stays deleted); a damaged record in IndexedDB is skipped and the others show; storage refused (a blocked `indexedDB.open`) → sample songs, Save shows the failure message with the text kept; quota error on save → message, text kept; Back / Escape / Cancel with and without changes; the `versionchange` notice (a second page opens the database with a higher version); help opens and closes; no sideways page scroll at 320 px with a long line in the text field.
   - **Attack strings in every field** (title, artist, key, source, text in both formats, e.g. `<img src=x onerror=alert(1)>`, `"><script>alert(1)</script>`, `</textarea><script>alert(1)</script>`, `javascript:alert(1)`, `[<img src=x onerror=alert(1)>]`, `{c: <b>x</b>}`): saved, then checked in the list, the Song view, the edit form and the delete question — shown as text, no element created from them, no dialog fired (`page.on('dialog')`), no CSP violation in normal use.
 

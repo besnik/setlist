@@ -15,6 +15,7 @@ One row per feature here; the step-by-step breakdown lives in one file per featu
 | [Error handling and logging](details/error-handling-logging.md) | Rules, ADR 0007, app log, narrowed catches, check rules (T-031) | small (task PR) | [#44](https://github.com/besnik/setlist/pull/44) | 100,357 | 1:29 | 1 | 1 / 4 | in progress |
 | [M4 spec — Song format](details/m4-spec.md)* | ADR 0008, song format spec (plain and ChordPro, notation, source line), tasks T-033–T-037 | big (spec PR) | [#47](https://github.com/besnik/setlist/pull/47) | 36,033 | 0:46 | 4 | 2 / 6 | proposed |
 | [M4 — Song format](details/m4-song-format.md)* | Song format tasks T-033–T-037 | big (task PRs) | [#48](https://github.com/besnik/setlist/pull/48), [#51](https://github.com/besnik/setlist/pull/51), [#52](https://github.com/besnik/setlist/pull/52), [#53](https://github.com/besnik/setlist/pull/53), [#54](https://github.com/besnik/setlist/pull/54) | 168,622 | 2:38 | 0 | 1 / 6 (milestone check: 0 new cleanup tasks, 1 tech-debt note) | done |
+| [M5 spec — Manage songs](details/m5-spec.md)* | ADR 0009 (IndexedDB), manage songs spec (form, help, add, edit, delete, unsaved changes, security), M5 components, tasks T-039–T-047 | big (spec PR) | — | 53,583 | 1:25 | 0 | 2 / 9 | proposed |
 
 Lead tokens count every token a lead read, and most of them are cheap cache reads, so they are **not a price** — compare them only with each other. The real price is in the session costs below. In the detail files, GM steps show `n/a`.
 

@@ -42,7 +42,8 @@ Provisional — taken from the prototype. The CEO decided to keep them through t
 | `--color-chord` | `#c2410c` | `#ffa27d` | Key chip text; chord lines of the song sheet (from M3) |
 | `--color-tint` | `#fdece5` | `#2a1a14` | Key chip background |
 | `--color-danger` | `#c8372a` | `#ff6b5e` | Destructive actions, error messages (from M5) |
-| `--color-on-accent` | `#ffffff` | `#0e1013` | Text and icons on accent and danger buttons (from M5) |
+| `--color-accent-fill` | `#c2410c` | `#ff7a4d` | Background of filled accent buttons: Save, Add (from M5); darker than the accent in light, so white text reads |
+| `--color-on-accent` | `#ffffff` | `#0e1013` | Text and icons on filled accent and danger buttons (from M5) |
 
 #### Contrast
 
@@ -56,11 +57,11 @@ Approximate WCAG contrast ratios:
 | chord on surface | 5.2 | 8.9 |
 | accent (focus ring) on bg | 3.4 | 7.4 |
 | danger on surface / bg | 5.2 / 4.7 | 6.2 / 6.8 |
-| on-accent on accent | 3.8 | 7.4 |
+| on-accent on accent-fill | 5.2 | 7.4 |
 | on-accent on danger | 5.2 | 6.8 |
 
 - Light `--color-muted` and the light key chip sit right at 4.5 : 1. Do not use them on anything darker than `--color-bg`, or below 13 px.
-- White text on the light accent is about 3.8 : 1, which is enough only for large or bold text: accent buttons use 600 weight or a 2 px icon stroke (Save, Add in M5; next in M7). In the dark theme the text on accent and danger is dark (`--color-on-accent`), because white on the light dark-theme accent is too faint.
+- White text on the light accent is about 3.8 : 1, which is enough only for large or bold text: so filled accent buttons (Save, Add in M5; next in M7) use `--color-accent-fill` with `--color-on-accent` text (5.2 : 1 light). In the dark theme the text on accent and danger is dark (`--color-on-accent`), because white on the light dark-theme accent is too faint.
 
 ### Typography
 
@@ -183,14 +184,14 @@ Used first by the song form ([songs.md](../product-specs/songs.md#manage-songs-m
 
 - At least 44 px high (`--touch-min`), padding 0 `--space-4`, `--radius-pill`, text in the `row` step (17 px, 600), one line.
 - **Plain:** `--color-surface` background, `--color-ink` text, no border (Cancel, Keep editing, Close).
-- **Accent:** `--color-accent` background, `--color-on-accent` text (Save).
+- **Accent:** `--color-accent-fill` background, `--color-on-accent` text (Save).
 - **Danger:** `--color-danger` background, `--color-on-accent` text (Delete and Discard in a question).
 - **Danger outline:** `--color-surface` background, `--color-danger` text and 1 px border (Delete song at the end of the edit form).
 - States: pressed — plain `--color-line`, accent and danger 85 % brightness (`filter: brightness(0.85)`); keyboard focus — 2 px `--color-accent` outline, offset 2 px; disabled — opacity 0.4.
 
 ### Round add button
 
-- 44 × 44 px, `--radius-pill`, `--color-accent` background, a plus drawn as an inline SVG (20 px, 2 px stroke, `--color-on-accent`). Name shown as a tooltip with a mouse ("Add song"). States as the accent pill.
+- 44 × 44 px, `--radius-pill`, `--color-accent-fill` background, a plus drawn as an inline SVG (20 px, 2 px stroke, `--color-on-accent`). Name shown as a tooltip with a mouse ("Add song"). States as the accent pill.
 
 ### Text field
 
@@ -211,9 +212,9 @@ Used first by the song form ([songs.md](../product-specs/songs.md#manage-songs-m
 
 - The native `<dialog>`, opened as a modal. Backdrop: black at 40 % opacity (both themes).
 - **Below 600 px: a bottom sheet** — full screen width, at the bottom, `--radius-dialog` on the top corners only, padding `--space-5` `--space-4` plus the safe area at the bottom, at most 85 % of the screen height (its content scrolls inside).
-- **From 600 px: a centered card** — at most 420 px wide, `--radius-dialog`, padding `--space-5`.
+- **From 600 px: a centered card** — at most 420 px wide and 85 % of the screen height (its content scrolls inside), `--radius-dialog`, padding `--space-5`.
 - Background `--color-surface`. Title in the `row` step (wraps), `--space-3` below it; text in `body`; buttons at the end, right-aligned, `--space-2` apart, `--space-5` above them. The safe or first button gets the focus on open.
-- Closes with its buttons, Escape or a tap on the backdrop (all count as the safe choice). Focus returns to the button that opened it.
+- Closes with its buttons, Escape, Back or a tap on the backdrop (all count as the safe choice). Focus returns to the button that opened it.
 
 ### Notice bar
 
