@@ -1,7 +1,7 @@
 # M5 spec — Manage songs
 
 - **Description:** ADR 0009 (songs in IndexedDB), the Manage songs spec in songs.md (storage, song form, help, add, edit, delete, unsaved changes, failures, another tab, security), its design and the M5 components in the guidelines, tasks T-039–T-047.
-- **PR:** see the M5 milestone file
+- **PR:** [#57](https://github.com/besnik/setlist/pull/57)
 - **Date:** 2026-11-28
 
 ## Lead runs

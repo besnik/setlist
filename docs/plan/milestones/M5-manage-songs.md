@@ -1,6 +1,6 @@
 # M5 — Manage songs
 
-- **Status:** not started — scope agreed with the CEO on 2026-11-28; spec, ADR 0009 and tasks proposed in the spec PR
+- **Status:** not started — scope agreed with the CEO on 2026-11-28; spec, ADR 0009 and tasks proposed in the spec PR [#57](https://github.com/besnik/setlist/pull/57)
 
 ## Goal
 
