@@ -55,7 +55,7 @@ From the M3 end-of-milestone architecture check, approved by the CEO in chat (20
 | ID | Task | Spec | Status | PR |
 |---|---|---|---|---|
 | T-029 | `tools/check.js`: one shared helper that strips comments from source, instead of the same two regexes copied in 7 places (6 JS rules, 1 CSS rule); tests in `tests/tools` stay green. With the next new check rule | — | approved | — |
-| T-030 | One shared "Unknown artist" fallback for the song list and the Song view (a small component in `ui/components/`), before M6 adds setlist rows and M7 the play-mode header | — | approved | — |
+| T-030 | One shared "Unknown artist" fallback for the song list and the Song view (a small component in `ui/components/`), before M6 adds setlist rows and M7 the play-mode header. Ride along with the first M5 task that shows the artist (e.g. the song form) (CEO, 2026-11-28) | — | approved | — |
 
 ## Out of scope
 
