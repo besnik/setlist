@@ -37,7 +37,7 @@ A bottom tab bar Songs / Setlists arrives with setlists. Before that the app has
 
 ### Install and offline
 
-See [install-offline.md](install-offline.md) (M2).
+See [install-offline.md](install-offline.md).
 
 ## UX and visual design
 
@@ -45,11 +45,8 @@ Tokens and components: [design guidelines](../design/guidelines.md).
 
 **Page**
 
-- Page background `--color-bg`. Text uses `--font-body` with the `body` step in `--color-ink`.
-- The page declares `color-scheme: light dark`.
-- Light and dark values switch with `prefers-color-scheme`, so a change in the system setting applies right away, without a reload.
-- `<meta name="theme-color">` is set once per theme (two meta tags with a `media` attribute) to the hex value of `--color-bg` — a meta tag cannot use `var()` — so the browser's own bar matches.
-- Fonts: four self-hosted WOFF2 files (see the guidelines), `font-display: swap`. The page is readable in the fallback fonts before they load.
+- Light and dark colors switch with the system setting right away, without a reload; the browser's own bar matches the page background in both themes.
+- Fonts are self-hosted (see the guidelines); the page is readable in the fallback fonts before they load.
 
 **Column**
 
@@ -61,12 +58,12 @@ phone (320–599 px)                     tablet / desktop (≥ 600 px)
 └────────────────────┘                 └──────────────────────────────────────────┘
 ```
 
-- One column, `max-width: var(--content-max)` (720 px, the outer width including the gutters, `box-sizing: border-box`), centered with automatic side margins.
-- Side gutter `--gutter`: 16 px below 600 px, 24 px from 600 px.
-- Top and bottom padding `--space-5` (24 px).
-- The page scrolls vertically only. Every flex or grid child that holds text has `min-width: 0`, and long words wrap or ellipsize, so nothing widens the page.
-- No `viewport-fit=cover` in M1: on phones with a notch in landscape the browser keeps the content inside the safe area by itself.
-- No top app bar and no navigation in M1. The screen heading is the top of the page; the tab bar comes in M6.
+- One centered column with a maximum width; a narrower side gutter on phones, a wider one from 600 px.
+- The page scrolls vertically only: long words wrap or are shortened with an ellipsis, so nothing widens the page.
+- On phones with a notch in landscape the browser keeps the content inside the safe area by itself.
+- No top app bar: the screen heading is the top of the page. The tab bar comes in M6.
+
+The exact values (column width, gutters, paddings, theme colors) live in `app/styles/tokens.css`, `app/styles/base.css` and `app/index.html`.
 
 ## Out of scope
 

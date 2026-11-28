@@ -310,17 +310,16 @@ No match:
 ```
 
 - **Order, top to bottom:** page header, search field, then the list or the empty state.
-  - 16 px (`--space-4`) between the header, the search field and the list.
-  - 8 px (`--space-2`) between rows.
-- **Page header:** "Songs" (`title`) and the count line (`small`, muted), e.g. "4 songs" or "1 song".
+- **Page header:** "Songs" and the count line (small, muted), e.g. "4 songs" or "1 song".
 - **Search field:** a native search input with the placeholder "Search title, artist, key". It is not focused on start, because the phone keyboard would cover the list.
-- **Song row:** title, artist and key chip as specified in the guidelines.
+- **Song row:** title, artist and key chip as specified in the guidelines; the whole row opens the Song view.
   - Title and artist stay on one line and end with an ellipsis.
   - The chip never shrinks. When a song has no key, the row has no chip and the text takes the full width.
 - **Empty state:** the "No songs found." component. It replaces the list while a search has no match.
-- **Scrolling:** the whole page scrolls; the header and the search field scroll with the list (no sticky parts in M1).
+- **Scrolling:** the whole page scrolls; the header and the search field scroll with the list (no sticky parts).
 - **Wide screens:** the same layout in the 720 px column. Rows stay full column width; there is no grid of cards.
-- **From M3:** rows open the Song view; their states are in the guidelines (*Song row*).
+
+The exact values (spacing, sizes, row states) live in `app/styles/songs-screen.css`, `app/styles/components.css` and the [design guidelines](../design/guidelines.md).
 
 ### Song view screen (M3)
 
@@ -521,9 +520,7 @@ Phone, 320 px wide (288 px column). Edit form shown; the add form has the headin
 
 ## Notes for Design / Engineering
 
-- Song fields for M1: `id`, `title`, `artist`, `key`, `text` (M4 adds the format fields, below).
-- The song list reads songs through an asynchronous repository in `data/` ([ARCHITECTURE.md](../../ARCHITECTURE.md)); in M1 it returns the sample songs.
-- Sorting and accent-insensitive matching are domain logic with unit tests. Use a fixed collation (not the device language), so the order is the same on every device.
+Song list (M1): the `Song` type, the fixed sort order and the accent-insensitive search are in `domain/songs.js`; the song repository is described in [ARCHITECTURE.md](../../ARCHITECTURE.md).
 
 Song view (M3): routing, the screens, the settings repository and the screen lock are described in [ARCHITECTURE.md](../../ARCHITECTURE.md).
 
