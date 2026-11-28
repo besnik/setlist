@@ -25,5 +25,5 @@ Important decisions are recorded here as short **ADRs** (Architecture Decision R
 | [0005](0005-dev-tooling-tests-and-deployment.md) | Development tooling, tests, CI and deployment | accepted |
 | [0006](0006-screens-views-and-components.md) | Screens, views and components in the UI layer | accepted |
 | [0007](0007-error-handling-and-logging.md) | Error handling and logging | accepted |
-| [0008](0008-song-format.md) | Song format | proposed |
+| [0008](0008-song-format.md) | Song format | accepted |
 | [0009](0009-song-storage.md) | Song storage on the device (IndexedDB) | proposed |

@@ -99,7 +99,7 @@ Check against `ARCHITECTURE.md` and the golden principles:
 - **Where does the code go?** Name the new or changed files or modules and the one job of each (e.g. a new screen module, a new repository). Check that no existing file takes on a second job, and that the next planned tasks have a place too.
 - Does it need an ADR, a new dependency or a larger refactoring?
 
-Record the result in the spec's "Notes for Design / Engineering" section.
+Record the result in the spec's "Notes for Design / Engineering" section. These are working notes for building the milestone; the `close-milestone` skill removes them when it closes, so anything that must stay true long-term belongs in `ARCHITECTURE.md` or an ADR.
 🛑 **If an ADR, dependency or larger refactoring is needed, the CEO decides** (use the `new-adr` skill for the proposal).
 
 ## 7. Break it into tasks

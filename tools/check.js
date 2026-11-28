@@ -28,6 +28,10 @@
 // 11. No error is silently swallowed in app/ and tools/: no catch without its
 //    error, no empty catch block and no .catch() with an empty handler.
 // 12. In app/, only app/src/ui/log.js writes to the console.
+// 13. Plan statuses agree (close-milestone skill): a done milestone has only done or
+//     rejected tasks and links no ADR that is still proposed; every ADR is in the ADR
+//     index; the status in the roadmap, the ADR index and the spec index matches the
+//     status line of the file each row links to.
 
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -326,6 +330,119 @@ export function versionProblems(changed, version, baseVersion, base) {
   return [`${WORKER}: files under app/ changed against ${base} (${shown}), but VERSION is still '${version}'. Change VERSION in ${WORKER} (YYYY.MM.DD, .2, .3 for more releases on one day), otherwise installed apps never get the change (see ARCHITECTURE.md, "Offline and updates").`];
 }
 
+// Rule 13: statuses in the plan, the ADRs and the specs.
+
+/**
+ * The status in a document's "- **Status:** …" line, without its explanation after " — ".
+ * @param {string} markdown
+ * @returns {string | null}
+ */
+export function statusOf(markdown) {
+  const match = /^- \*\*Status:\*\*\s*(.+)$/m.exec(markdown);
+  return match ? match[1].split(' — ')[0].trim() : null;
+}
+
+/** The first word of a status, lowercase ("accepted (planning part …)" → "accepted"). */
+const firstWord = (status) => (status ?? '').trim().split(/\s+/)[0].toLowerCase();
+
+/**
+ * The rows of all markdown tables in a document, each as an object keyed by its header cells.
+ * @param {string} markdown
+ * @returns {Record<string, string>[]}
+ */
+export function tableRows(markdown) {
+  const lines = markdown.split(/\r?\n/);
+  const cells = (line) => line.trim().replace(/^\||\|$/g, '').split('|').map((cell) => cell.trim());
+  const rows = [];
+  let header = null;
+  lines.forEach((line, index) => {
+    if (!line.trim().startsWith('|')) { header = null; return; }
+    if (!header) {
+      if (/^\s*\|[\s|:-]+\|\s*$/.test(lines[index + 1] ?? '')) header = cells(line);
+      return;
+    }
+    if (/^\s*\|[\s|:-]+\|\s*$/.test(line)) return;
+    const values = cells(line);
+    rows.push(Object.fromEntries(header.map((name, i) => [name, values[i] ?? ''])));
+  });
+  return rows;
+}
+
+/** The target of the first markdown link in a table cell, without an anchor. */
+const linkOf = (cell) => /\]\(([^)#\s]+)/.exec(cell ?? '')?.[1] ?? null;
+
+/**
+ * Checks a milestone file: a done milestone holds only done or rejected tasks and
+ * links no ADR whose status is still proposed.
+ * @param {string} path repository-relative path of the milestone file
+ * @param {string} markdown its content
+ * @param {(adrPath: string) => string | null} adrStatus status of an ADR by repository path
+ * @returns {string[]} problem messages
+ */
+export function milestoneProblems(path, markdown, adrStatus) {
+  if (firstWord(statusOf(markdown)) !== 'done') return [];
+  const problems = tableRows(markdown)
+    .filter((row) => /^T-\d+$/.test(row.ID ?? '') && row.Status !== undefined && !['done', 'rejected'].includes(firstWord(row.Status)))
+    .map((row) => `${path}: the milestone is done, but task ${row.ID} is '${row.Status}'. Finish or reject it, or move it into the next milestone (close-milestone skill, step "Carry over open tasks").`);
+  const adrs = new Set([...markdown.matchAll(/\]\(([^)#\s]*decisions\/\d{4}-[^)#\s]+\.md)/g)].map((match) => posix.join(posix.dirname(path), match[1])));
+  for (const adr of adrs) {
+    if (firstWord(adrStatus(adr)) === 'proposed') problems.push(`${path}: the milestone is done, but it links ${adr}, which is still 'proposed'. Set the ADR (and its row in the ADR index) to the CEO's decision (close-milestone skill, step "Statuses").`);
+  }
+  return problems;
+}
+
+/**
+ * Checks an index table (roadmap, ADR index, spec index): the Status cell of every row
+ * that links a file must match the status line of that file.
+ * @param {string} path repository-relative path of the index
+ * @param {string} markdown its content
+ * @param {(linkedPath: string) => string | null} fileStatus status of a linked file, or null when it has none
+ * @param {{ wordOnly?: boolean }} [options] compare only the first word (ADR statuses carry notes)
+ * @returns {string[]} problem messages
+ */
+export function indexStatusProblems(path, markdown, fileStatus, { wordOnly = false } = {}) {
+  return tableRows(markdown).flatMap((row) => {
+    const first = Object.values(row)[0];
+    const link = linkOf(first);
+    if (!link || !link.endsWith('.md') || row.Status === undefined) return [];
+    const linked = posix.join(posix.dirname(path), link);
+    const status = fileStatus(linked);
+    if (status === null) return [];
+    const same = wordOnly ? firstWord(status) === firstWord(row.Status) : status.toLowerCase() === row.Status.toLowerCase();
+    return same ? [] : [`${path}: the row of ${linked} says '${row.Status}', but the file says '${status}'. Make them the same (close-milestone skill, step "Statuses").`];
+  });
+}
+
+/**
+ * Checks that every ADR file is listed in the ADR index.
+ * @param {string} indexPath repository-relative path of the ADR index
+ * @param {string} markdown its content
+ * @param {string[]} adrPaths repository-relative paths of the ADR files (without the template)
+ * @returns {string[]} problem messages
+ */
+export function adrIndexProblems(indexPath, markdown, adrPaths) {
+  const listed = new Set(tableRows(markdown).map((row) => linkOf(Object.values(row)[0])).filter(Boolean).map((link) => posix.join(posix.dirname(indexPath), link)));
+  return adrPaths.filter((adr) => !listed.has(adr)).map((adr) => `${indexPath}: ${adr} is missing from the index. Add a row with its number, title and status.`);
+}
+
+/** Rule 13 over the repository's plan, ADR and spec files. */
+function statusCheck() {
+  const read = (path) => (statSync(join(ROOT, path), { throwIfNoEntry: false })?.isFile() ? readFileSync(join(ROOT, path), 'utf8') : null);
+  const statusFile = (path) => { const markdown = read(path); return markdown === null ? null : statusOf(markdown); };
+  const list = (dir) => readdirSync(join(ROOT, dir)).filter((name) => name.endsWith('.md')).map((name) => `${dir}/${name}`);
+  const adrs = list('docs/decisions').filter((path) => /\/\d{4}-/.test(path) && !path.endsWith('/0000-template.md'));
+  const indexes = [
+    ['docs/plan/roadmap.md', {}],
+    ['docs/decisions/README.md', { wordOnly: true }],
+    ['docs/product-specs/index.md', {}],
+  ];
+  return [
+    ...list('docs/plan/milestones').flatMap((path) => milestoneProblems(path, read(path), statusFile)),
+    ...adrIndexProblems('docs/decisions/README.md', read('docs/decisions/README.md'), adrs),
+    ...indexes.flatMap(([path, options]) => indexStatusProblems(path, read(path), statusFile, options)),
+  ];
+}
+
 /** Runs git in the repository and returns its output, or null when git fails or is missing. */
 function git(...args) {
   try {
@@ -384,6 +501,7 @@ function main() {
     return [...(header ? [header] : []), ...references, ...rawHtmlProblems(path, source), ...pureViewProblems(path, source), ...mainProblems(path, source), ...errorHandlingProblems(path, source)];
   });
   problems.push(...offlineListProblems(offlineFilesOf(readFileSync(join(ROOT, WORKER), 'utf8')), appFiles()));
+  problems.push(...statusCheck());
   const version = versionCheck();
   problems.push(...(version.problems ?? []));
   if (version.note) console.log(version.note);
