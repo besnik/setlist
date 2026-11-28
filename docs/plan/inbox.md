@@ -10,6 +10,7 @@ Raw ideas go here — one line each, no filtering. The GM or Product lead turns 
 - Slovak UI translation (texts are kept in one place from M1, but no translation system yet).
 - Importer of songs from public song websites (e.g. supermusic.cz) as a separate part (`importer/`) reusing the app's domain code — check copyright and the websites' terms of use first; import single songs the user chooses, and keep the source and a link to the original with the song (see [M4](milestones/M4-song-format.md)).
 - Transposition of songs (the format chosen in M4 must allow it).
+- Show chords in the user's preferred notation: a setting "as written / international / German"; the stored song keeps the notation of its source (ADR 0008). Uses the same chord conversion as transposition, so build them together (after the MVP).
 - Linter and formatter for the code (a new development dependency — CEO decision).
 - User guide screenshots generated automatically by Playwright, so they stay current.
 - Signpost page at the root of the website (links to the app and the guide).

@@ -164,7 +164,7 @@ The musician's own songbook: type in or paste a song, save it, edit it, delete i
 
 **Add**
 
-- Rule: the Songs screen has an Add button (+). Tapping it opens the empty song form, address `#/new`, with the format `plain` and the notation `international`.
+- Rule: the Songs screen has an Add button (+). Tapping it opens the empty song form, address `#/new`, with the format `plain` and the notation `german` (the app's users are mostly Slovak and Czech musicians; CEO, 2026-11-28). The fallback for stored songs without a valid notation stays as in *Song format*.
 - Rule: given a title is filled in, when the user taps Save, then the song is saved and the Song view of the new song opens in place of the form. The form is not left in the history: Back, × and Escape in that Song view go to the Songs screen, as if the song had been opened from the list.
 - Rule: when the user taps Cancel, the form closes without saving and the previous screen shows (see *Unsaved changes*).
 
@@ -178,7 +178,7 @@ The musician's own songbook: type in or paste a song, save it, edit it, delete i
   | Artist | one line | no | 200 characters | empty shows "Unknown artist" as before |
   | Key | one line | no | 20 characters | e.g. `Am`; written in the song's notation; not checked against the chord pattern |
   | Format | one of two | yes | — | "Chords over lyrics" (`plain`) or "ChordPro" (`chordpro`); chosen by hand |
-  | Notation | one of two | yes | — | "International — B, Bb" (`international`) or "Central European — H, B" (`german`); chosen by hand |
+  | Notation | one of two | yes | — | "International — B, Bb" (`international`) or "German — H, B" (`german`); the stored values stay as in ADR 0008; chosen by hand |
   | Text | many lines | no | 50 000 characters | lyrics with chords; a song may have no text yet |
   | Source | one line | no | 100 characters | plain text, e.g. `akordy.sk`; empty means no source |
 
@@ -204,7 +204,7 @@ The musician's own songbook: type in or paste a song, save it, edit it, delete i
   - Title: "Notation"
   - "Which letter means which chord in this song:"
   - "**International** — `B` is B, `Bb` is B flat. Used in English songbooks."
-  - "**Central European** — `H` is B, `B` is B flat. Used in Slovak, Czech and German songbooks."
+  - "**German** — `H` is B, `B` is B flat. Used in Slovak, Czech and German songbooks."
   - "The app shows chords as written. The notation tells later features (such as transposing) what `B` means."
 - Rule: the help is plain text and examples written by us; the "?" button with its explanation is one component that takes its title and content from the screen that uses it.
 
@@ -228,7 +228,7 @@ The musician's own songbook: type in or paste a song, save it, edit it, delete i
 
 **Unsaved changes**
 
-- Rule: the form has unsaved changes when any field differs from what the form showed when it opened (for the add form: empty fields, `plain`, `international`). Typing and then removing the same text leaves no changes.
+- Rule: the form has unsaved changes when any field differs from what the form showed when it opened (for the add form: empty fields, `plain`, `german`). Typing and then removing the same text leaves no changes.
 - Rule: given unsaved changes, when the user taps Cancel, presses Escape (with no question or help open), taps Back or uses the Android back gesture, then the app asks: title "Discard changes?", buttons Keep editing and Discard. Keep editing closes the question and the form stays exactly as it was (the address stays the form's). Discard leaves the form without saving, to where the user was going.
 - Rule: given no unsaved changes, leaving the form asks nothing; Escape (with no question or help open) then does what Cancel does.
 - Rule: given a help or a question is open, when the user taps Back or uses the Android back gesture, then it closes and the screen then acts on Back as above (for a form with unsaved changes: the Discard question). Given the Discard question is open, Back counts as Keep editing.
@@ -498,8 +498,8 @@ Phone, 320 px wide (288 px column). Edit form shown; the add form has the headin
 │ (•) Chords over lyrics         │  radio choices: one per row, 44 px high
 │ ( ) ChordPro                   │
 │ Notation (?)                   │
-│ (•) International — B, Bb      │
-│ ( ) Central European — H, B    │
+│ ( ) International — B, Bb      │
+│ (•) German — H, B              │
 │ Text                           │
 │ ┌────────────────────────────┐ │  text area: mono 16 px, line height 1.5,
 │ │G         C        G        │ │  no wrapping (scrolls sideways inside),
@@ -524,7 +524,7 @@ Phone, 320 px wide (288 px column). Edit form shown; the add form has the headin
 - **Page:** the same column, gutters and background as every screen; like the Song view, **no top padding** above the bar, which sits at the very top.
 - **Form bar:** sticky (`position: sticky; top: 0`), `--color-bg`, 1 px `--color-line` bottom border, padding `--space-2` 0. Left Cancel (pill), right Save (accent pill), the heading ("New song" / "Edit song", `row` step, ink) centered between them, one line with an ellipsis. The bar stays visible while the page scrolls and while the phone keyboard is open, so Save is always one tap away.
 - **Fields:** label above its field, `--space-1` between them, `--space-4` between fields. Text fields use the text field component; the key field is 120 px wide (20 characters fit when scrolled; a key is short). The field message sits `--space-1` below its field.
-- **Radio choices:** the native radio button with its label, each row at least 44 px high (the whole row is the target), `accent-color: var(--color-accent)`. Vertical, because "Central European — H, B" does not fit half of a 288 px column.
+- **Radio choices:** the native radio button with its label, each row at least 44 px high (the whole row is the target), `accent-color: var(--color-accent)`. Vertical, because "International — B, Bb" does not fit half of a 288 px column.
 - **Text area:** the text field component, but `--font-mono` 16 px, line height 1.5, `white-space: pre` (`wrap="off"`), 18 rows, `resize: vertical`, padding `--space-3`. No spell-check, autocorrect or autocapitalize.
 - **Failure message:** at the top of the form, below the bar: `--color-surface` background, 4 px `--color-danger` bar on the left, `--radius-card`, padding `--space-3` `--space-4`, `body` text in ink. The screen scrolls to it when it appears.
 - **Id line:** `small`, `--color-muted`, `--space-5` above it, wraps.
@@ -627,8 +627,7 @@ Manage songs (M5):
 
 Manage songs (M5):
 
-1. **Notation of a new song.** The add form starts with `international` (the same as the fallback of *Song format*). A Slovak or Czech musician switches it to Central European for almost every song (one tap). Alternative: start with the notation of the song added last (a little more logic, no setting). **Recommendation:** `international` in M5; change it if it is annoying in practice.
-2. **Names of the notations in the form.** "International — B, Bb" and "Central European — H, B" (the stored values stay `international` / `german`). Alternative: "German — H, B". **Recommendation:** "Central European", because it is what the users in Slovakia and Czechia know it as.
+- *(none open)* Decided by the CEO on 2026-11-28: the stored notation values stay `international` / `german`; the form names them "International — B, Bb" and "German — H, B"; a new song starts with `german`; the fallback for stored songs stays `international`. Showing chords in the user's preferred notation is an idea in the [inbox](../plan/inbox.md) (after the MVP, with transposition).
 
 Earlier:
 
