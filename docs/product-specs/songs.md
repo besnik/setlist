@@ -101,12 +101,12 @@ How a song is stored and shown. Decision: [ADR 0008](../decisions/0008-song-form
 
 - Rule: a song has a title, an artist, a key, a text, and these header fields:
   - **Format:** `plain` ("chords over lyrics": a line of chords above each line of lyrics) or `chordpro` (chords in square brackets inside the lyrics, e.g. `[G]Amazing [C]grace`).
-  - **Notation:** `international` (`B` is B, `Bb` is B flat) or `german`, the Central European notation (`H` is B, `B` is B flat).
+  - **Notation:** `international` (`B` is B, `Bb` is B flat), `german`, the Central European notation (`H` is B, `B` is B flat), or `unknown` (from M5: nobody knows; chords are shown as written).
   - **Source** (optional): the name of the website the song came from, as plain text — the domain with its ending, e.g. `akordy.sk` — and the date of import. There is no link to the original. A song typed in by hand has no source.
 - Rule: the text is kept exactly as written; neither the format nor the notation ever changes it.
 - Rule: lines end with a line break; `\r\n` and `\r` (Windows and old Mac line ends) count as one line break, in both formats.
 - Rule: given a song whose format is missing or unknown, then it is shown as `plain` (nothing is lost: `plain` shows every line as written).
-- Rule: given a song whose notation is missing or unknown, then it counts as `international`.
+- Rule: given a song whose notation is missing or not one of the known values, then it counts as `unknown` (changed in M5, CEO 2026-11-28: the app admits it does not know rather than guess `international`; a later notation setting or transposition does not convert such a song).
 - Rule: the key is written in the song's notation (`H` in a `german` song); search finds it as written.
 - Rule: in M4 the notation does not change what is shown: chords are shown as written. It is stored so that a notation setting and transposition (after the MVP) know what `B` means.
 
@@ -160,11 +160,11 @@ The musician's own songbook: type in or paste a song, save it, edit it, delete i
 - Rule: every song has an id made at random when it is added (it never changes, and songs from two devices never get the same id), and it remembers when it was added and when it was last edited. The sample songs keep their ids, so their addresses stay the same.
 - Rule: when a song is saved, the app asks the browser to keep its data for good (persistent storage), so the browser does not delete it when the device runs low on space. Whatever the browser answers, nothing is shown.
 - Rule: given the browser does not allow storage at all (e.g. some private modes), then the Songs screen shows the sample songs and reading works as before; saving or deleting shows the failure message (see *Save fails*).
-- Rule: given a stored song is damaged (a field has the wrong type or is longer than its maximum, or the id is missing), then it is left out of the app and stays in storage untouched; a warning is logged, without the song's content. Given only its format or notation is unknown, then the song is shown with the fallbacks of *Song format* (`plain`, `international`).
+- Rule: given a stored song is damaged (a field has the wrong type or is longer than its maximum, or the id is missing), then it is left out of the app and stays in storage untouched; a warning is logged, without the song's content. Given only its format or notation is missing or not a known value, then the song is shown with the fallbacks of *Song format* (`plain`, `unknown`).
 
 **Add**
 
-- Rule: the Songs screen has an Add button (+). Tapping it opens the empty song form, address `#/new`, with the format `plain` and the notation `german` (the app's users are mostly Slovak and Czech musicians; CEO, 2026-11-28). The fallback for stored songs without a valid notation stays as in *Song format*.
+- Rule: the Songs screen has an Add button (+). Tapping it opens the empty song form, address `#/new`, with the format `plain` and the notation `german` (the app's users are mostly Slovak and Czech musicians; CEO, 2026-11-28). A stored song without a valid notation counts as `unknown` (see *Song format*).
 - Rule: given a title is filled in, when the user taps Save, then the song is saved and the Song view of the new song opens in place of the form. The form is not left in the history: Back, × and Escape in that Song view go to the Songs screen, as if the song had been opened from the list.
 - Rule: when the user taps Cancel, the form closes without saving and the previous screen shows (see *Unsaved changes*).
 
@@ -178,7 +178,7 @@ The musician's own songbook: type in or paste a song, save it, edit it, delete i
   | Artist | one line | no | 200 characters | empty shows "Unknown artist" as before |
   | Key | one line | no | 20 characters | e.g. `Am`; written in the song's notation; not checked against the chord pattern |
   | Format | one of two | yes | — | "Chords over lyrics" (`plain`) or "ChordPro" (`chordpro`); chosen by hand |
-  | Notation | one of two | yes | — | "International — B, Bb" (`international`) or "German — H, B" (`german`); the stored values stay as in ADR 0008; chosen by hand |
+  | Notation | one of three | yes | — | "International — B, Bb" (`international`), "German — H, B" (`german`) or "Not sure — chords shown as written" (`unknown`); the stored values as in ADR 0008; chosen by hand |
   | Text | many lines | no | 50 000 characters | lyrics with chords; a song may have no text yet |
   | Source | one line | no | 100 characters | plain text, e.g. `akordy.sk`; empty means no source |
 
@@ -186,7 +186,7 @@ The musician's own songbook: type in or paste a song, save it, edit it, delete i
 - Rule: when the song is saved, the one-line fields (title, artist, key, source) are cleaned: spaces at the start and the end are removed, a tab or a line break inside becomes one space, and invisible control characters are removed (the ASCII control characters, the zero-width space and the byte order mark, and the marks that change the text direction). Letters, accents, emoji and all visible characters stay.
 - Rule: given the title is empty or only spaces, when the user taps Save, then nothing is saved, the message "Enter a title." shows below the title field and the field gets the focus.
 - Rule: given a field is longer than its maximum (after cleaning), when the user taps Save, then nothing is saved and the field shows "Too long: 230 characters, at most 200." (with the field's numbers) below it; the first such field gets the focus. Typing and pasting are never cut off, so no text is lost silently.
-- Rule: the format and the notation are two radio choices; only their two values can be chosen and saved.
+- Rule: the format (two values) and the notation (three values) are radio choices; only those values can be chosen and saved. Given a song with the notation `unknown` (e.g. imported), then the edit form has "Not sure" selected.
 - Rule: the text field uses the monospaced font and does not wrap lines (a long line scrolls sideways inside the field), so a line of chords stays above its lyrics while typing. The page itself never scrolls sideways.
 - Rule: the form does not correct, capitalize or spell-check what is typed in the text, key and source (`Ami` stays `Ami`).
 - Rule: a source typed by hand does not set the date of import (that comes with import, M8); editing a song keeps its date of import unchanged.
@@ -205,6 +205,7 @@ The musician's own songbook: type in or paste a song, save it, edit it, delete i
   - "Which letter means which chord in this song:"
   - "**International** — `B` is B, `Bb` is B flat. Used in English songbooks."
   - "**German** — `H` is B, `B` is B flat. Used in Slovak, Czech and German songbooks."
+  - "**Not sure** — choose this when you do not know. Chords are always shown as written."
   - "The app shows chords as written. The notation tells later features (such as transposing) what `B` means."
 - Rule: the help is plain text and examples written by us; the "?" button with its explanation is one component that takes its title and content from the screen that uses it.
 
@@ -500,6 +501,8 @@ Phone, 320 px wide (288 px column). Edit form shown; the add form has the headin
 │ Notation (?)                   │
 │ ( ) International — B, Bb      │
 │ (•) German — H, B              │
+│ ( ) Not sure — chords shown as │  label wraps; the row grows
+│     written                    │
 │ Text                           │
 │ ┌────────────────────────────┐ │  text area: mono 16 px, line height 1.5,
 │ │G         C        G        │ │  no wrapping (scrolls sideways inside),
@@ -568,7 +571,7 @@ Song view (M3):
 
 Song format (M4):
 
-- **Song fields:** `id`, `title`, `artist`, `key`, `text`, `format` (`'plain' | 'chordpro'`), `notation` (`'international' | 'german'`), and optional `source` (plain text) and `importedAt` (ISO date `YYYY-MM-DD`). The `Song` type in `domain/songs.js`; the format and notation values are domain constants there. The fallbacks (unknown format → `plain`, unknown notation → `international`) are small domain functions with unit tests, so M5 storage reuses them.
+- **Song fields:** `id`, `title`, `artist`, `key`, `text`, `format` (`'plain' | 'chordpro'`), `notation` (`'international' | 'german'`; `'unknown'` from M5), and optional `source` (plain text) and `importedAt` (ISO date `YYYY-MM-DD`). The `Song` type in `domain/songs.js`; the format and notation values are domain constants there. The fallbacks (unknown format → `plain`, unknown notation → `international`, from M5 → `unknown`) are small domain functions with unit tests, so M5 storage reuses them.
 - **Where the code goes:**
   - `domain/chords.js` — stays: `isChordLine` is the reader of the `plain` format (no longer provisional; update its comments).
   - `domain/chordpro.js` (new) — `parseChordPro(text)`: pure, text in, a list of blocks out (lines of pieces `{ chord, text }`, section blocks — verse with its number or mark, chorus with its mark — chorus references, comments, empty lines; hidden directives and `#` lines dropped). Unit tests with every rule above. Knows nothing of HTML.
@@ -627,7 +630,7 @@ Manage songs (M5):
 
 Manage songs (M5):
 
-- *(none open)* Decided by the CEO on 2026-11-28: the stored notation values stay `international` / `german`; the form names them "International — B, Bb" and "German — H, B"; a new song starts with `german`; the fallback for stored songs stays `international`. Showing chords in the user's preferred notation is an idea in the [inbox](../plan/inbox.md) (after the MVP, with transposition).
+- *(none open)* Decided by the CEO on 2026-11-28: the stored notation values stay `international` / `german`, plus a third value `unknown`; the form names them "International — B, Bb", "German — H, B" and "Not sure — chords shown as written"; a new song starts with `german`; a missing or unknown stored notation counts as `unknown` (no longer `international`). Showing chords in the user's preferred notation is an idea in the [inbox](../plan/inbox.md) (after the MVP, with transposition).
 
 Earlier:
 
