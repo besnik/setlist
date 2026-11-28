@@ -60,7 +60,7 @@ phone (320–599 px)                     tablet / desktop (≥ 600 px)
 
 - One centered column with a maximum width; a narrower side gutter on phones, a wider one from 600 px.
 - The page scrolls vertically only: long words wrap or are shortened with an ellipsis, so nothing widens the page.
-- On phones with a notch in landscape the browser keeps the content inside the safe area by itself.
+- No `viewport-fit=cover`: on phones with a notch in landscape the browser keeps the content inside the safe area by itself.
 - No top app bar: the screen heading is the top of the page. The tab bar comes in M6.
 
 The exact values (column width, gutters, paddings, theme colors) live in `app/styles/tokens.css`, `app/styles/base.css` and `app/index.html`.

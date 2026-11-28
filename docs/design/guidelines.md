@@ -10,6 +10,7 @@ All screens:
 - **Minimal, clean, modern.** One centered column, generous whitespace, no decoration that carries no meaning.
 - **Readable in a dark venue.** Dark mode is a first-class theme; text tokens keep strong contrast in both themes (see *Contrast*).
 - **Mobile first.** Design for a 320 px wide phone first; tablet and desktop get the same column, centered.
+- **Nothing widens the page.** The page scrolls vertically only. Every flex or grid child that holds text has `min-width: 0`, and long words wrap or end with an ellipsis.
 - **Nothing hidden that matters.** No critical action behind a long press, a swipe only or a hover.
 
 There are two kinds of screens with different rules:

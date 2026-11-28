@@ -61,7 +61,7 @@ Tokens: [design guidelines](../design/guidelines.md).
 - The "S" stays inside the central safe zone, so Android can cut the icon into a circle, a squircle or a rounded square without cutting the letter. There is a rounded icon for browsers and Windows, a full-bleed *maskable* one for Android and a full-bleed one for the iPhone home screen (which rounds the corners itself).
 - Name and short name: "Setlist".
 - Splash screen and window background (Android) are dark — a short dark splash is harmless in daylight and never blinds on a dark stage. The window bar follows the theme. On Windows in light mode the window may show the dark background for a moment while starting — accepted.
-- iPhone: status bar in the default style, content below it.
+- iPhone: status bar in the default style, content below it (no `viewport-fit=cover`).
 
 The exact values (icon sizes, colors) live in `app/manifest.webmanifest`, `app/index.html` and `app/assets/icons/`.
 

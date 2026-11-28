@@ -64,7 +64,8 @@ app/src/ui/
   log.js              the app's log (see "Errors and logging")
   wake-lock.js        keeps the screen on (Screen Wake Lock), started and stopped by a screen;
                       needs a secure context, so on a phone it works on the deployed site,
-                      not through the dev server's LAN address
+                      not through the dev server's LAN address; Chrome / Edge, Safari on
+                      iPhone from iOS 16.4 (in a home-screen app from iOS 18.4)
   routes.js           pure: address hash → route, song → address
   router.js           follows the address and shows one screen at a time
   screens/            one module per screen: state, actions, side effects
