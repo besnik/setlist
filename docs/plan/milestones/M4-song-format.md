@@ -64,8 +64,8 @@ From the M3 end-of-milestone architecture check. Approved by the CEO in chat (20
 | ID | Task | Spec | Status | PR |
 |---|---|---|---|---|
 | T-028 | Stale comments: `app/sw.js` (header and the registration comment) still says `src/main.js` registers the worker — it is `data/app-version.js`; `app/src/data/sample-songs.js` says "in M1" — the sample songs are the only songs until M5. Ride along with the first M4 PR that changes `app/` (needs a new VERSION) | — | done | [#48](https://github.com/besnik/setlist/pull/48) |
-| T-029 | `tools/check.js`: one shared helper that strips comments from source, instead of the same two regexes copied in 7 places (6 JS rules, 1 CSS rule); tests in `tests/tools` stay green. With the next new check rule | — | approved | — |
-| T-030 | One shared "Unknown artist" fallback for the song list and the Song view (a small component in `ui/components/`), before M6 adds setlist rows and M7 the play-mode header | — | approved | — |
+
+T-029 and T-030 (approved, not done) moved to [M5](M5-manage-songs.md#cleanup-carried-over).
 
 ## End-of-milestone architecture check
 

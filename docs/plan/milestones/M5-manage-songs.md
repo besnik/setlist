@@ -48,6 +48,15 @@ Spec: [songs.md — Manage songs](../../product-specs/songs.md#manage-songs-m5),
 | T-046 | **The app was updated in another tab:** `ui/update-notice.js` (notice bar with Reload), wired in `main.js` to `onOutdated`; e2e: a second page opens the database with a higher version → the first shows the notice, an open form keeps its text, Save fails with the message | standard — small module on the T-039 event; offline and updates area, so light QA | [The app was updated in another tab](../../product-specs/songs.md#manage-songs-m5) | proposed | — |
 | T-047 | **Attack strings sweep** (the only cross-screen sweep; per-task attack checks stay short): one e2e spec that saves known attack strings into every field (title, artist, key, source, text in `plain` and `chordpro`) and checks the list, the Song view, the edit form, the delete question and the id line: shown as text, no element created, no browser dialog, no CSP violation; a unit test of `validateSong` with the same strings read from storage | standard — tests only, over finished screens | [Security](../../product-specs/songs.md#manage-songs-m5) | proposed | — |
 
+## Cleanup carried over
+
+From the M3 end-of-milestone architecture check, approved by the CEO in chat (2026-11-26); moved here from M4 when it closed.
+
+| ID | Task | Spec | Status | PR |
+|---|---|---|---|---|
+| T-029 | `tools/check.js`: one shared helper that strips comments from source, instead of the same two regexes copied in 7 places (6 JS rules, 1 CSS rule); tests in `tests/tools` stay green. With the next new check rule | — | approved | — |
+| T-030 | One shared "Unknown artist" fallback for the song list and the Song view (a small component in `ui/components/`), before M6 adds setlist rows and M7 the play-mode header | — | approved | — |
+
 ## Out of scope
 
 - Detecting the format of a pasted text, import and export of files (M8). Cleaning up text pasted from a website (tabs, non-breaking spaces) belongs to an importer for that website (after the MVP).

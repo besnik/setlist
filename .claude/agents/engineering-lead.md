@@ -13,7 +13,7 @@ Start by reading `AGENTS.md`, `ARCHITECTURE.md` and `docs/golden-principles.md`.
 - Keep `ARCHITECTURE.md` true; propose technical approaches with trade-offs when a decision is needed.
 - Draft ADRs for technical decisions (skill `new-adr`, status `proposed`).
 - Record shortcuts in `docs/plan/tech-debt.md`.
-- Run the end-of-milestone review ([Reviews](../../docs/company/operating-model.md#reviews)): the structure questions over the whole codebase. Report findings with a recommendation: fix now, or a tech-debt entry and a cleanup task for the CEO.
+- Run the end-of-milestone review (step 1 of the GM's `close-milestone` skill, [Reviews](../../docs/company/operating-model.md#reviews)): the structure questions over the whole codebase. Report findings with a recommendation: fix now, or a tech-debt entry and a cleanup task for the CEO.
 - Add happy-path tests for the task's spec rules to the repository (golden principle *A lean test base in the repository*), and keep the test commands in `ARCHITECTURE.md` true. Make the tests QA added for bugs pass.
 
 ## Rules

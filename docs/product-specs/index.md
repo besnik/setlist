@@ -6,6 +6,7 @@ The **source of truth for what Setlist does.** One file per functional area, des
 - Every PR that changes app behavior updates the matching spec.
 - Tasks in [docs/plan/](../plan/) link to the spec sections they implement.
 - New spec: copy [_template.md](_template.md).
+- *Notes for Design / Engineering*, exact UX values and self-checks are working notes for the milestone being built. When it closes, they are compacted (`close-milestone` skill): the behavior rules stay; what the code, the tests and `ARCHITECTURE.md` now hold is removed.
 
 ## Specs
 

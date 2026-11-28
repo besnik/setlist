@@ -1,13 +1,15 @@
 // Unit tests of the project check (tools/check.js): the rules in ARCHITECTURE.md
 // that the check enforces — header comments, part isolation, app layers and the
 // files HTML and CSS load, HTML written into the page only by the renderer, the
-// offline file list of the service worker and a new version for every app change.
+// offline file list of the service worker, a new version for every app change, and
+// statuses that agree across milestones, the roadmap, the ADRs and the specs.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   assetProblems, assetReferencesOf, errorHandlingProblems, headerProblem, importProblems, importsOf, offlineFilesOf, offlineListProblems,
   mainProblems, pureViewProblems, rawHtmlProblems, versionOf, versionProblems,
+  adrIndexProblems, indexStatusProblems, milestoneProblems, statusOf, tableRows,
 } from '../../tools/check.js';
 
 const all = () => true;
@@ -163,4 +165,48 @@ test('only the app log writes to the console', () => {
   assert.deepEqual(errorHandlingProblems('app/src/ui/log.js', `console.warn(PREFIX, message);`), []);
   assert.match(errorHandlingProblems('app/src/main.js', `p.catch((error) => console.warn('x', error));`)[0], /writes to the console.*ui\/log\.js/);
   assert.deepEqual(errorHandlingProblems('tools/serve.js', `console.log('dev server');`), []);
+});
+
+// Rule 13: the status line is read without its explanation.
+test('status line is read', () => {
+  assert.equal(statusOf('# M4\n\n- **Status:** done — tasks T-033–T-037 done\n'), 'done');
+  assert.equal(statusOf('- **Status:** approved (Manage songs: draft)'), 'approved (Manage songs: draft)');
+  assert.equal(statusOf('# No status'), null);
+});
+
+// Rule 13: tables are read by their header.
+test('table rows are read by header', () => {
+  const rows = tableRows('| ID | Status |\n|---|---|\n| T-001 | done |\n\ntext\n| A | B |\n|---|---|\n| 1 | 2 |');
+  assert.deepEqual(rows, [{ ID: 'T-001', Status: 'done' }, { A: '1', B: '2' }]);
+});
+
+// Rule 13: a done milestone holds only done or rejected tasks and no proposed ADR.
+test('done milestone has no open tasks and no proposed ADR', () => {
+  const adr = (path) => (path === 'docs/decisions/0008-x.md' ? 'proposed' : 'accepted');
+  const table = '| ID | Task | Status | PR |\n|---|---|---|---|\n| T-001 | A | done | #1 |\n| T-002 | B | rejected | — |\n';
+  assert.deepEqual(milestoneProblems('docs/plan/milestones/M1.md', `- **Status:** done\n\n${table}`, adr), []);
+  const open = `- **Status:** done\n\n${table}| T-003 | C | approved | — |\n\nSee [ADR](../../decisions/0008-x.md).`;
+  const problems = milestoneProblems('docs/plan/milestones/M1.md', open, adr);
+  assert.equal(problems.length, 2);
+  assert.match(problems[0], /T-003 is 'approved'/);
+  assert.match(problems[1], /0008-x\.md, which is still 'proposed'/);
+  // A milestone in progress may hold open tasks and proposed ADRs.
+  assert.deepEqual(milestoneProblems('docs/plan/milestones/M1.md', open.replace('done', 'in-progress'), adr), []);
+});
+
+// Rule 13: an index row says the same status as the file it links.
+test('index status matches the linked file', () => {
+  const index = '| Milestone | Status |\n|---|---|\n| [M1](milestones/M1.md) | done |\n| M9 *(later)* | not started |\n';
+  assert.deepEqual(indexStatusProblems('docs/plan/roadmap.md', index, () => 'done'), []);
+  assert.match(indexStatusProblems('docs/plan/roadmap.md', index, () => 'in-progress')[0], /says 'done', but the file says 'in-progress'/);
+  const adrs = '| # | Title | Status |\n|---|---|---|\n| [0001](0001-a.md) | A | accepted (part superseded by 0002) |\n';
+  assert.deepEqual(indexStatusProblems('docs/decisions/README.md', adrs, () => 'accepted', { wordOnly: true }), []);
+  assert.equal(indexStatusProblems('docs/decisions/README.md', adrs, () => 'proposed', { wordOnly: true }).length, 1);
+});
+
+// Rule 13: every ADR file is in the ADR index.
+test('every ADR is in the index', () => {
+  const index = '| # | Title | Status |\n|---|---|---|\n| [0001](0001-a.md) | A | accepted |\n';
+  assert.deepEqual(adrIndexProblems('docs/decisions/README.md', index, ['docs/decisions/0001-a.md']), []);
+  assert.match(adrIndexProblems('docs/decisions/README.md', index, ['docs/decisions/0001-a.md', 'docs/decisions/0002-b.md'])[0], /0002-b\.md is missing/);
 });

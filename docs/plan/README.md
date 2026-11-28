@@ -47,4 +47,4 @@ proposed ──► approved ──► in-progress ──► done
 
 - IDs `M0`, `M1`, … — file name `MN-short-name.md`.
 - Every task belongs to exactly one milestone.
-- A milestone becomes `done` only after its [architecture review](../company/operating-model.md#reviews) of the whole codebase; approved cleanup tasks from it go into the next milestone.
+- A milestone becomes `done` only through the `close-milestone` skill: its [architecture review](../company/operating-model.md#reviews) of the whole codebase, final statuses, open tasks moved into the next milestone, and its planning notes compacted. A done milestone holds only `done` and `rejected` tasks; the project's check command enforces it, and that the statuses in the roadmap, the ADR index and the spec index match their files.

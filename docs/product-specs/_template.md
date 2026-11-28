@@ -21,11 +21,11 @@ Mark capabilities that are not built yet with *(planned)*.
 
 ## UX and visual design (optional)
 
-Layout and flows (ASCII sketches), sizes, colors, typography — written in step 5 of `new-feature`.
+Layout and flows (ASCII sketches), sizes, colors, typography — written in step 5 of `new-feature`. Exact values and the self-check are compacted when the milestone closes (`close-milestone`).
 
 ## Notes for Design / Engineering (optional)
 
-Technical impact and points the leads must know. Not for the CEO.
+Technical impact and points the leads must know. Not for the CEO. Working notes: removed when the milestone closes (`close-milestone`), after anything still true has moved to `ARCHITECTURE.md` or the code.
 
 ## Out of scope
 

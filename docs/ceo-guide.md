@@ -29,6 +29,7 @@ You can write in Slovak; these are example openers.
 | Bug in the app | "Našiel som chybu: … (čo som robil, čo som čakal, čo sa stalo)" |
 | Technical decision needed | "Priprav ADR na …" (skill `new-adr`) |
 | Idea for later | "Zapíš do inboxu: …" |
+| Milestone finished (all its PRs merged) | "Uzavri M<číslo>." (skill `close-milestone`) |
 | Try a pull request before merging | In a **local** session in the `setlist` folder: "Ukáž mi PR <číslo>." (skill `preview-pr`) |
 | Change to how we work, or feedback that should become a rule | "Uprav harness: …" (skill `update-harness`) |
 
@@ -43,6 +44,7 @@ Skills are step-by-step procedures the GM follows. You can name one in chat to m
 | `new-feature` | A new feature or milestone: mode → questions → optional prototype → spec → UX and visual design → technical impact → tasks |
 | `new-adr` | Recording or proposing an important decision |
 | `update-harness` | Changing rules, principles or workflow |
+| `close-milestone` | Closing a milestone: architecture review, statuses, open tasks moved on, planning notes compacted |
 | `open-pr` | Opening a pull request (the GM uses it on its own) |
 | `preview-pr` | Trying a pull request on your computer before merging it (in a local session) |
 
