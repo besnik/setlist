@@ -94,7 +94,7 @@ A stage screen: one song full screen, read while playing. The controls follow th
 - Rule: given the browser does not support it, then the Song view works as usual and shows no message.
 ### Song format *(M4)*
 
-How a song is stored and shown. Decision: [ADR 0008](../decisions/0008-song-format.md). In M4 the songs are the sample songs, prepared by hand; entering songs comes with M5, detecting the format of a pasted text and import / export with a later milestone.
+How a song is stored and shown. Decision: [ADR 0008](../decisions/0008-song-format.md). In M4 the songs are the sample songs, prepared by hand; entering songs comes with M5 (the format chosen by hand), detecting the format of a pasted text and import / export with M8.
 
 **Song header**
 
