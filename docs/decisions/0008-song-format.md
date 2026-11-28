@@ -33,7 +33,7 @@ For the chord notation:
 
 - A song keeps its text **as written**, together with header fields stored next to the text (not as directives inside it):
   - `format`: `plain` ("chords over lyrics") or `chordpro` (chords in square brackets). The MVP has exactly these two.
-  - `notation`: `international` (`B` = B, `Bb` = B flat) or `german` (`H` = B, `B` = B flat).
+  - `notation`: `international` (`B` = B, `Bb` = B flat) or `german` (`H` = B, `B` = B flat). Amended in M5 (CEO, 2026-11-28): a third value `unknown` for a song whose notation nobody knows (an import without it, a value from a newer app); a missing or unrecognized notation counts as `unknown`, not `international`, and a later display setting or transposition does not convert such a song.
   - Optional source fields: `source` (the website's name as plain text, e.g. `akordy.sk`) and `importedAt` (the date of import). The source is never a link: no address is stored or shown, so a malformed or harmful link cannot get in (CEO, 2026-11-27).
 - Each format has its own renderer in the Song view: `plain` in the monospaced font with chord-line detection (from M3), `chordpro` in the body font with every chord above its syllable.
 - The notation does not change what is shown in the MVP (chords are shown as written); it is stored so that a display setting and transposition after the MVP know what `B` means.

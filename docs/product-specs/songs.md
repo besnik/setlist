@@ -1,6 +1,6 @@
 # Songs
 
-- **Status:** approved (Song format: draft)
+- **Status:** approved (Manage songs: draft)
 
 <!-- Based on the CEO's prototype — see docs/design/prototype-reference.md. -->
 
@@ -18,6 +18,7 @@ The songbook: all the musician's songs with lyrics and chords in one place, quic
 - Rule: the heading shows the number of songs, e.g. "4 songs" (singular "1 song"). It is the total number of songs and does not change while searching.
 - Rule: given the first start of the app, when the Songs screen opens, then it shows the sample songs (see *Sample songs*).
 - Rule: tapping a row opens the song in the *Song view* (M3).
+- Rule: the Songs screen has an Add button (+) that opens the song form (see *Manage songs*, M5).
 
 ### Search
 
@@ -42,7 +43,7 @@ The songbook: all the musician's songs with lyrics and chords in one place, quic
 
 - Rule: the four English songs stay as they are (`plain`); the sample songs are a collection that grows over time.
 - Rule: the three Slovak songs are written from at least two public sources each, checked against each other, and only in a version that is free to use (a folk song, or words whose author died more than 70 years ago or is unknown and old). The sample songs have no source (CEO, 2026-11-27, for *A od Prešova*), so the source line is tested with test songs.
-- Rule: until *Manage songs* (M5) the sample songs are the only songs.
+- Rule: the sample songs are saved as songs on the very first start; from then on they are ordinary songs that can be edited and deleted (see *Manage songs*).
 
 ### Song view *(M3)*
 
@@ -100,12 +101,12 @@ How a song is stored and shown. Decision: [ADR 0008](../decisions/0008-song-form
 
 - Rule: a song has a title, an artist, a key, a text, and these header fields:
   - **Format:** `plain` ("chords over lyrics": a line of chords above each line of lyrics) or `chordpro` (chords in square brackets inside the lyrics, e.g. `[G]Amazing [C]grace`).
-  - **Notation:** `international` (`B` is B, `Bb` is B flat) or `german`, the Central European notation (`H` is B, `B` is B flat).
+  - **Notation:** `international` (`B` is B, `Bb` is B flat), `german`, the Central European notation (`H` is B, `B` is B flat), or `unknown` (from M5: nobody knows; chords are shown as written).
   - **Source** (optional): the name of the website the song came from, as plain text — the domain with its ending, e.g. `akordy.sk` — and the date of import. There is no link to the original. A song typed in by hand has no source.
 - Rule: the text is kept exactly as written; neither the format nor the notation ever changes it.
 - Rule: lines end with a line break; `\r\n` and `\r` (Windows and old Mac line ends) count as one line break, in both formats.
 - Rule: given a song whose format is missing or unknown, then it is shown as `plain` (nothing is lost: `plain` shows every line as written).
-- Rule: given a song whose notation is missing or unknown, then it counts as `international`.
+- Rule: given a song whose notation is missing or not one of the known values, then it counts as `unknown` (changed in M5, CEO 2026-11-28: the app admits it does not know rather than guess `international`; a later notation setting or transposition does not convert such a song).
 - Rule: the key is written in the song's notation (`H` in a `german` song); search finds it as written.
 - Rule: in M4 the notation does not change what is shown: chords are shown as written. It is stored so that a notation setting and transposition (after the MVP) know what `B` means.
 
@@ -147,7 +148,114 @@ How a song is stored and shown. Decision: [ADR 0008](../decisions/0008-song-form
 - Rule: the date of import is stored but not shown in M4.
 - Rule: given a song without a source, then there is no source line.
 
-### Manage songs *(planned — M5)*
+### Manage songs *(M5)*
+
+The musician's own songbook: type in or paste a song, save it, edit it, delete it — and after closing the app everything is still there. Decision on the storage: [ADR 0009](../decisions/0009-song-storage.md). Scope and the CEO's agreements: [M5](../plan/milestones/M5-manage-songs.md).
+
+**Saved on the device**
+
+- Rule: songs are saved on the device, in the browser's storage of the app. Given the user added, edited or deleted songs, when the app is closed and opened again (also after an update of the app), then the songs are exactly as the user left them.
+- Rule: songs never leave the device; nothing is sent anywhere.
+- Rule: given the very first start (nothing stored yet), then the seven sample songs are saved as songs. From then on they are ordinary songs: they can be edited and deleted, and they never come back by themselves — not after the user deleted them, not after an update. (Only when the browser's data of the app is cleared does the app start again as on the very first start.)
+- Rule: every song has an id made at random when it is added (it never changes, and songs from two devices never get the same id), and it remembers when it was added and when it was last edited. The sample songs keep their ids, so their addresses stay the same.
+- Rule: when a song is saved, the app asks the browser to keep its data for good (persistent storage), so the browser does not delete it when the device runs low on space. Whatever the browser answers, nothing is shown.
+- Rule: given the browser does not allow storage at all (e.g. some private modes), then the Songs screen shows the sample songs and reading works as before; saving or deleting shows the failure message (see *Save fails*).
+- Rule: given a stored song is damaged (a field has the wrong type or is longer than its maximum, or the id is missing), then it is left out of the app and stays in storage untouched; a warning is logged, without the song's content. Given only its format or notation is missing or not a known value, then the song is shown with the fallbacks of *Song format* (`plain`, `unknown`).
+
+**Add**
+
+- Rule: the Songs screen has an Add button (+). Tapping it opens the empty song form, address `#/new`, with the format `plain` and the notation `german` (the app's users are mostly Slovak and Czech musicians; CEO, 2026-11-28). A stored song without a valid notation counts as `unknown` (see *Song format*).
+- Rule: given a title is filled in, when the user taps Save, then the song is saved and the Song view of the new song opens in place of the form. The form is not left in the history: Back, × and Escape in that Song view go to the Songs screen, as if the song had been opened from the list.
+- Rule: when the user taps Cancel, the form closes without saving and the previous screen shows (see *Unsaved changes*).
+
+**Song form** (one screen for add and edit)
+
+- Rule: the form has these fields, in this order (a "character" in a maximum is one UTF-16 code unit, the length a browser counts — an emoji counts as 2):
+
+  | Field | Kind | Required | Maximum | Notes |
+  |---|---|---|---|---|
+  | Title | one line | yes | 200 characters | |
+  | Artist | one line | no | 200 characters | empty shows "Unknown artist" as before |
+  | Key | one line | no | 20 characters | e.g. `Am`; written in the song's notation; not checked against the chord pattern |
+  | Format | one of two | yes | — | "Chords over lyrics" (`plain`) or "ChordPro" (`chordpro`); chosen by hand |
+  | Notation | one of three | yes | — | "International — B, Bb" (`international`), "German — H, B" (`german`) or "Not sure — chords shown as written" (`unknown`); the stored values as in ADR 0008; chosen by hand |
+  | Text | many lines | no | 50 000 characters | lyrics with chords; a song may have no text yet |
+  | Source | one line | no | 100 characters | plain text, e.g. `akordy.sk`; empty means no source |
+
+- Rule: the text is saved exactly as typed or pasted: every space, tab, empty line (also at the start and the end) and character stays. Nothing in it is removed or replaced. The one exception is made by the browser in every text field: line breaks are saved as `\n` (a pasted `\r\n` becomes `\n`).
+- Rule: when the song is saved, the one-line fields (title, artist, key, source) are cleaned: spaces at the start and the end are removed, a tab or a line break inside becomes one space, and invisible control characters are removed (the ASCII control characters, the zero-width space and the byte order mark, and the marks that change the text direction). Letters, accents, emoji and all visible characters stay.
+- Rule: given the title is empty or only spaces, when the user taps Save, then nothing is saved, the message "Enter a title." shows below the title field and the field gets the focus.
+- Rule: given a field is longer than its maximum (after cleaning), when the user taps Save, then nothing is saved and the field shows "Too long: 230 characters, at most 200." (with the field's numbers) below it; the first such field gets the focus. Typing and pasting are never cut off, so no text is lost silently.
+- Rule: the format (two values) and the notation (three values) are radio choices; only those values can be chosen and saved. Given a song with the notation `unknown` (e.g. imported), then the edit form has "Not sure" selected.
+- Rule: the text field uses the monospaced font and does not wrap lines (a long line scrolls sideways inside the field), so a line of chords stays above its lyrics while typing. The page itself never scrolls sideways.
+- Rule: the form does not correct, capitalize or spell-check what is typed in the text, key and source (`Ami` stays `Ami`).
+- Rule: a source typed by hand does not set the date of import (that comes with import, M8); editing a song keeps its date of import unchanged.
+- Rule: two songs may have the same title and artist (versions of one song, a song from a friend); nothing warns about it.
+
+**Help next to a field**
+
+- Rule: the labels Format and Notation each have a small "?" button. Tapping it opens a short explanation with an example (texts below); it closes with its Close button, with Escape or with a tap outside it. The form stays as it was.
+- Rule: help for Format:
+  - Title: "Format"
+  - "**Chords over lyrics** — a line of chords above each line of lyrics, as on most song websites:" then the example `G           C        G` / `Amazing grace, how sweet`
+  - "**ChordPro** — chords in square brackets, right before the syllable they belong to. Chords stay on their syllables when a line wraps on a small screen:" then the example `[G]Amazing [C]grace, how [G]sweet`
+  - "In ChordPro, `{sov}` and `{eov}` mark a verse, `{soc}` and `{eoc}` the chorus, and `{c: Capo 2}` adds a comment."
+- Rule: help for Notation:
+  - Title: "Notation"
+  - "Which letter means which chord in this song:"
+  - "**International** — `B` is B, `Bb` is B flat. Used in English songbooks."
+  - "**German** — `H` is B, `B` is B flat. Used in Slovak, Czech and German songbooks."
+  - "**Not sure** — choose this when you do not know. Chords are always shown as written."
+  - "The app shows chords as written. The notation tells later features (such as transposing) what `B` means."
+- Rule: the help is plain text and examples written by us; the "?" button with its explanation is one component that takes its title and content from the screen that uses it.
+
+**Edit**
+
+- Rule: the Song view has an Edit button. Tapping it opens the song form filled with the song, address `#/song/<song id>/edit`.
+- Rule: given changes, when the user taps Save, then the changes are saved, the time of the last edit is updated, and the Song view of the song shows the changes. The form is not left in the history: given Songs screen → Song view → Edit → Save, then ×, Escape or Back in the Song view go to the Songs screen (not to the song again).
+- Rule: given no changes, when the user taps Save, then the Song view shows again and the time of the last edit does not change. The comparison is made after cleaning (a space added at the end of the title alone is no change).
+- Rule: given an edit address of a song that does not exist (e.g. deleted), then the Songs screen shows and the address becomes the Songs screen address, as for an unknown song.
+- Rule: the bottom of the edit form shows a muted line with the short id and the dates, e.g. `ID 3f2a91 · added 28 Nov 2026 · edited 2 Dec 2026`:
+  - The short id is the first six characters of the id; an id that was not made at random (the sample songs) is shown whole, e.g. `ID sample-amazing-grace`.
+  - Dates are in English, day, short month and year, in the device's time zone. "· edited …" is left out while the song was never edited after it was added.
+  - Only the edit form shows this line: not the add form, not the Song view (it keeps only the source line), not the song list.
+
+**Delete**
+
+- Rule: the bottom of the edit form has a Delete song button in the danger color. Tapping it asks: title "Delete “<song title>”?", text "This cannot be undone.", buttons Cancel and Delete.
+- Rule: Delete removes the song from the device and shows the Songs screen. Cancel (or Escape, or a tap outside the question) closes the question and leaves the form as it was.
+- Rule: after a delete, the song is gone everywhere: an address of it (Song view or edit form, e.g. by Back) shows the Songs screen. There is no trash and no undo.
+- Rule: given there are no songs at all, then the Songs screen shows "0 songs" and, instead of the list, the empty state "No songs yet. Tap + to add one." (also while a search text is typed).
+
+**Unsaved changes**
+
+- Rule: the form has unsaved changes when any field differs from what the form showed when it opened (for the add form: empty fields, `plain`, `german`). Typing and then removing the same text leaves no changes.
+- Rule: given unsaved changes, when the user taps Cancel, presses Escape (with no question or help open), taps Back or uses the Android back gesture, then the app asks: title "Discard changes?", buttons Keep editing and Discard. Keep editing closes the question and the form stays exactly as it was (the address stays the form's). Discard leaves the form without saving, to where the user was going.
+- Rule: given no unsaved changes, leaving the form asks nothing; Escape (with no question or help open) then does what Cancel does.
+- Rule: given a help or a question is open, when the user taps Back or uses the Android back gesture, then it closes and the screen then acts on Back as above (for a form with unsaved changes: the Discard question). Given the Discard question is open, Back counts as Keep editing.
+- Rule: given unsaved changes, when the user reloads the page or closes the tab or window, then the browser's own question ("Leave site?") is shown, where the browser offers one (Safari on iPhone does not — accepted).
+
+**Save fails**
+
+- Rule: given saving fails (the device's storage is full, the browser does not allow storage, or the app was updated in another tab), then the form stays open with everything typed, and a message shows at the top of the form: "Could not save the song. The device's storage is full or not available. Your text is still here — copy it somewhere safe." The message stays until the next Save; nothing typed is lost.
+- Rule: given deleting fails for the same reasons, then the question closes, the form stays, and the message reads "Could not delete the song." with the same explanation.
+- Rule: given the song was deleted in another tab while its edit form is open, when the user taps Save, then the song is saved again (nothing typed is lost).
+
+**The app was updated in another tab**
+
+- Rule: given the app is open in a tab and a newer version of the app that changes the stored data starts in another tab, then the old tab stops using the storage and shows a bar at the top: "The app was updated." with one button, Reload, which reloads the tab. An open form keeps its text on screen so it can be copied; a Save there fails with the message of *Save fails*.
+- Rule: changes of the songs in another tab of the same version need nothing: each screen reads the songs when it opens (a song added in another tab shows in the list the next time the Songs screen opens).
+
+**Security** — every field (title, artist, key, source, text) is user input that may hold an attack.
+
+- Rule: every field is shown as plain text everywhere — the Songs screen, the Song view in both formats (also chords and directives of a `chordpro` song), the source line, the form, the delete question: markup such as `<b>`, `<script>…</script>` or `<img src=x onerror=…>` shows exactly as typed, and nothing in it runs or changes the look.
+- Rule: the text is saved as written; there is no "sanitizer" that removes characters. Safety comes from showing every value as text (only the safe rendering writes HTML into the page).
+- Rule: each field is checked for its type and its maximum length when it is saved and again when it is read from storage; the format and the notation take only their allowed values (see *Saved on the device* for what happens to a damaged song).
+- Rule: as a second line of defense, the app runs only its own scripts: a Content Security Policy forbids scripts from other sites, inline scripts and plugins.
+
+**Good to know**
+
+- Rule: the songs live only on this device and in this browser until backup arrives with import and export (M8) — keep your main songbook elsewhere too. On iPhone, Safari and the app on the home screen keep separate songs, and Safari may delete the data of a website not added to the home screen after about seven days without use ([install-offline.md](install-offline.md#good-to-know-affects-m5-and-m8)). The README says so; the app shows nothing about it in M5.
 
 ## UX and visual design
 
@@ -325,6 +433,126 @@ The Song view screen stays as in M3 (bar, header, sheet); only the sheet changes
 | Section marks and comments recognizable in both themes | Marks are bold mono in `--color-muted`, comments `--color-muted` (about 4.5 : 1 light, about 7.3 : 1 dark, as the artist line). |
 | Portrait and landscape, phone to desktop | Nothing depends on the width except where lines wrap; the 720 px column wraps less. |
 
+### Manage songs (M5)
+
+The song form is a **browse screen** (full attention, before or between gigs): touch targets ≥ `--touch-min` (44 px), the usual type scale. New shared components (pill button, round add button, text field, radio choice, help button, dialog, notice bar) are in the [design guidelines](../design/guidelines.md#components-m5).
+
+**Songs screen: Add button and empty songbook**
+
+```
+┌────────────────────────────────┐
+│ Songs                    ┌──┐  │  page header: heading and count left,
+│ 7 songs                  │+ │  │  Add button right (round 44 px, accent),
+│                          └──┘  │  centered on the header's height
+│ ┌────────────────────────────┐ │
+│ │ Search title, artist, key  │ │
+│ └────────────────────────────┘ │
+│ ┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐ │  no songs at all: the empty state reads
+│   No songs yet. Tap + to add   │  "No songs yet. Tap + to add one."
+│ │ one.                       │ │
+│ └ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┘ │
+```
+
+- The page header becomes a row: the heading and the count on the left (as before), the Add button on the right with a `--space-3` gap. The button's name (tooltip with a mouse) is "Add song". It scrolls with the page, like the header.
+- The empty songbook uses the existing empty state component with the new text.
+
+**Song view: Edit button**
+
+```
+┌────────────────────────────────┐
+│ ┌──┐ ┌──┐          ┌──┐  ┌──┐  │  stage top bar: × and Edit left,
+│ │× │ │✎ │          │A−│  │A+│  │  A− and A+ right; all 56 × 56 px
+│ └──┘ └──┘          └──┘  └──┘  │
+├────────────────────────────────┤
+```
+
+- Edit is a stage button (56 px) next to the close button, `--space-2` gap: a pencil drawn as an inline SVG, 24 px, 2 px stroke, `currentColor`; name "Edit song". Close and Edit both leave the view, so a mis-tap between them is harmless; the font size buttons stay apart on the right.
+
+**Song form screen**
+
+Phone, 320 px wide (288 px column). Edit form shown; the add form has the heading "New song" and no id line and no Delete button.
+
+```
+┌────────────────────────────────┐
+│ ┌──────┐  Edit song   ┌──────┐ │  form bar, sticky: 61 px
+│ │Cancel│              │ Save │ │  (8 + 44 + 8 px padding + 1 px border)
+│ └──────┘              └──────┘ │  Cancel: pill; Save: pill, accent
+├────────────────────────────────┤
+│ ┃ Could not save the song. The │  failure message (only after a failed
+│ ┃ device's storage is full …   │  save): 4 px danger bar on the left
+│                                │  24 px
+│ Title                          │  label: small 600, ink
+│ ┌────────────────────────────┐ │  text field: 48 px high
+│ │ Amazing Grace              │ │
+│ └────────────────────────────┘ │
+│ Enter a title.                 │  field message: small, danger (only on error)
+│                                │  16 px between fields
+│ Artist                         │
+│ ┌────────────────────────────┐ │
+│ │ Traditional                │ │
+│ └────────────────────────────┘ │
+│ Key                            │
+│ ┌──────────┐                   │  key field: 120 px wide
+│ │ G        │                   │
+│ └──────────┘                   │
+│ Format (?)                     │  label + help button
+│ (•) Chords over lyrics         │  radio choices: one per row, 44 px high
+│ ( ) ChordPro                   │
+│ Notation (?)                   │
+│ ( ) International — B, Bb      │
+│ (•) German — H, B              │
+│ ( ) Not sure — chords shown as │  label wraps; the row grows
+│     written                    │
+│ Text                           │
+│ ┌────────────────────────────┐ │  text area: mono 16 px, line height 1.5,
+│ │G         C        G        │ │  no wrapping (scrolls sideways inside),
+│ │Amazing grace, how sweet th…│ │  18 lines high (~456 px), the user may
+│ │…                           │ │  make it taller
+│ └────────────────────────────┘ │
+│ Source                         │
+│ ┌────────────────────────────┐ │
+│ │ akordy.sk                  │ │
+│ └────────────────────────────┘ │
+│                                │  24 px
+│ ID 3f2a91 · added 28 Nov 2026  │  id line: small, muted, wraps
+│ · edited 2 Dec 2026            │
+│                                │  32 px
+│ ┌────────────────────────────┐ │  Delete song: pill, full width,
+│ │        Delete song         │ │  danger text and border
+│ └────────────────────────────┘ │
+│                                │  24 px bottom padding
+└────────────────────────────────┘
+```
+
+- **Page:** the same column, gutters and background as every screen; like the Song view, **no top padding** above the bar, which sits at the very top.
+- **Form bar:** sticky (`position: sticky; top: 0`), `--color-bg`, 1 px `--color-line` bottom border, padding `--space-2` 0. Left Cancel (pill), right Save (accent pill), the heading ("New song" / "Edit song", `row` step, ink) centered between them, one line with an ellipsis. The bar stays visible while the page scrolls and while the phone keyboard is open, so Save is always one tap away.
+- **Fields:** label above its field, `--space-1` between them, `--space-4` between fields. Text fields use the text field component; the key field is 120 px wide (20 characters fit when scrolled; a key is short). The field message sits `--space-1` below its field.
+- **Radio choices:** the native radio button with its label, each row at least 44 px high (the whole row is the target), `accent-color: var(--color-accent)`. Vertical, because "International — B, Bb" does not fit half of a 288 px column.
+- **Text area:** the text field component, but `--font-mono` 16 px, line height 1.5, `white-space: pre` (`wrap="off"`), 18 rows, `resize: vertical`, padding `--space-3`. No spell-check, autocorrect or autocapitalize.
+- **Failure message:** at the top of the form, below the bar: `--color-surface` background, 4 px `--color-danger` bar on the left, `--radius-card`, padding `--space-3` `--space-4`, `body` text in ink. The screen scrolls to it when it appears.
+- **Id line:** `small`, `--color-muted`, `--space-5` above it, wraps.
+- **Delete song:** a pill button at full column width, `--color-surface` background, `--color-danger` text and a 1 px `--color-danger` border, `--space-6` above it, so it is far from the fields and from Save.
+- **Delete question and Discard question:** the dialog component. Delete: title "Delete “Amazing Grace”?" (the title wraps, never shortened), text "This cannot be undone.", buttons Cancel (pill) and Delete (danger pill). Discard: title "Discard changes?", buttons Keep editing (pill) and Discard (danger pill). The safe choice comes first and gets the focus when the question opens.
+- **Help:** the dialog component with the help title, the text (`body`) and the examples (`--font-mono` 14 px on `--color-bg`, `--radius-chip`, padding `--space-2` `--space-3`, `white-space: pre`, scrolls sideways inside if needed), and one Close button (pill).
+- **The app was updated:** the notice bar at the top of the window, above every screen.
+- **Landscape phone** (640 × 360): the same layout; with the keyboard open little of the form shows. The sticky bar should keep Save and Cancel visible while the keyboard is open — best effort: iPhone Safari moves the visible area with the keyboard, so the CEO checks it on a phone. A dialog is at most 85 % of the screen height in both variants; its content scrolls inside.
+- **Tablet / desktop:** the same layout in the 720 px column; the dialogs are centered cards (see the guidelines).
+
+**Self-check**
+
+| Rule | Check |
+|---|---|
+| Form bar fits a 320 px phone | Cancel ≈ 6 letters × 8.5 px + 32 px ≈ 83 px; Save ≈ 70 px; heading "Edit song" ≈ 80 px; 83 + 70 + 2 × 8 gap = 169 px, 119 px left for the heading ≥ 80 px. A longer heading ends with an ellipsis. |
+| Touch targets ≥ 44 px | Pills 44 px high; radio rows ≥ 44 px; the "?" help button has a 44 × 44 px target around its 24 px circle; Add 44 px; Edit 56 px. |
+| Song view bar fits 320 px | 4 × 56 + 2 × 8 = 240 px ≤ 288 px; 48 px free between Edit and A−. |
+| No sideways scroll of the page | Fields are full column width (the key 120 px); the text area scrolls inside itself; titles in dialogs and the id line wrap. |
+| No zoom on iPhone when a field gets focus | All fields 16 px or larger. |
+| Text is never lost | Typing and pasting are not cut off (no `maxlength`); a failed save keeps the form. |
+| Save and Add readable | Filled accent buttons use `--color-accent-fill` (light `#c2410c`: white text 5.2 : 1; dark `#ff7a4d`: dark text 7.4 : 1), not the lighter accent (3.8 : 1 with white). |
+| Danger color readable | `--color-danger` on `--color-surface`: about 5.2 : 1 light, about 6.2 : 1 dark; on `--color-bg` about 4.7 : 1 light, 6.8 : 1 dark. On-color text on the danger and accent pills: see the guidelines. |
+| Delete far from Save | Save is in the bar at the top, Delete at the very end of the form, below the id line, with 32 px above it. |
+| Portrait and landscape, phone to desktop | Nothing depends on the width except the dialog (bottom sheet below 600 px, centered card from 600 px); both are at most 85 % of the screen height with inner scrolling, so the help fits a 640 × 360 phone. |
+
 ## Notes for Design / Engineering
 
 - Song fields for M1: `id`, `title`, `artist`, `key`, `text` (M4 adds the format fields, below).
@@ -343,7 +571,7 @@ Song view (M3):
 
 Song format (M4):
 
-- **Song fields:** `id`, `title`, `artist`, `key`, `text`, `format` (`'plain' | 'chordpro'`), `notation` (`'international' | 'german'`), and optional `source` (plain text) and `importedAt` (ISO date `YYYY-MM-DD`). The `Song` type in `domain/songs.js`; the format and notation values are domain constants there. The fallbacks (unknown format → `plain`, unknown notation → `international`) are small domain functions with unit tests, so M5 storage reuses them.
+- **Song fields:** `id`, `title`, `artist`, `key`, `text`, `format` (`'plain' | 'chordpro'`), `notation` (`'international' | 'german'`; `'unknown'` from M5), and optional `source` (plain text) and `importedAt` (ISO date `YYYY-MM-DD`). The `Song` type in `domain/songs.js`; the format and notation values are domain constants there. The fallbacks (unknown format → `plain`, unknown notation → `international`, from M5 → `unknown`) are small domain functions with unit tests, so M5 storage reuses them.
 - **Where the code goes:**
   - `domain/chords.js` — stays: `isChordLine` is the reader of the `plain` format (no longer provisional; update its comments).
   - `domain/chordpro.js` (new) — `parseChordPro(text)`: pure, text in, a list of blocks out (lines of pieces `{ chord, text }`, section blocks — verse with its number or mark, chorus with its mark — chorus references, comments, empty lines; hidden directives and `#` lines dropped). Unit tests with every rule above. Knows nothing of HTML.
@@ -358,14 +586,52 @@ Song format (M4):
 - **No ADR beyond 0008, no new dependency, no new font file** (Slovak letters are in the Latin Extended subset of the fonts).
 - **Tests:** unit tests for `parseChordPro` and the fallbacks; e2e: a `chordpro` song shows its chords above the right syllables (the chord's left edge over its syllable's left edge) at 320 px and 32 px, also after a line wraps; no horizontal scroll; verse numbers, the `R:` mark and a `{chorus}` reference (*Tancuj, tancuj, vykrúcaj*) and a comment shown; the source line as plain text (no link; markup in it shown as text), none for an empty source; a `plain` song unchanged; the song count now "7 songs".
 
+Manage songs (M5):
+
+- **Storage:** [ADR 0009](../decisions/0009-song-storage.md) — IndexedDB used directly, database `setlist`, version 1, one store `songs` (key `id`). Records have exactly the `Song` shape. The sample songs are written in the upgrade from no database only. The data version is the database version; `versionchange` → close and tell the app. `navigator.storage.persist()` after a successful save when `navigator.storage.persisted()` is false (feature-detect; ignore the answer).
+- **Song fields:** the `Song` type gains `createdAt` and `updatedAt` (ISO date-time strings from `new Date().toISOString()`); new songs get `crypto.randomUUID()` (a secure context: `https` or `localhost`; the dev server's LAN address is not one — note for testing on a phone). The form never sets `importedAt`.
+- **Where the code goes:**
+  - `domain/song-fields.js` (new) — the limits (domain constants), `cleanLine(value)` (trim, tab / line break → space, control characters removed), `songFieldErrors(fields)` (required title, maximum lengths, allowed format and notation → a list of `{ field, message }`), and `validateSong(record)` → `Song | null` (types, lengths, non-empty id, ISO dates; unknown format / notation → the M4 fallbacks). One job: the rules of a song's fields. Pure, unit tests with every rule above. `domain/songs.js` keeps the type, order and search.
+  - `data/database.js` (new) — the only code that touches IndexedDB: open, upgrade (seed), `versionchange`, promise wrappers for requests and transactions, `onOutdated(callback)`. The expected failures (`QuotaExceededError`, `SecurityError`, `InvalidStateError` after close, a refused open) reach callers by their `error.name`, per ADR 0007.
+  - `data/song-repository.js` — `listSongs()` and `getSong(id)` (every record through `validateSong`), `addSong(fields)` → `Song`, `updateSong(id, fields)` → `Song` (a `put`, so a song deleted in another tab is saved again), `deleteSong(id)`. When storage is not allowed, `listSongs` / `getSong` fall back to the sample songs in memory and the writes reject.
+    - The data layer cannot import `ui/log.js`, so the warning about a damaged record is logged by the caller: e.g. the repository also returns how many records it skipped, and the screen logs that number (no content). The task picks the smallest form and records it in ARCHITECTURE.md.
+  - `data/sample-songs.js` — unchanged data; its header comment says they seed the first start.
+  - `ui/routes.js` — routes `{ screen: 'new-song' }` for `#/new` and `{ screen: 'edit-song', id }` for `#/song/<id>/edit`; `newSongHash`, `editSongHash(id)`. Unit tests.
+  - `ui/router.js` — two additions:
+    - **History state** (with T-042): the router writes `{ index, from }` into `history.state` of every entry it shows (`index` counts entries of this app run; `from` is the screen before it), so `navigation.from` is right again after Back and Forward. A new `navigation.replace(hash)` replaces the current entry and keeps its `from`. Add: Save → `replace(songHash(id))` (the Song view's `from` stays `songs`, so × goes back). Edit: Save → `back()` when the form was opened from this song's Song view, else `replace(songHash(id))`. E2e: Songs → Song → Edit → Save → × / Back / Escape → Songs; Songs → + → Save → × / Back → Songs.
+    - **Leave guard** (T-045): the shown screen may answer whether it can be left (asynchronously, after its question). On a `hashchange` away from a guarded screen, the router computes the move from `history.state.index` (an entry without state is a typed address: one step forward), restores the form's entry with `history.go(-delta)` while ignoring the `hashchange` that causes, shows the question, and on Discard repeats the move (`history.go(delta)`, or the typed address) with the guard off. `beforeunload` while the screen says unsaved. Tests: Cancel, Escape, Back, the Android back gesture (`page.goBack()`), a typed address, Keep editing and Discard, with and without changes.
+  - `ui/screens/song-form-screen.js` (new) — one screen for add and edit (`load` returns the song or the empty draft; `null` for an unknown id): reads the fields, unsaved-changes state, Save (errors from `songFieldErrors`, then the repository), Delete, the failure message, the questions. The text area's value is set and compared as the browser normalises it (`\n` line breaks); the view writes the text so that a leading empty line survives the HTML parser (a newline right after `<textarea>`, or the value set by property) — tested with a text that starts and ends with empty lines.
+  - `ui/views/song-form-view.js` (new) — pure: form state → HTML (fields with values, messages, radio choices, help buttons with their content, id line, Delete). The id line (short id and `Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })`) is a small function here, unit-tested with fixed dates.
+  - `ui/components/help-button.js` (new) — the "?" button and its dialog; takes `{ id, title, content }` from outside (`content` is an `html` template); no options for the future.
+  - `ui/components/dialog.js` (new) — the dialog markup (title, content, buttons) used by the help, delete and discard questions.
+  - `ui/dialogs.js` (new) — the side effects of dialogs: open with `showModal()`, close, close on a tap outside (the click target is the `<dialog>` for its padding too, so compare the click position with the dialog's rectangle), return the focus, resolve a question with the chosen button, close on Back (Chrome does it by itself, Safari does not: the router tells the open dialog first). Native `<dialog>` (Escape closes it by itself; the screen's Escape key is not handled while a dialog is open).
+  - `ui/update-notice.js` (new) — shows the notice bar "The app was updated." with Reload; `main.js` wires `onOutdated` from `data/database.js` to it (wiring only).
+  - `ui/views/songs-view.js` — Add button in the header, the "No songs yet" empty state. `ui/views/song-view.js` — Edit button (`EDIT_ICON` in `ui/components/stage-button.js`), and it drops its own repairs of bad data (`songFormat`, the `source` type check): it trusts the `Song` type (tech debt entry removed).
+  - `ui/screens/song-screen.js` — the Edit action; nothing else.
+  - Styles: `styles/song-form-screen.css` (new, the form screen); `styles/components.css` — pill button, round add button, text field, radio choice, help button, dialog, notice bar, failure message; `styles/tokens.css` — `--color-danger`, `--color-on-accent`, `--color-accent-fill`, `--radius-dialog`. `index.html` loads the new stylesheet.
+  - `index.html` — the Content Security Policy as a `<meta http-equiv>` (GitHub Pages cannot set headers): `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'`. `'unsafe-inline'` for styles only, because the sheets set `--sheet-size` and `--mark-chars` in a `style` attribute (numbers made by our code); scripts stay strict, which is what stops an attack. `frame-ancestors` cannot be set in a meta tag (accepted). Check that the service worker, the manifest, the fonts and the e2e test helpers (`addInitScript`) still work, that the meta tag comes before the module script, and that the offline e2e server serves the same `index.html`.
+  - Every new file goes into the offline list (`app/sw.js`); every change to `app/` needs a new VERSION.
+- **Fits the architecture:** yes — storage only in `data/`, rules of the fields in `domain/`, one new screen with its pure view, shared dialogs as components plus one side-effect module. The router gains one mechanism (leave guard) that M6 (setlist form) reuses. No new dependency; ADR 0009 for the storage. ARCHITECTURE.md: storage, routes, leave guard, dialogs, CSP, updated with the tasks.
+- **No input "sanitizer":** escaping on output (`ui/html.js`) is the defense; `cleanLine` is a clean-up of one-line fields, not a security filter.
+- **Tests:**
+  - Unit: `song-fields.js` (cleaning, every limit at max and max + 1 (also with an emoji), required title, allowed values, `validateSong` with every wrong type), routes, the id line, the form view (values escaped, messages, radio states).
+  - E2e (Chromium and WebKit): add → reload → still there; edit → reload; delete → reload; the sample songs only on the first start (delete one, reload: it stays deleted); a damaged record in IndexedDB is skipped and the others show; storage refused (a blocked `indexedDB.open`) → sample songs, Save shows the failure message with the text kept; quota error on save → message, text kept; Back / Escape / Cancel with and without changes; the `versionchange` notice (a second page opens the database with a higher version); help opens and closes; no sideways page scroll at 320 px with a long line in the text field.
+  - **Attack strings in every field** (title, artist, key, source, text in both formats, e.g. `<img src=x onerror=alert(1)>`, `"><script>alert(1)</script>`, `</textarea><script>alert(1)</script>`, `javascript:alert(1)`, `[<img src=x onerror=alert(1)>]`, `{c: <b>x</b>}`): saved, then checked in the list, the Song view, the edit form and the delete question — shown as text, no element created from them, no dialog fired (`page.on('dialog')`), no CSP violation in normal use.
+
 ## Out of scope
 
-- Adding, editing or deleting songs (M5).
+- Manage songs (M5): detecting the format of a pasted text, import and export of files, backup (M8); cleaning up text pasted from a website (an importer for that website, after the MVP); a preview of the song while typing; tags and categories; transposition; sync; a trash or undo for deleted songs; warning about songs with the same title; showing the id or dates anywhere but the edit form; a message in the app about iPhone keeping separate data.
 - Categories or tags of songs (an idea in the inbox).
 - Filters, tags, sorting options, favorites.
-- In the Song view: previous / next song (play mode, M7), editing (M5), transposition (after the MVP), a display of the current font size.
+- In the Song view: previous / next song (play mode, M7), transposition (after the MVP), a display of the current font size.
 - Song format (M4): detecting the format of a pasted text, import and export, converting between formats (a later milestone); a notation setting that shows `H` / `B` the user's way (after the MVP); other ChordPro features — bridge and other sections, tabs, grids, chord diagrams, `{title}` and other header directives as song fields, several songs in one text; formats other than `plain` and `chordpro` (e.g. tabs).
 
 ## Open questions
 
-- *(none open)* The Slovak words of *Tichá noc* were decided by the CEO on 2026-11-27: both Slovak songs count as folk songs and are used as found. One of the sources checked names Ladislav Hohoš as the author of the words (the others give no author); this is noted in the T-037 PR.
+Manage songs (M5):
+
+- *(none open)* Decided by the CEO on 2026-11-28: the stored notation values stay `international` / `german`, plus a third value `unknown`; the form names them "International — B, Bb", "German — H, B" and "Not sure — chords shown as written"; a new song starts with `german`; a missing or unknown stored notation counts as `unknown` (no longer `international`). Showing chords in the user's preferred notation is an idea in the [inbox](../plan/inbox.md) (after the MVP, with transposition).
+
+Earlier:
+
+- The Slovak words of *Tichá noc* were decided by the CEO on 2026-11-27: both Slovak songs count as folk songs and are used as found. One of the sources checked names Ladislav Hohoš as the author of the words (the others give no author); this is noted in the T-037 PR.
