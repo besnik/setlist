@@ -7,7 +7,7 @@ description: Close a milestone after its last task is merged — architecture re
 
 Goal: after a milestone, the repository says what is **true now** — not how we got there. Specs keep the rules the app follows; working notes written to build the milestone are removed once the code, the tests and `ARCHITECTURE.md` hold them. Git history and the merged PRs keep everything that is removed.
 
-One session, one PR: `docs: close MN` (branch `docs/close-mN`). Review: none by a lead beyond the architecture review in step 1 (plan-only PR, [Reviews](../../../docs/company/operating-model.md#reviews)).
+One session, one PR: `docs: close MN` (branch `docs/close-mN`). Review: the architecture review in step 1 and a light QA check of the compaction in step 7 ([Reviews](../../../docs/company/operating-model.md#reviews)).
 
 🛑 = stop and wait for the CEO.
 
@@ -35,6 +35,18 @@ Set everything the milestone finished to its final state. The project's check co
 Tasks that are still `approved` or `proposed` move as rows into the next milestone (a section *Cleanup carried over* or its task table). The closed milestone keeps one line saying where they went. A done milestone holds only `done` and `rejected` tasks.
 
 ## 4. Compact the spec
+
+**Remove a value, keep a rule.** Before removing a line, ask what it is:
+
+| It is … | Example | Do |
+|---|---|---|
+| a **value** the code holds | `56 px`, `--mark-gap: 0.35em`, line height 1.2 | remove |
+| **history** an ADR, the spec or a PR records | options considered, the GM's first lean | remove |
+| a **rule for future code or screens** — "every …", "never …", "always …" | every flex child with text has `min-width: 0`; ids in addresses are encoded | keep — move it to its general home (design guidelines, `ARCHITECTURE.md`, golden principles), not into one component's notes |
+| a **deliberate "no X"** — a choice someone might later undo by accident | no `viewport-fit=cover`, no sticky parts, no install button | keep, one short line |
+| a **platform limit** that guides testing or support | works only in a secure context; supported from iOS 16.4 | keep — in `ARCHITECTURE.md` or the spec |
+
+A line can mix them: keep the rule, drop the value. When unsure, keep it.
 
 For the sections of this milestone in its spec file(s):
 
@@ -64,4 +76,8 @@ ADRs (they are superseded, never deleted), cost records in `docs/plan/costs/`, v
 
 ## 7. Check and ship
 
-Run the check command and the unit tests. Open the PR (`open-pr` skill); in *What*, list per file what was removed or moved and where it lives now, so the CEO can review the compaction quickly. 🛑 The CEO merges.
+Run the check command and the unit tests.
+
+**Light QA of the compaction** (QA lead, standard tier) before the PR: the brief is the diff and this skill. The lead checks that no behavior rule changed, that every removed note lives in the code, `ARCHITECTURE.md`, an ADR or the guidelines, and that no rule, deliberate "no X" or platform limit from step 4 was lost. Findings are fixed in the same PR. Record the run in `docs/plan/costs/`.
+
+Open the PR (`open-pr` skill); in *What*, list per file what was removed or moved and where it lives now, so the CEO can review the compaction quickly. 🛑 The CEO merges.

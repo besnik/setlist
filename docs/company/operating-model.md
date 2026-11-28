@@ -135,6 +135,7 @@ Tests and the project's check command run on every change. A **review** is the i
 | **Small task** touching a **risky area** | light QA | QA lead | standard |
 | **Larger task** | one run: light QA plus the structure questions | QA lead | standard |
 | **End of a milestone** (`close-milestone` skill) | the structure questions over the whole codebase; cleanup tasks proposed to the CEO | Engineering lead | strong |
+| **Milestone compaction** (`close-milestone` skill) | light QA: no rule lost, every removed note lives elsewhere | QA lead | standard |
 | Full QA | only when the CEO asks (the GM proposes it before a public release) | QA lead | standard |
 
 - **Larger task:** adds a screen, a layer or a cross-cutting mechanism, or changes more than ~5 code files.
