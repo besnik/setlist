@@ -23,8 +23,17 @@ Paste a song from the web into a new song, close the app, open it again: the son
 - **Unsaved changes:** leaving the form with unsaved changes asks first.
 - **iPhone note** (Safari and the app on the home screen keep separate data, see [install-offline.md](../../product-specs/install-offline.md#good-to-know-affects-m5-and-m8)): in the README; later in the user guide (M9). Nothing in the app in M5 — sync between devices would remove the problem (CEO, 2026-11-28).
 
+## Agreed for the spec (CEO, 2026-11-28)
+
+- **Security first:** every field (title, artist, key, source, text) is user input that may hold an attack. The text is stored as written and escaped on every output (`ui/html.js`, the only way HTML reaches the page); no input "sanitizer" that removes characters. Each field is checked for its type and length when saved and when read from storage; the format and the notation only take their allowed values. A Content Security Policy in `index.html` as a second line of defense (only the app's own scripts run). Tests put known attack strings into every field and check they are shown as text and nothing runs.
+- **Basic clean-up of input:** spaces around single-line fields are trimmed and invisible control characters removed; the song text stays exactly as written. Maximum lengths: title and artist 200 characters, key 20, source 100, text 50 000.
+- **Same titles allowed:** two songs may have the same title and artist (versions of one song, a song from a friend). The bottom of the edit form shows a muted line with the short id and the dates, e.g. `ID 3f2a91 · added 28 Nov 2026 · edited 2 Dec 2026`. The song list shows no id: the user tells the songs apart by renaming one.
+- **Save fails** (storage full or not allowed): the form stays open with everything typed and a short message is shown; text is never lost silently.
+- **A newer version in another tab:** when a new app version changes the shape of the stored data while an old tab is open, the old tab lets go of the storage and shows "The app was updated — reload" with one button; an open form keeps its text on screen so it can be copied. Changes of the data alone need nothing: each screen reads the storage when it opens.
+- **Delete:** only a confirmation. No trash and no undo in M5; remembering deleted songs comes with sync, where it is needed.
+
 ## Out of scope
 
-- Detecting the format of a pasted text, import and export of files (M8).
+- Detecting the format of a pasted text, import and export of files (M8). Cleaning up text pasted from a website (tabs, non-breaking spaces) belongs to an importer for that website (after the MVP).
 - Preview of the song while typing, tags and categories, transposition, sync.
 - Backup: stays in M8 (CEO, 2026-11-28). Until then the songs live only on the device — keep the main songbook elsewhere too.
