@@ -62,7 +62,10 @@ Decision: [ADR 0006](docs/decisions/0006-screens-views-and-components.md).
 app/src/ui/
   html.js, events.js  safe rendering; delegated events and keys
   log.js              the app's log (see "Errors and logging")
-  wake-lock.js        keeps the screen on (Screen Wake Lock), started and stopped by a screen
+  wake-lock.js        keeps the screen on (Screen Wake Lock), started and stopped by a screen;
+                      needs a secure context, so on a phone it works on the deployed site,
+                      not through the dev server's LAN address; Chrome / Edge, Safari on
+                      iPhone from iOS 16.4 (in a home-screen app from iOS 18.4)
   routes.js           pure: address hash → route, song → address
   router.js           follows the address and shows one screen at a time
   screens/            one module per screen: state, actions, side effects
@@ -97,7 +100,7 @@ Spec: [install-offline.md](docs/product-specs/install-offline.md).
 - On install it downloads every file past the HTTP cache and stores them only when all arrived; one failure fails the install, so the app keeps its current version. It answers the app's requests from its own version's cache (cache-first). On activate it removes older caches.
 - A new version is used from the next start: the browser activates the new worker only when no page of the app is open (no `skipWaiting`, no forced reload).
 - **Every change to a file under `app/` changes `VERSION`, and every new file goes into the offline list** — without a build there are no content hashes. `npm run check` enforces both: the offline list must match the files under `app/`, and when a file under `app/` differs from the base, `VERSION` must differ too. The base is `origin/main` on a pull request and the parent commit `HEAD^` on deploy (which also catches two pull requests merged with the same version); locally it is `origin/main` (or `CHECK_VERSION_BASE`), and the rule is skipped with a note when that is missing — run `git fetch origin main` first.
-- **Development:** on `localhost` the worker is not registered (and one left from an earlier visit is removed), so a reload always shows edited files. `?sw` in the address turns it on there; the e2e tests of offline and updates (`tests/app/e2e/offline.spec.js`, Chromium only) use it with their own small server that can publish a new version, fail a file or stop.
+- **Development:** on `localhost` the worker is not registered (and one left from an earlier visit is removed), so a reload always shows edited files. `?sw` in the address turns it on there; the e2e tests of offline and updates (`tests/app/e2e/offline.spec.js`, Chromium only) use it with their own small server that can publish a new version, fail a file or stop. Playwright's WebKit does not cover the iPhone home screen, so installing on Android and iPhone is checked by the CEO by hand on the deployed site.
 
 ## Addresses
 
