@@ -59,7 +59,7 @@ Tests and the check command run on every change. An independent review by a lead
 - **Spec PR:** light QA of the spec.
 - **Small task:** no lead; the GM answers the structure questions in the PR. If it touches a risky area (security, stored data, offline, dev server, CI, deployment): light QA.
 - **Larger task** (new screen, layer or mechanism, or more than ~5 code files): one QA run that also checks the structure.
-- **End of a milestone:** the Engineering lead reviews the whole codebase; you get a list of proposed cleanup tasks to approve.
+- **End of a milestone:** the Engineering lead reviews the whole codebase; you get a list of proposed cleanup tasks to approve. A light QA run checks that compacting the planning notes lost no rule.
 - **Full QA** only when you ask: "Urob plnú QA". You can ask for a structure review any time: "Pozri sa na architektúru …".
 
 Each PR says under *How it was verified* which review it got.
